@@ -15,7 +15,6 @@ import lombok.*;
 @Getter
 @Setter
 @Entity(name = "team")
-
 public class TeamEntity {
 
     @Id
