@@ -2,7 +2,7 @@
 도커를 작동시킬려고 했으나 제대로 작동하지 않고 깜빡깜빡 거립니다.
 혹시나 해결방안 아시는 분 계시면...한 번만 봐주시면 감사하겠습니다...
 
-HTML 파일은 src > main > resource > template 파일 안에다가 넣어주시면 됩니다!!
+# HTML 파일은 src > main > resource > template 파일 안에다가 넣어주시면 됩니다!!
 
 백엔드는 src > main > java > edu.yonsei.Studymate 파일 내에서 작업해주시면 되겠습니다.
 URL은 스토리보드 참고해서 만드시면 됩니다.
