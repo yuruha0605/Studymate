@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@Entity(name = "team")
+@Entity(name = "team") // table 이름
 public class TeamEntity {
 
     @Id
