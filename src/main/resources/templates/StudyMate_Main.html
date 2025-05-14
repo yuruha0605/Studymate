@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메인 페이지</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
+    header, footer {
+      background: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .top-nav button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .top-nav .nav-link {
+      text-decoration: none;  
+      color: #000;          
+      font-size: 1rem;
+      font-weight: normal;
+      background: none;
+      padding: 0;
+      margin: 0;
+      border: none;
+      cursor: pointer;
+    }
+
+    .main-top {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .schedule-box, .profile-box {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      flex: 1;
+    }
+
+    .profile-box {
+      max-width: 400px;
+    }
+
+    .main-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .schedule-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .schedule-box li {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .profile-summary {
+      border: 2px solid #4285f4;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .profile-stats div {
+      flex: 1 1 30%;
+      background: #e0eaff;
+      padding: 0.75rem;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .class-section {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .class-section h3 {
+      color: #4285f4;
+      margin-bottom: 1rem;
+    }
+
+    .class-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .class-card {
+      flex: 1 1 calc(50% - 1rem);
+      background: #f9f9f9;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .class-card.full {
+      opacity: 0.6;
+    }
+
+    .class-card button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #4285f4;
+      color: white;
+      cursor: pointer;
+    }
+
+    .class-card.full button {
+      background: grey;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .main-top {
+        flex-direction: column;
+      }
+      .class-card {
+        flex: 1 1 100%;
+      }
+      .profile-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+    .join-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .join-btn:hover {
+    background-color: #2a6ad7;
+  }
+  </style>
+</head>
+<body>
+  <header style="display: flex; align-items: center; padding: 1rem; background: #f9f9f9; color: #333; border-bottom: 1px solid #ccc;">
+  <div style="font-size: 1.5rem; font-weight: bold;">Study-Mate</div>
+</header>
+
+  <div class="container">
+    <div class="top-nav">
+      <!-- myclass.html 페이지로 이동 -->
+      <a href="myclass.html" class="nav-link">내 강의실</a>
+      <!-- search.html 페이지로 이동 -->
+      <a href="search.html" class="nav-link">과목 찾기</a>
+      <!-- paid.html 페이지로 이동 -->
+      <a href="paid.html" class="nav-link">유료 서비스</a>
+    </div>
+    <!-- 스케줄 정보 백엔드로부터 get -->
+    <div class="main-top">
+      <div class="schedule-box">
+        <div class="main-title">Upcoming <span style="color: #4285f4">Schedule</span></div>
+        <ul>
+          <li>월요일 10:00 - 데이터베이스 개론</li>
+          <li>화요일 14:00 - 웹프로그래밍 실습</li>
+          <li>수요일 09:00 - 인공지능 개론</li>
+          <li>금요일 11:00 - 캡스톤 디자인</li>
+        </ul>
+      </div>
+      <!-- 사용자 정보 백엔드로부터 get -->
+      <div class="profile-box">
+        <div class="profile-summary" style="
+  background-color: #f0f7ff;
+  border: 1px solid #c6e2ff;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+">
+  <!-- 프로필 이미지 -->
+  <img src="https://i.pravatar.cc/80" alt="프로필 이미지" style="
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  ">
+
+  <!-- 텍스트 정보 -->
+  <div>
+    <p><strong>👤 이름:</strong> 김민수</p>
+    <p><strong>🎓 학번:</strong> 202112345</p>
+  </div>
+</div>
+        <div class="profile-stats">
+          <div>수강과목<br>4개</div>
+          <div>진행 중인 과제 수<br>3개</div>
+          <div>학습 시간<br>2시간</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="class-section">
+      <!-- 수업 정보 백엔드로부터 get -->
+      <h3>진행 중인 수업 추천</h3>
+      <div class="class-list">
+        <div class="class-card">
+          <h4>캡스톤 디자인</h4>
+          <p>[ 실시간 회의 링크 있음 ]</p>
+          <p>Current : 4 / 5</p>
+          <a href="#" class="join-btn">Join Class</a>
+        </div>
+        <div class="class-card">
+          <h4>웹프로그래밍 실습</h4>
+          <p>[ React 기반 프론트엔드 프로젝트 ]</p>
+          <p>Current : 2 / 5</p>
+          <a href="#" class="join-btn">Join Class</a>
+        </div>
+        <div class="class-card full">
+          <h4>인공지능 개론</h4>
+          <p>[ 팀 프로젝트 마감 임박 ]</p>
+          <p>Current : Full</p>
+          <a href="#" class="join-btn" style="pointer-events: none; background: grey;">Join Class</a>
+        </div>
+        <div class="class-card">
+          <h4>데이터베이스 개론</h4>
+          <p>[ 실습 보고서 제출 필요 ]</p>
+          <p>Current : 1 / 5</p>
+          <a href="#" class="join-btn">Join Class</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
+  </footer>
+</body>
+</html>
