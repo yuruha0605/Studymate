@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyMate - 내 강의실2</title>
+  <title>StudyMate - 내 강의실</title>
   <style>
     * {
       box-sizing: border-box;
@@ -17,11 +17,32 @@
       color: #000;
     }
 
-    header, footer {
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: #fff;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+
+    header div.logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    header div.logo:hover {
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 50px;
       background: #333;
       color: white;
-      padding: 1rem;
       text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
     }
 
     .container {
@@ -49,7 +70,7 @@
       margin: 2rem 0 1rem;
     }
 
-    .subject-list {
+    .subject-wrapper {
       background: #fff;
       border-radius: 10px;
       padding: 1rem;
@@ -57,7 +78,7 @@
       border: 1px solid #ccc;
     }
 
-    .subject-card {
+    .course-card {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -65,16 +86,16 @@
       border-bottom: 1px solid #eee;
     }
 
-    .subject-card:last-child {
+    .course-card:last-child {
       border-bottom: none;
     }
 
-    .subject-name {
+    .course-name {
       font-weight: bold;
       color: #4285f4;
     }
 
-    .participants {
+    .enroll-info {
       font-size: 0.9rem;
       color: #333;
       margin-right: 10px;
@@ -103,134 +124,131 @@
       margin-bottom: 1rem;
     }
 
-    .mate-circles {
+    .mate-display {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
-    .mate {
+    .mate-entry {
       display: flex;
       flex-direction: column;
       align-items: center;
       flex: 1 1 20%;
+      transition: all 0.3s ease;
     }
 
-    .mate .circle {
-      width: 80px;
-      height: 80px;
-      border: 4px solid #4285f4;
+    .mate-entry:hover {
+      color: #4285f4;
+    }
+
+    .mate-entry .circle {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #ccc;
       border-radius: 50%;
-      background-image: url("/image/basic_image.jpg");
       background-size: cover;
       background-position: center;
       margin-bottom: 0.5rem;
+      transition: border 0.3s ease;
     }
 
-    footer {
-      margin-top: 50px;
-      background-color: #eee;
-      color: #555;
-      text-align: center;
-      padding: 1rem;
-      border-top: 1px solid #ccc;
+    .mate-entry:hover .circle {
+      border-color: #4285f4;
+    }
+
+    .mate-entry p {
+      font-size: 0.9rem;
+      font-weight: bold;
     }
 
     @media (max-width: 768px) {
-      .subject-card {
+      .course-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
       }
 
-      .mate-circles {
+      .mate-display {
         justify-content: center;
       }
 
-      .mate {
+      .mate-entry {
         flex: 1 1 45%;
       }
     }
   </style>
 </head>
 <body>
-
-<!-- 헤더 -->
 <header>
-  <div style="font-size: 1.5rem; font-weight: bold;">StudyMate</div>
+  <div class="logo" onclick="location.href='StudyMate_Main.html'">StudyMate</div>
 </header>
 
 <div class="container">
-  <!-- 상단 네비게이션 -->
   <div class="top-nav">
     <a href="myclass.html">내 강의실</a>
     <a href="search.html">과목 찾기</a>
     <a href="paid.html">유료 서비스</a>
   </div>
 
-  <!-- 타이틀 -->
   <div class="main-title">My <span style="color: #4285f4;">Classroom</span></div>
 
-  <!-- 과목 리스트 -->
-  <section class="subject-list">
-    <div class="subject-card">
-      <span class="subject-name">데이터베이스</span>
+  <section class="subject-wrapper">
+    <div class="course-card">
+      <span class="course-name">데이터베이스</span>
       <div class="action-area">
-        <span class="participants">참여 인원 : 12 / 50</span>
+        <span class="enroll-info">참여 인원 : 12 / 50</span>
         <button class="join-btn">Join Class</button>
       </div>
     </div>
-    <div class="subject-card">
-      <span class="subject-name">알고리즘 기초</span>
+    <div class="course-card">
+      <span class="course-name">알고리즘 기초</span>
       <div class="action-area">
-        <span class="participants">참여 인원 : 8 / 40</span>
+        <span class="enroll-info">참여 인원 : 8 / 40</span>
         <button class="join-btn">Join Class</button>
       </div>
     </div>
-    <div class="subject-card">
-      <span class="subject-name">운영 체제</span>
+    <div class="course-card">
+      <span class="course-name">운영 체제</span>
       <div class="action-area">
-        <span class="participants">참여 인원 : 20 / 50</span>
+        <span class="enroll-info">참여 인원 : 20 / 50</span>
         <button class="join-btn">Join Class</button>
       </div>
     </div>
-    <div class="subject-card">
-      <span class="subject-name">데이터마이닝</span>
+    <div class="course-card">
+      <span class="course-name">데이터 마이닝</span>
       <div class="action-area">
-        <span class="participants">참여 인원 : 11 / 30</span>
+        <span class="enroll-info">참여 인원 : 11 / 30</span>
         <button class="join-btn">Join Class</button>
       </div>
     </div>
   </section>
 
-  <!-- 스터디 메이트 상태 -->
   <section class="mate-status">
     <h2>스터디 메이트 상태</h2>
-    <div class="mate-circles">
-      <div class="mate">
-        <div class="circle"></div>
-        <p>이름 또는 상태</p>
+    <div class="mate-display">
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=34');"></div>
+        <p>김민수</p>
       </div>
-      <div class="mate">
-        <div class="circle"></div>
-        <p>이름 또는 상태</p>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=31');"></div>
+        <p>이수정</p>
       </div>
-      <div class="mate">
-        <div class="circle"></div>
-        <p>이름 또는 상태</p>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=32');"></div>
+        <p>박지우</p>
       </div>
-      <div class="mate">
-        <div class="circle"></div>
-        <p>이름 또는 상태</p>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=33');"></div>
+        <p>홍길동</p>
       </div>
     </div>
   </section>
 </div>
 
-<!-- 푸터 -->
 <footer>
-  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
+  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혜, 남윤롱, 박진우, 이동규, 이세준, 이체연, 한인찬</p>
 </footer>
-
 </body>
 </html>
