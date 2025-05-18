@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습 페이지</title>
+  <style>
+    html, body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      width: 100%;
+    }
+    header, footer {
+      background-color: #ddd;
+      padding: 10px 20px;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-links a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: black;
+      font-weight: 500;
+    }
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      box-sizing: border-box;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      background-color: #4a7ddf;
+      color: white;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .stream-box {
+      background-color: #999;
+      height: 200px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+    }
+    .stream-button,
+    .small-button {
+      background-color: #4a7ddf;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background-color 0.2s ease;
+    }
+    .stream-button:hover,
+    .small-button:hover {
+      background-color: #3b66b8;
+    }
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2%;
+    }
+    .left-box {
+      flex: 0 0 65%;
+    }
+    .right-boxes {
+      flex: 0 0 30%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .box {
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .box h3 {
+      margin-top: 0;
+    }
+    .button-bar {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 50px;
+      background-color: #eee;
+      color: #555;
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><strong>LOGO / Name</strong></div>
+      <div class="nav-links">
+        <a href="#">내 강의실</a>
+        <a href="#">과목 찾기</a>
+        <a href="#">유료 서비스</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="section header-bar">
+      <div><strong>과목명</strong></div>
+      <div>
+        <span>참여자 수</span> |
+        <span>공부 시간</span>
+      </div>
+    </div>
+
+    <div class="stream-box">
+      <button class="stream-button">스트림 시작 버튼</button>
+    </div>
+
+    <div class="main-content">
+      <div class="box left-box">
+        <h3>질문 게시판</h3>
+        <div>
+          <p>질문 1</p>
+          <p>질문 2</p>
+          <p>질문 3</p>
+          <p>질문 4</p>
+          <p>질문 5</p>
+          <p>질문 6</p>
+          <p>질문 7</p>
+        </div>
+        <div class="button-bar">
+          <button class="small-button">질문글 추가</button>
+        </div>
+      </div>
+
+      <div class="right-boxes">
+        <div class="box">
+          <h3>학습자료</h3>
+          <div>
+            <p>자료 1</p>
+            <p>자료 2</p>
+          </div>
+          <div class="button-bar">
+            <button class="small-button">자료 업로드</button>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>일정</h3>
+          <div>
+            <p>일정 1</p>
+            <p>일정 2</p>
+          </div>
+          <div class="button-bar">
+            <button class="small-button">일정 추가</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
+  </footer>
+</body>
+</html>

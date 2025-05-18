@@ -1,4 +1,4 @@
-package edu.yonsei.Studymate.entity;
+package edu.yonsei.Studymate.team.entity;
 
 
 import jakarta.persistence.Entity;

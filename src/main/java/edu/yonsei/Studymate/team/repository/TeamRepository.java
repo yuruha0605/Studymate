@@ -1,6 +1,6 @@
-package edu.yonsei.Studymate.repository;
+package edu.yonsei.Studymate.team.repository;
 
-import edu.yonsei.Studymate.entity.TeamEntity;
+import edu.yonsei.Studymate.team.entity.TeamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {

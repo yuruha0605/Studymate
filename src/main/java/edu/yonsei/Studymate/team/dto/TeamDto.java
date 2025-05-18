@@ -1,4 +1,4 @@
-package edu.yonsei.Studymate.dto;
+package edu.yonsei.Studymate.team.dto;
 
 
 import lombok.*;

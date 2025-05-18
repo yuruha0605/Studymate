@@ -1,8 +1,8 @@
-package edu.yonsei.Studymate.service;
+package edu.yonsei.Studymate.team.service;
 
-import edu.yonsei.Studymate.dto.TeamDto;
-import edu.yonsei.Studymate.entity.TeamEntity;
-import edu.yonsei.Studymate.repository.TeamRepository;
+import edu.yonsei.Studymate.team.dto.TeamDto;
+import edu.yonsei.Studymate.team.entity.TeamEntity;
+import edu.yonsei.Studymate.team.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
