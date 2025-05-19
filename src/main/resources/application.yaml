@@ -5,9 +5,9 @@ spring:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
   datasource:
-    url: jdbc:mysql://52.79.122.208:3306/team8database?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/team8database?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: team8
-    password: team8888!!
+    username: root
+    password: 12341234
