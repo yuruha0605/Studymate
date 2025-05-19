@@ -146,11 +146,18 @@
   <main>
     <div class="search-box">
       <div class="search-top">
-        <select class="search-select">
-          <option>과목명</option>
-          <option>교수명</option>
+<!--         id, value 추가-->
+<!--        <select class="search-select">-->
+<!--          <option>과목명</option>-->
+<!--          <option>교수명</option>-->
+<!--        </select>-->
+        <select class="search-select" id="searchType">
+          <option value="name">과목명</option>
+          <option value="professor">교수명</option>
         </select>
-        <input type="text" placeholder="검색어를 입력하세요" class="search-input" />
+<!--          1. 검색 input에 id="searchInput" 추가-->
+<!--        <input type="text" placeholder="검색어를 입력하세요" class="search-input" />-->
+          <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="search-input" />
         <button class="search-btn" onclick="searchKeyword()">검색</button>
       </div>
       <div class="search-results" id="results">
@@ -165,8 +172,11 @@
 
   <script>
     function searchKeyword() {
+      // type 추가
       const keyword = document.querySelector('.search-input').value;
-      fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+      const type = document.getElementById('searchType').value;
+      // fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
+      fetch(`/api/search?keyword=${encodeURIComponent(keyword)}&type=${type}`)
         .then(res => res.json())
         .then(data => {
           const results = document.getElementById('results');
@@ -178,7 +188,9 @@
           data.forEach(item => {
             const div = document.createElement('div');
             div.className = 'result-line';
-            div.textContent = item.name;
+            // 과목명 - 교수:교수명
+            // div.textContent = item.name;
+            div.textContent = `${item.name} - 교수: ${item.professor}`;
             results.appendChild(div);
           });
         })

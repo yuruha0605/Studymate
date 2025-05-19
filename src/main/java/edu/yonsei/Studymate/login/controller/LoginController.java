@@ -1,7 +1,6 @@
-package edu.yonsei.Studymate.login.contoller;
+package edu.yonsei.Studymate.login.controller;
 
 import edu.yonsei.Studymate.login.repository.UserRepository;
-import edu.yonsei.Studymate.team.repository.TeamRepository;
 import edu.yonsei.Studymate.login.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

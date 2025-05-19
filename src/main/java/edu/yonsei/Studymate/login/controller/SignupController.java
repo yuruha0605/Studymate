@@ -1,8 +1,7 @@
-package edu.yonsei.Studymate.login.contoller;
+package edu.yonsei.Studymate.login.controller;
 
 import edu.yonsei.Studymate.login.entity.User;
 import edu.yonsei.Studymate.login.repository.UserRepository;
-import edu.yonsei.Studymate.team.entity.TeamEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
