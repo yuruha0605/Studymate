@@ -27,9 +27,9 @@ public class LoginController {
     }
 
     // 리디렉션 테스트
-    @GetMapping("/Dashboard")
+    @GetMapping("/users/exam")
     public String showDashboardPage() {
-        return "a_DashboardTest";
+        return "StudyMate_Main";
     }
 
     @PostMapping("/login")
@@ -39,7 +39,7 @@ public class LoginController {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (user.getPassword().equals(pw)) {
-                return "redirect:/Dashboard";
+                return "redirect:/users/exam";
             }
         }
 
