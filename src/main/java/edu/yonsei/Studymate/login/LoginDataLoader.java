@@ -6,11 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataLoader implements CommandLineRunner {
+public class LoginDataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
-    public DataLoader(UserRepository userRepository) {
+    public LoginDataLoader(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

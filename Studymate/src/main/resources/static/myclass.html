@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate - 내 강의실</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: #fff;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+
+    header div.logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    header div.logo:hover {
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 50px;
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .top-nav a {
+      text-decoration: none;
+      color: #000;
+      font-size: 1rem;
+    }
+
+    .main-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 2rem 0 1rem;
+    }
+
+    .subject-wrapper {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border: 1px solid #ccc;
+    }
+
+    .course-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .course-card:last-child {
+      border-bottom: none;
+    }
+
+    .course-name {
+      font-weight: bold;
+      color: #4285f4;
+    }
+
+    .enroll-info {
+      font-size: 0.9rem;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    .join-btn {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .join-btn:hover {
+      background-color: #2a6ad7;
+    }
+
+    .mate-status {
+      margin-top: 2rem;
+    }
+
+    .mate-status h2 {
+      color: #4285f4;
+      margin-bottom: 1rem;
+    }
+
+    .mate-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .mate-entry {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1 1 20%;
+      transition: all 0.3s ease;
+    }
+
+    .mate-entry:hover {
+      color: #4285f4;
+    }
+
+    .mate-entry .circle {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 0.5rem;
+      transition: border 0.3s ease;
+    }
+
+    .mate-entry:hover .circle {
+      border-color: #4285f4;
+    }
+
+    .mate-entry p {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .course-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .mate-display {
+        justify-content: center;
+      }
+
+      .mate-entry {
+        flex: 1 1 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo" onclick="location.href='StudyMate_Main.html'">StudyMate</div>
+</header>
+
+<div class="container">
+  <div class="top-nav">
+    <a href="myclass.html">내 강의실</a>
+    <a href="search.html">과목 찾기</a>
+    <a href="paid.html">유료 서비스</a>
+  </div>
+
+  <div class="main-title">My <span style="color: #4285f4;">Classroom</span></div>
+
+  <section class="subject-wrapper">
+    <div class="course-card">
+      <span class="course-name">데이터베이스</span>
+      <div class="action-area">
+        <span class="enroll-info">참여 인원 : 12 / 50</span>
+        <button class="join-btn">Join Class</button>
+      </div>
+    </div>
+    <div class="course-card">
+      <span class="course-name">알고리즘 기초</span>
+      <div class="action-area">
+        <span class="enroll-info">참여 인원 : 8 / 40</span>
+        <button class="join-btn">Join Class</button>
+      </div>
+    </div>
+    <div class="course-card">
+      <span class="course-name">운영 체제</span>
+      <div class="action-area">
+        <span class="enroll-info">참여 인원 : 20 / 50</span>
+        <button class="join-btn">Join Class</button>
+      </div>
+    </div>
+    <div class="course-card">
+      <span class="course-name">데이터 마이닝</span>
+      <div class="action-area">
+        <span class="enroll-info">참여 인원 : 11 / 30</span>
+        <button class="join-btn">Join Class</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mate-status">
+    <h2>스터디 메이트 상태</h2>
+    <div class="mate-display">
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=34');"></div>
+        <p>김민수</p>
+      </div>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=31');"></div>
+        <p>이수정</p>
+      </div>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=32');"></div>
+        <p>박지우</p>
+      </div>
+      <div class="mate-entry">
+        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=33');"></div>
+        <p>홍길동</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혜, 남윤롱, 박진우, 이동규, 이세준, 이체연, 한인찬</p>
+</footer>
+</body>
+</html>
