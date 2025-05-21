@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공지사항</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 30px;
+        background-color: #f9f9f9;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    thead {
+        background-color: #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+    th {
+        background-color: #e8e8e8;
+    }
+
+    .content {
+        display: none;
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .reply-section {
+        margin-top: 20px;
+        margin-left: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .pagination {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination a {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 8px 14px;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .pagination a:hover {
+        background-color: #eee;
+    }
+
+    .pagination a.current-page {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        border-color: #007bff;
+    }
+
+    span[onclick] {
+        cursor: pointer;
+        color: black;
+        text-decoration: none;
+    }
+
+    .write-button {
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .write-button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+  </style>
+
+  <script th:inline="javascript">
+    function toggleContent(postId) {
+        var content = document.getElementById('content-' + postId);
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+        } else {
+            content.style.display = 'none';
+        }
+    }
+
+    function redirectToPosting() {
+        window.location.href="/ch10/post/write";
+    }
+  </script>
+  </script>
+</head>
+<body>
+<h1>게 시 판</h1>
+
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th width="50px">번호</th>
+      <th>제목</th>
+      <th width="200px">작성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post, iterStat : ${bbsArticle.body}">
+      <td th:text="${iterStat.count}"></td>
+      <td>
+        <span th:text="${post.subject}" th:onclick="'javascript:toggleContent(\'' + ${post.id} + '\')'"></span>
+        <div class="content" th:id="'content-' + ${post.id}">
+          <p th:text="${post.content}"></p>
+
+          <!-- 댓글 출력 부분 -->
+          <div class="reply-section" th:if="${post.replyList}">
+            <ul style="list-style: none; padding-left: 0;">
+              <li th:each="reply, iterStat : ${post.replyList}">
+                <p style="font-size: 1em; margin: 1px 0;">
+                  <span style="margin-right: 5px;" th:text="${iterStat.last} ? '└' : '├'"></span>
+                  <span th:text="${reply.content}" style="font-size: 0.9em;"></span>
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="reply-form">
+            <h4>댓글 작성</h4>
+            <form th:action="@{/ch10/reply/create}" method="post">
+              <input type="hidden" name="postId" th:value="${post.id}"/>
+              <textarea name="content" rows="3" style="width: 100%;" placeholder="댓글을 입력하세요"></textarea>
+              <br>
+              <button type="submit">댓글 등록</button>
+            </form>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+            <form th:action="@{/ch10/post/read}" method="post">
+              <input type="hidden" name="boardId" th:value="${post.id}" />
+              <input type="hidden" name="subject" value="subject"/>
+              <input type="hidden" name="content" value="content"/>
+              <button type="submit" style="background-color: #ffc107; color: black; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                수정
+              </button>
+            </form>
+            <form th:action="@{/ch10/post/delete}" method="post" th:onsubmit="return confirm('정말 삭제하시겠습니까?');">
+              <input type="hidden" name="postId" th:value="${post.id}" />
+              <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                삭제
+              </button>
+            </form>
+          </div>
+        </div>
+      </td>
+      <td th:text="${post.written}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination">
+    <span th:if="${bbsArticle.pagination.page > 0}">
+        <a th:href="@{/ch10/post/articles(page=${bbsArticle.pagination.page - 1}, size=${bbsArticle.pagination.size})}">◀</a>
+    </span>
+  <span th:each="pageNum : ${#numbers.sequence(0, bbsArticle.pagination.totalPage - 1)}">
+        <a th:href="@{/ch10/post/articles(page=${pageNum}, size=${bbsArticle.pagination.size})}"
+           th:text="${pageNum + 1}"
+           th:class="${pageNum == bbsArticle.pagination.page ? 'current-page' : ''}"></a>
+    </span>
+  <span th:if="${bbsArticle.pagination.page < bbsArticle.pagination.totalPage - 1}">
+        <a th:href="@{/ch10/post/articles(page=${bbsArticle.pagination.page + 1}, size=${bbsArticle.pagination.size})}">▶</a>
+    </span>
+</div>
+<div style="text-align: right; margin-top: 20px;">
+  <button onclick="redirectToPosting()" class="write-button">글쓰기</button>
+</div>
+</body>
+</html>
