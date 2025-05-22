@@ -156,7 +156,7 @@
 
 
         <!-- 로그인 폼 action에 thymeleaf 적용 -->
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/study-mate/login}" method="post">
             <div class="input-group">
                 <label for="id">ID :</label>
                 <input type="text" id="id" name="id" required />
@@ -170,8 +170,8 @@
 
         <div class="links">
             <!-- 링크에 thymeleaf 적용 -->
-            <!--<a th:href="@{/signup}">Register</a> /-->
-            <a href="a_SignupTest.html" class="nav-link">Register</a>/
+            <a th:href="@{/signup}" class="nav-link">Register</a> /
+            <!--<a href="a_SignupTest.html" class="nav-link">내 강의실</a>/-->
             <a th:href="@{/find-id}">Find ID</a> /
             <a th:href="@{/find-password}">Find Password</a>
         </div>

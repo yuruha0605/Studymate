@@ -3,286 +3,350 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>메인 페이지</title>
+  <title>StudyMate | Main Page</title>
   <style>
+    :root {
+      --main-blue: #4285f4;
+      --main-bg: #f4f4f4;
+      --card-bg: #fff;
+      --shadow: 0 4px 16px rgba(66,133,244,0.10), 0 1.5px 4px rgba(0,0,0,0.05);
+      --border-radius: 14px;
+    }
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
+      font-family: 'Noto Sans KR', sans-serif;
     }
-
     body {
-      background-color: #f4f4f4;
-      color: #000;
+      background: var(--main-bg);
+      color: #222;
+      min-height: 100vh;
     }
-
-    header, footer {
-      background: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2rem;
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      box-shadow: var(--shadow);
     }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 1rem;
+    .logo {
+      font-size: 1.7rem;
+      font-weight: bold;
+      letter-spacing: -1px;
+      color: var(--main-blue);
     }
-
     .top-nav {
       display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 2rem;
+      align-items: center;
     }
-
-    .top-nav button {
-      border: none;
-      background: none;
-      cursor: pointer;
+    .nav-link {
+      text-decoration: none;
+      color: #222;
       font-size: 1rem;
+      font-weight: 500;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: background 0.15s;
     }
-
-    .top-nav .nav-link {
-      text-decoration: none;  
-      color: #000;          
-      font-size: 1rem;
-      font-weight: normal;
-      background: none;
-      padding: 0;
-      margin: 0;
-      border: none;
-      cursor: pointer;
+    .nav-link:hover, .nav-link.active {
+      background: #e3edfa;
+      color: var(--main-blue);
     }
-
+    .container {
+      max-width: 1200px;
+      margin: 2.5rem auto 0 auto;
+      padding: 0 1rem 2rem 1rem;
+    }
     .main-top {
       display: flex;
-      flex-direction: row;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 2rem;
+      margin-bottom: 2rem;
     }
-
     .schedule-box, .profile-box {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
       flex: 1;
+      min-width: 0;
     }
-
-    .profile-box {
-      max-width: 400px;
-    }
-
-    .main-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .schedule-box ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .schedule-box li {
-      padding: 0.5rem;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .profile-summary {
-      border: 2px solid #4285f4;
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-
-    .profile-stats {
+    .schedule-box {
+      flex: 2;
       display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      flex-direction: column;
+      justify-content: flex-start;
     }
-
+    .main-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+      color: #222;
+    }
+    .main-title .accent {
+      color: var(--main-blue);
+      font-weight: bold;
+    }
+    .schedule-list {
+      list-style: none;
+      margin-top: 0.5rem;
+    }
+    .schedule-list li {
+      background: #f5faff;
+      border-radius: 8px;
+      margin-bottom: 0.7rem;
+      padding: 0.7rem 1rem;
+      font-size: 1.05rem;
+      border-left: 4px solid var(--main-blue);
+      box-shadow: 0 1px 4px rgba(66,133,244,0.06);
+    }
+    .profile-box {
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .profile-summary {
+      width: 100%;
+      background: #f0f7ff;
+      border: 1px solid #c6e2ff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(66,133,244,0.08);
+      padding: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+    }
+    .profile-summary img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--main-blue);
+      background: #fff;
+    }
+    .profile-summary-text p {
+      margin-bottom: 0.2rem;
+      font-size: 1.05rem;
+    }
+    .profile-stats {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+    }
     .profile-stats div {
-      flex: 1 1 30%;
+      flex: 1 1 0;
       background: #e0eaff;
-      padding: 0.75rem;
       border-radius: 10px;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.98rem;
+      padding: 0.7rem 0.3rem;
+      font-weight: 500;
+      color: #222;
+      box-shadow: 0 1px 4px rgba(66,133,244,0.06);
     }
-
     .class-section {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
     }
-
     .class-section h3 {
-      color: #4285f4;
-      margin-bottom: 1rem;
+      color: var(--main-blue);
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
     }
-
     .class-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
     }
-
     .class-card {
-      flex: 1 1 calc(50% - 1rem);
+      flex: 1 1 calc(50% - 1.5rem);
+      min-width: 270px;
       background: #f9f9f9;
-      border-radius: 10px;
-      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: box-shadow 0.2s;
+      border: 1.5px solid #e0e0e0;
+      position: relative; /* 버튼 위치 기준 */
+      min-height: 130px;
+      padding-bottom: 2.7rem; /* 버튼 공간 확보 */
     }
-
     .class-card.full {
       opacity: 0.6;
+      background: #f0f0f0;
     }
-
-    .class-card button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
-      background: #4285f4;
-      color: white;
-      cursor: pointer;
+    .class-card h4 {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+      color: #222;
     }
-
-    .class-card.full button {
-      background: grey;
-      cursor: not-allowed;
+    .class-card p {
+      font-size: 0.98rem;
+      margin-bottom: 0.1rem;
     }
-
-    @media (max-width: 768px) {
-      .main-top {
-        flex-direction: column;
-      }
-      .class-card {
-        flex: 1 1 100%;
-      }
-      .profile-stats {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+    .class-card .status {
+      font-size: 0.96rem;
+      color: #555;
+      margin-bottom: 0.2rem;
     }
     .join-btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .join-btn:hover {
-    background-color: #2a6ad7;
-  }
+      position: absolute;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      padding: 0.38rem 1rem;
+      background-color: var(--main-blue);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.98rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(66,133,244,0.08);
+      transition: background 0.18s, box-shadow 0.18s;
+      min-width: 90px;
+      height: 2.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .join-btn:hover {
+      background-color: #2a6ad7;
+      box-shadow: 0 4px 16px rgba(66,133,244,0.18);
+    }
+    .class-card.full .join-btn {
+      background: #aaa;
+      cursor: not-allowed;
+      pointer-events: none;
+      box-shadow: none;
+    }
+    footer {
+      width: 100%;
+      background: #222;
+      color: #fff;
+      text-align: center;
+      padding: 1.2rem 0 1rem 0;
+      font-size: 1rem;
+      margin-top: 2rem;
+      border-radius: 0 0 20px 20px;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 900px) {
+      .main-top {
+        flex-direction: column;
+        gap: 1.1rem;
+      }
+      .profile-box {
+        max-width: 100%;
+      }
+      .class-list {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .class-card {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+    @media (max-width: 600px) {
+      header, .container {
+        padding-left: 0.6rem;
+        padding-right: 0.6rem;
+      }
+      .main-top {
+        gap: 0.5rem;
+      }
+      .class-section {
+        padding: 1rem 0.5rem 1rem 0.5rem;
+      }
+      .class-card {
+        padding-bottom: 2.7rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <header style="display: flex; align-items: center; padding: 1rem; background: #f9f9f9; color: #333; border-bottom: 1px solid #ccc;">
-  <div style="font-size: 1.5rem; font-weight: bold;">Study-Mate</div>
+<header>
+  <div class="logo">StudyMate</div>
+  <nav class="top-nav">
+    <a href="myclass.html" class="nav-link">내 강의실</a>
+    <a href="search.html" class="nav-link">과목 찾기</a>
+    <a href="paid.html" class="nav-link">유료 서비스</a>
+  </nav>
 </header>
-
-  <div class="container">
-    <div class="top-nav">
-      <!-- myclass.html 페이지로 이동 -->
-      <a href="myclass.html" class="nav-link">내 강의실</a>
-      <!-- search.html 페이지로 이동 -->
-      <a href="search.html" class="nav-link">과목 찾기</a>
-      <!-- paid.html 페이지로 이동 -->
-      <a href="paid.html" class="nav-link">유료 서비스</a>
+<div class="container">
+  <div class="main-top">
+    <!-- 일정 박스 -->
+    <div class="schedule-box">
+      <div class="main-title">Upcoming <span class="accent">Schedule</span></div>
+      <ul class="schedule-list">
+        <li>월요일 10:00 - 데이터베이스 개론</li>
+        <li>화요일 14:00 - 웹프로그래밍 실습</li>
+        <li>수요일 09:00 - 인공지능 개론</li>
+        <li>금요일 11:00 - 캡스톤 디자인</li>
+      </ul>
     </div>
-    <!-- 스케줄 정보 백엔드로부터 get -->
-    <div class="main-top">
-      <div class="schedule-box">
-        <div class="main-title">Upcoming <span style="color: #4285f4">Schedule</span></div>
-        <ul>
-          <li>월요일 10:00 - 데이터베이스 개론</li>
-          <li>화요일 14:00 - 웹프로그래밍 실습</li>
-          <li>수요일 09:00 - 인공지능 개론</li>
-          <li>금요일 11:00 - 캡스톤 디자인</li>
-        </ul>
+    <!-- 프로필 박스 -->
+    <div class="profile-box">
+      <div class="profile-summary">
+        <img src="https://i.pravatar.cc/80" alt="프로필 이미지">
+        <div class="profile-summary-text">
+          <p><strong>👤 이름:</strong> 김민수</p>
+          <p><strong>🎓 학번:</strong> 202112345</p>
+        </div>
       </div>
-      <!-- 사용자 정보 백엔드로부터 get -->
-      <div class="profile-box">
-        <div class="profile-summary" style="
-  background-color: #f0f7ff;
-  border: 1px solid #c6e2ff;
-  padding: 1rem;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-align: left;
-">
-  <!-- 프로필 이미지 -->
-  <img src="https://i.pravatar.cc/80" alt="프로필 이미지" style="
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-  ">
-
-  <!-- 텍스트 정보 -->
-  <div>
-    <p><strong>👤 이름:</strong> 김민수</p>
-    <p><strong>🎓 학번:</strong> 202112345</p>
+      <div class="profile-stats">
+        <div>수강과목<br><span style="font-size:1.1em; font-weight:bold;">4개</span></div>
+        <div>진행 중인 과제 수<br><span style="font-size:1.1em; font-weight:bold;">3개</span></div>
+        <div>학습 시간<br><span style="font-size:1.1em; font-weight:bold;">2시간</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- 수업 추천 섹션 -->
+  <div class="class-section">
+    <h3>진행 중인 수업 추천</h3>
+    <div class="class-list">
+      <div class="class-card">
+        <h4>캡스톤 디자인</h4>
+        <p class="status">[ 실시간 회의 링크 있음 ]</p>
+        <p>Current : 4 / 5</p>
+        <a href="#" class="join-btn">Join Class</a>
+      </div>
+      <div class="class-card">
+        <h4>웹프로그래밍 실습</h4>
+        <p class="status">[ React 기반 프론트엔드 프로젝트 ]</p>
+        <p>Current : 2 / 5</p>
+        <a href="#" class="join-btn">Join Class</a>
+      </div>
+      <div class="class-card full">
+        <h4>인공지능 개론</h4>
+        <p class="status">[ 팀 프로젝트 마감 임박 ]</p>
+        <p>Current : Full</p>
+        <a href="#" class="join-btn">Join Class</a>
+      </div>
+      <div class="class-card">
+        <h4>데이터베이스 개론</h4>
+        <p class="status">[ 실습 보고서 제출 필요 ]</p>
+        <p>Current : 1 / 5</p>
+        <a href="#" class="join-btn">Join Class</a>
+      </div>
+    </div>
   </div>
 </div>
-        <div class="profile-stats">
-          <div>수강과목<br>4개</div>
-          <div>진행 중인 과제 수<br>3개</div>
-          <div>학습 시간<br>2시간</div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <div class="class-section">
-      <!-- 수업 정보 백엔드로부터 get -->
-      <h3>진행 중인 수업 추천</h3>
-      <div class="class-list">
-        <div class="class-card">
-          <h4>캡스톤 디자인</h4>
-          <p>[ 실시간 회의 링크 있음 ]</p>
-          <p>Current : 4 / 5</p>
-          <a href="#" class="join-btn">Join Class</a>
-        </div>
-        <div class="class-card">
-          <h4>웹프로그래밍 실습</h4>
-          <p>[ React 기반 프론트엔드 프로젝트 ]</p>
-          <p>Current : 2 / 5</p>
-          <a href="#" class="join-btn">Join Class</a>
-        </div>
-        <div class="class-card full">
-          <h4>인공지능 개론</h4>
-          <p>[ 팀 프로젝트 마감 임박 ]</p>
-          <p>Current : Full</p>
-          <a href="#" class="join-btn" style="pointer-events: none; background: grey;">Join Class</a>
-        </div>
-        <div class="class-card">
-          <h4>데이터베이스 개론</h4>
-          <p>[ 실습 보고서 제출 필요 ]</p>
-          <p>Current : 1 / 5</p>
-          <a href="#" class="join-btn">Join Class</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
-  </footer>
+<footer>
+  © 2025 웹서비스 응용 팀 프로젝트 | 8조 | 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬
+</footer>
 </body>
 </html>
