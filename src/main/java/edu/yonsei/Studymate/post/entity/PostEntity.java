@@ -39,6 +39,6 @@ public class PostEntity {
             mappedBy = "postEntity"
     )
     @Builder.Default
-    @org.hibernate.annotations.OrderBy(clause = "id")
+    @org.hibernate.annotations.SQLOrder("id")
     private List<ReplyEntity> replyList = List.of();
 }

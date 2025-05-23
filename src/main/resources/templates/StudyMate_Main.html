@@ -16,7 +16,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     body {
       background: var(--main-bg);
@@ -36,7 +36,7 @@
       font-size: 1.7rem;
       font-weight: bold;
       letter-spacing: -1px;
-      color: var(--main-blue);
+      color: var(--main-black);
     }
     .top-nav {
       display: flex;
@@ -211,8 +211,7 @@
       color: white;
       border: none;
       border-radius: 5px;
-      font-size: 0.98rem;
-      font-weight: bold;
+      font-size: 12px;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(66,133,244,0.08);
       transition: background 0.18s, box-shadow 0.18s;
@@ -221,6 +220,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      text-decoration: none
     }
     .join-btn:hover {
       background-color: #2a6ad7;
@@ -233,16 +233,15 @@
       box-shadow: none;
     }
     footer {
-      width: 100%;
-      background: #222;
-      color: #fff;
+      border-top: 1px solid #ccc;
+      margin-top: auto;
       text-align: center;
-      padding: 1.2rem 0 1rem 0;
-      font-size: 1rem;
-      margin-top: 2rem;
-      border-radius: 0 0 20px 20px;
-      letter-spacing: 0.02em;
+      t-size: 0.9rem;
+      padding: 1rem;
+      background: #333;
+      color: #fff;
     }
+
     @media (max-width: 900px) {
       .main-top {
         flex-direction: column;
@@ -279,7 +278,7 @@
 </head>
 <body>
 <header>
-  <div class="logo">StudyMate</div>
+  <div class="logo">Study-Mate</div>
   <nav class="top-nav">
     <a href="myclass.html" class="nav-link">내 강의실</a>
     <a href="search.html" class="nav-link">과목 찾기</a>

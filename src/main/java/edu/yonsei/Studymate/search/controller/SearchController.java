@@ -1,7 +1,7 @@
 package edu.yonsei.Studymate.search.controller;
 
-import edu.yonsei.Studymate.search.entity.SubjectEntity;
-import edu.yonsei.Studymate.search.repository.SubjectRepository;
+import edu.yonsei.Studymate.search.entity.SearchEntity;
+import edu.yonsei.Studymate.search.repository.SearchRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class SubjectController {
+public class SearchController {
 
-    private final SubjectRepository subjectRepository;
+    private final SearchRepository searchRepository;
 
-    public SubjectController(SubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
+    public SearchController(SearchRepository searchRepository) {
+        this.searchRepository = searchRepository;
     }
 
     /**
@@ -23,14 +23,14 @@ public class SubjectController {
      * ?type=name 또는 professor (검색 기준)
      */
     @GetMapping("/api/search")
-    public List<SubjectEntity> searchSubjects(
+    public List<SearchEntity> searchSubjects(
             @RequestParam String keyword,
             @RequestParam(required = false, defaultValue = "name") String type) {
 
         if ("professor".equalsIgnoreCase(type)) {
-            return subjectRepository.findByProfessorContainingIgnoreCase(keyword);
+            return searchRepository.findByProfessorContainingIgnoreCase(keyword);
         } else {
-            return subjectRepository.findByNameContainingIgnoreCase(keyword);
+            return searchRepository.findByNameContainingIgnoreCase(keyword);
         }
     }
 }

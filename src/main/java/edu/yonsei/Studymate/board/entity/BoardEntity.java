@@ -1,5 +1,7 @@
 package edu.yonsei.Studymate.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.post.entity.PostEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +27,12 @@ public class BoardEntity {
     @OneToMany(
             mappedBy = "boardEntity"
     )
+
+    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @JoinColumn(name = "t_studygroup_id")
+    private StudygroupEntity studygroupEntity;
 
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")

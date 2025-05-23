@@ -11,10 +11,11 @@ import lombok.*;
 @Setter
 @Builder
 @ToString
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class) // 직렬화 과정의 naming rule 이다.
 
 public class BoardRequest {
 
+    // 해당 field에 대한 유효성 검사
     @NotBlank
     private String boardName;
 

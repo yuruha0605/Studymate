@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class PostService {
 
         var entity = PostEntity.builder()
                 .boardEntity(boardEntity)
-                .subject(postRequest.getSubject())
+                .subject(postRequest.getSubject()) // 이거 나중에 title로 바꿀 것
                 .content(postRequest.getContent())
                 .written(LocalDateTime.now())
                 .build()

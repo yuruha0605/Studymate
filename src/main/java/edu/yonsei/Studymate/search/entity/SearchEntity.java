@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class SubjectEntity {
+public class SearchEntity {
 
     // Getter & Setter
     @Id
@@ -21,9 +21,9 @@ public class SubjectEntity {
     private String professor; // 교수명
 
     // 기본 생성자
-    public SubjectEntity() {}
+    public SearchEntity() {}
 
-    public SubjectEntity(String name, String professor) {
+    public SearchEntity(String name, String professor) {
         this.name = name;
         this.professor = professor;
     }

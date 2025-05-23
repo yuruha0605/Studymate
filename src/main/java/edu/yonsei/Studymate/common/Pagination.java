@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 
+// Page 정보용 class
 public class Pagination {
 
     private Integer page;

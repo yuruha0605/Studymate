@@ -5,10 +5,11 @@ import edu.yonsei.Studymate.board.dto.BoardRequest;
 import edu.yonsei.Studymate.board.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/yonseit8/board")
+@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
 
