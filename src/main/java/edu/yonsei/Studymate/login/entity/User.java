@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,9 +18,25 @@ public class User {
     @Column(nullable = false, unique = true)
     private String loginId;
     private String password;
+    //private String email;
+    private String name;
+    private String studentId;
+    private String major;
 
-    // 생성자, getter, setter
+    @ElementCollection
+    private List<String> selectedLearningStyles;
 
+    private String studyTime;
+
+    @ElementCollection
+    private List<String> selectedInterests;
+
+    private String skillLevel;
+
+    @Transient
+    private String passwordConfirm;
+
+    //생성자
     public User() {}
 
     public User(String loginId, String password) {
@@ -26,15 +44,18 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+
+
+    //passwordConfirm의 getter, setter
+    public String getPasswordConfirm(){
+        return passwordConfirm;
     }
 
-    public String getLoginId() {
-        return loginId;
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
-    public String getPassword() {
-        return password;
-    }
+
+
+
 }

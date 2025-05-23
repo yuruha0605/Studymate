@@ -1,145 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study-Mate - 과목 검색</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: #f4f4f4;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      background: #f9f9f9;
-      color: #333;
-      border-bottom: 1px solid #ccc;
-    }
-
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: auto;
-      text-align: center;
-      font-size: 0.9rem;
-      padding: 1rem;
-      background-color: #333;
-      color: white;
-    }
-
-    .header-left {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-left: auto;
-    }
-
-    .header-right a {
-      text-decoration: none;
-      color: #000;
-      font-size: 1rem;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
-    }
-
-    .search-box {
-      width: 100%;
-      max-width: 800px;
-      background: white;
-      border: 2px solid #4a76fd;
-      border-radius: 12px;
-      padding: 2rem;
-    }
-
-    .search-top {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .search-select {
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #4a76fd;
-      border-radius: 5px;
-      background-color: #4a76fd;
-      color: white;
-      min-width: 100px;
-    }
-
-    .search-input {
-      flex: 1;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      min-width: 200px;
-    }
-
-    .search-btn {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #4a76fd;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .search-btn:hover {
-      background-color: #375fc7;
-    }
-
-    .search-results {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .result-line {
-      height: 20px;
-      background-color: #ddd;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 768px) {
-      .search-top {
-        flex-direction: column;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study-Mate - 과목 검색</title>
+    <link rel="stylesheet" href="search-styles.css">
 </head>
 <body>
   <header>
     <div class="header-left">Study-Mate</div>
     <nav class="header-right">
-      <a href="myclass.html">내 강의실</a>
+      <a href="../My%20classroom/myclass.html">내 강의실</a>
       <a href="search.html">과목 찾기</a>
-      <a href="paid.html">유료 서비스</a>
+      <a href="../Main%20Page/paid.html">유료 서비스</a>
     </nav>
   </header>
 

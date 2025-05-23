@@ -3,185 +3,320 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study-Mate 회원가입</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+  <title>StudyMate - 회원가입</title>
+  <link rel="stylesheet" th:href="@{/signup-styles.css}">
 
-    body {
-      background: linear-gradient(to bottom right, #eaf0ff, #ffffff);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
 
-    header {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      background: #ffffff;
-      color: #333;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .header-left {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #000;
-    }
-
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: auto;
-      text-align: center;
-      font-size: 0.9rem;
-      padding: 1rem;
-      background-color: #333;
-      color: white;
-    }
-
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-grow: 1;
-      padding: 40px 20px;
-    }
-
-    .signup-box {
-      width: 100%;
-      max-width: 480px;
-      background: #fff;
-      padding: 2.5rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      text-align: center;
-    }
-
-    .signup-box h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      color: #4a76fd;
-    }
-
-    .subtext {
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 2rem;
-    }
-
-    .input-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
-      padding: 0 0.5rem;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #555;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      transition: border-color 0.2s;
-    }
-
-    .input-group input:focus {
-      border-color: #4a76fd;
-      outline: none;
-    }
-
-    button {
-      background-color: #4a76fd;
-      color: white;
-      border: none;
-      padding: 0.8rem 2.2rem;
-      font-size: 1.05rem;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 1.5rem;
-      width: 100%;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.2s;
-    }
-
-    button:hover {
-      background-color: #3b5eea;
-    }
-
-    .links {
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    .links a {
-      color: #4a4a4a;
-      text-decoration: none;
-      margin: 0 5px;
-    }
-
-    .links a:hover {
-      color: #000;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .input-group {
-        padding: 0;
-      }
-
-      .signup-box {
-        padding: 2rem 1.5rem;
-      }
-    }
-  </style>
 </head>
 <body>
-  <header>
-    <div class="header-left">Study-Mate</div>
-  </header>
+<header class="header">
+  <div class="header-container">
+    <a th:href="@{/}" class="logo">Study-Mate</a>
+  </div>
+</header>
 
-  <main>
-    <div class="signup-box">
-      <h1>Study-Mate<br>회원가입</h1>
-      <p class="subtext">Study-Mate에 오신 것을 환영합니다!<br>아래 정보를 입력해 주세요.</p>
-
-      <form th:action="@{/signup}" method="post">
-        <div class="input-group">
-          <label for="loginId">아이디</label>
-          <input type="text" id="loginId" name="loginId" required placeholder="아이디 입력" />
-        </div>
-        <div class="input-group">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" name="password" required placeholder="비밀번호 입력" />
-        </div>
-        <div class="input-group">
-          <label for="name">이름</label>
-          <input type="text" id="name" name="name" required placeholder="홍길동" />
-        </div>
-        <button type="submit">가입하기</button>
-      </form>
-
-      <div class="links">
-        이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a>
-      </div>
+<div class="container">
+  <div class="signup-container">
+    <div class="progress-bar">
+      <div class="progress-step active">1</div>
+      <div class="progress-step">2</div>
+      <div class="progress-step">3</div>
+      <div class="progress-step">4</div>
     </div>
-  </main>
 
-  <footer>
-    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
-  </footer>
+    <form th:action="@{/study-mate/signup}" th:object="${user}" method="post">
+    <!-- Step 1: 기본 정보 -->
+      <div class="form-section active" id="step1">
+        <h2>기본 정보</h2>
+        <div class="form-group">
+          <label for="loginId">이메일</label>
+          <input type="email" id="loginId" th:field="*{loginId}" required placeholder="example@email.com">
+          <div th:if="${#fields.hasErrors('loginId')}" class="error-message">
+            <span th:errors="*{loginId}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" th:field="*{password}" required placeholder="8자 이상 입력해주세요">
+          <div th:if="${#fields.hasErrors('password')}" class="error-message">
+            <span th:errors="*{password}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="passwordConfirm">비밀번호 확인</label>
+          <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" required placeholder="비밀번호를 다시 입력해주세요">
+          <div th:if="${#fields.hasErrors('passwordConfirm')}" class="error-message">
+            <span th:errors="*{passwordConfirm}"></span>
+          </div>
+        </div>
+        <div class="button-group">
+          <div></div>
+          <button type="button" class="btn btn-primary" onclick="nextStep(1)">다음</button>
+        </div>
+        <div class="login-link">
+          계정이 있으신가요? <a th:href="@{/login}">로그인</a>
+        </div>
+      </div>
+
+      <!-- Step 2: 개인 정보 -->
+      <div class="form-section" id="step2">
+        <h2>개인 정보</h2>
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" th:field="*{name}" required placeholder="이름을 입력해주세요">
+          <div th:if="${#fields.hasErrors('name')}" class="error-message">
+            <span th:errors="*{name}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="studentId">학번</label>
+          <input type="text" id="studentId" th:field="*{studentId}" required placeholder="학번을 입력해주세요">
+          <div th:if="${#fields.hasErrors('studentId')}" class="error-message">
+            <span th:errors="*{studentId}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="major">전공</label>
+          <select id="major" th:field="*{major}" required>
+            <option value="">전공을 선택해주세요</option>
+            <option value="computer">소프트웨어학과</option>
+            <option value="electronics">전자공학과</option>
+            <option value="mechanical">기계공학과</option>
+            <option value="business">경영학과</option>
+          </select>
+          <div th:if="${#fields.hasErrors('major')}" class="error-message">
+            <span th:errors="*{major}"></span>
+          </div>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(2)">이전</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(2)">다음</button>
+        </div>
+      </div>
+
+      <!-- Step 3: 학습 스타일 -->
+      <div class="form-section" id="step3">
+        <h2>학습 스타일</h2>
+        <div class="form-group">
+          <label>선호하는 학습 방식 (복수 선택 가능)</label>
+          <div class="tag-container">
+            <div th:each="style : ${learningStyles}" class="tag">
+              <input type="checkbox" th:field="*{selectedLearningStyles}"
+                     th:value="${style}" style="display: none;">
+              <label th:for="${#ids.prev('selectedLearningStyles')}"
+                     th:text="${style}"
+                     onclick="toggleTag(this)"></label>
+            </div>
+          </div>
+          <div th:if="${#fields.hasErrors('selectedLearningStyles')}" class="error-message">
+            <span th:errors="*{selectedLearningStyles}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="studyTime">주로 공부하는 시간대</label>
+          <select id="studyTime" th:field="*{studyTime}" required>
+            <option value="">시간대를 선택해주세요</option>
+            <option value="morning">아침형 (06:00-12:00)</option>
+            <option value="afternoon">오후형 (12:00-18:00)</option>
+            <option value="evening">저녁형 (18:00-24:00)</option>
+            <option value="night">야간형 (24:00-06:00)</option>
+          </select>
+          <div th:if="${#fields.hasErrors('studyTime')}" class="error-message">
+            <span th:errors="*{studyTime}"></span>
+          </div>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(3)">이전</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(3)">다음</button>
+        </div>
+      </div>
+
+      <!-- Step 4: 관심 분야 -->
+      <div class="form-section" id="step4">
+        <h2>관심 분야</h2>
+        <div class="form-group">
+          <label>관심 있는 학습 분야 (복수 선택 가능)</label>
+          <div class="tag-container">
+            <div th:each="interest : ${interests}" class="tag">
+              <input type="checkbox" th:field="*{selectedInterests}"
+                     th:value="${interest}" style="display: none;">
+              <label th:for="${#ids.prev('selectedInterests')}"
+                     th:text="${interest}"
+                     onclick="toggleTag(this)"></label>
+            </div>
+          </div>
+          <div th:if="${#fields.hasErrors('selectedInterests')}" class="error-message">
+            <span th:errors="*{selectedInterests}"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="skillLevel">현재 학습 수준</label>
+          <select id="skillLevel" th:field="*{skillLevel}" required>
+            <option value="">수준을 선택해주세요</option>
+            <option value="beginner">입문</option>
+            <option value="intermediate">중급</option>
+            <option value="advanced">고급</option>
+          </select>
+          <div th:if="${#fields.hasErrors('skillLevel')}" class="error-message">
+            <span th:errors="*{skillLevel}"></span>
+          </div>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(4)">이전</button>
+          <button type="submit" class="btn btn-primary">가입하기</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조</p>
+</footer>
+
+<script th:inline="javascript">
+  function nextStep(currentStep) {
+      // Step 1(기본 정보)에서 다음 단계로 넘어갈 때 비밀번호 확인
+      if (currentStep === 1) {
+          const password = document.getElementById('password').value;
+          const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+          // 비밀번호 입력 확인
+          if (!password || !passwordConfirm) {
+              alert('비밀번호를 입력해주세요.');
+              return;
+          }
+
+          // 비밀번호 일치 여부 확인
+          if (password !== passwordConfirm) {
+              alert('비밀번호가 일치하지 않습니다.');
+              return;
+          }
+
+          // 비밀번호 길이 확인 (8자 이상)
+          if (password.length < 8) {
+              alert('비밀번호는 8자 이상이어야 합니다.');
+              return;
+          }
+      }
+
+      // 검증을 통과한 경우에만 다음 단계로 진행
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep + 1}`).classList.add('active');
+
+      const steps = document.querySelectorAll('.progress-step');
+      steps[currentStep-1].classList.add('completed');
+      steps[currentStep].classList.add('active');
+  }
+
+  // 기존의 prevStep과 toggleTag 함수는 그대로 유지
+  function prevStep(currentStep) {
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep - 1}`).classList.add('active');
+
+      const steps = document.querySelectorAll('.progress-step');
+      steps[currentStep-1].classList.remove('active');
+      steps[currentStep-2].classList.remove('completed');
+  }
+
+  function toggleTag(element) {
+      element.classList.toggle('selected');
+      const checkbox = element.previousElementSibling;
+      checkbox.checked = !checkbox.checked;
+  }
+
+  // 실시간 비밀번호 확인을 위한 새로운 함수 추가
+  document.addEventListener('DOMContentLoaded', function() {
+
+      // check password
+      const passwordInput = document.getElementById('password');
+      const passwordConfirmInput = document.getElementById('passwordConfirm');
+      const messageDiv = document.createElement('div');
+      messageDiv.style.fontSize = '0.8em';
+      messageDiv.style.marginTop = '5px';
+      passwordConfirmInput.parentNode.appendChild(messageDiv);
+
+      function checkPasswordMatch() {
+          if (passwordConfirmInput.value === '') {
+              messageDiv.textContent = '';
+              messageDiv.style.color = '';
+              return;
+          }
+
+          if (passwordInput.value === passwordConfirmInput.value) {
+              messageDiv.textContent = '비밀번호가 일치합니다.';
+              messageDiv.style.color = 'green';
+          } else {
+              messageDiv.textContent = '비밀번호가 일치하지 않습니다.';
+              messageDiv.style.color = 'red';
+          }
+      }
+
+      passwordInput.addEventListener('input', checkPasswordMatch);
+      passwordConfirmInput.addEventListener('input', checkPasswordMatch);
+
+      //check email
+      const emailInput = document.getElementById('loginId');
+      const emailMessageDiv = document.createElement('div');
+      emailMessageDiv.style.fontSize = '0.8em';
+      emailMessageDiv.style.marginTop = '5px';
+      emailInput.parentNode.appendChild(emailMessageDiv);
+
+      let emailCheckTimeout;
+
+      emailInput.addEventListener('input', function() {
+          const email = this.value;
+
+          // 이메일 형식 검증
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email)) {
+              emailMessageDiv.textContent = '유효한 이메일 형식이 아닙니다.';
+              emailMessageDiv.style.color = 'red';
+              return;
+          }
+
+          // 입력이 멈춘 후 0.5초 후에 중복 체크 실행
+          clearTimeout(emailCheckTimeout);
+          emailCheckTimeout = setTimeout(() => {
+              fetch(`/study-mate/check-email?email=${encodeURIComponent(email)}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.isDuplicate) {
+                          emailMessageDiv.textContent = '이미 사용중인 이메일입니다.';
+                          emailMessageDiv.style.color = 'red';
+                      } else {
+                          emailMessageDiv.textContent = '사용 가능한 이메일입니다.';
+                          emailMessageDiv.style.color = 'green';
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                      emailMessageDiv.textContent = '이메일 중복 확인 중 오류가 발생했습니다.';
+                      emailMessageDiv.style.color = 'red';
+                  });
+          }, 500);
+      });
+  });
+
+
+   function prevStep(currentStep) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`step${currentStep - 1}`).classList.add('active');
+
+        const steps = document.querySelectorAll('.progress-step');
+        steps[currentStep-1].classList.remove('active');
+        steps[currentStep-2].classList.remove('completed');
+   }
+
+  function toggleTag(label) {
+      label.classList.toggle('selected');
+      const checkbox = label.previousElementSibling;
+      if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          console.log('Checkbox state:', checkbox.checked);
+      }
+  }
+
+</script>
 </body>
 </html>
