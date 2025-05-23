@@ -22,6 +22,6 @@
 - 현재 오류가 많아 git에 올려두었음
 
 ### 5/24 수정 사항
-- 전체적인 개편 들어감 signup page 수정 - 유저 정보 좀 더 불러옴 ( 추천 시스템용 )
+- signup page 수정 - 유저 정보 좀 더 불러옴 ( 추천 시스템용 )
 - login, signup쪽 백엔드 살짝 수정
 - login, signup, main, studyroom, myclass 프론트 일부 수정
