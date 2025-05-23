@@ -16,3 +16,7 @@
 - 게시판용 board, bbs, reply 파일 추가
 - a_LogTest.html의 Register를 a href -> a_SignupTest.html으로 연결하도록 수정
 - Myclass의 StudentEntity가 비어있어, 간단하게 id, name만 설정
+
+### 5/23 수정 사항
+- 스키마를 subject_entity > t_studygroup > t_board > t_bbs2025 > t_reply2025 에 맞춰 제작 중
+- 현재 오류가 많아 git에 올려두었음
