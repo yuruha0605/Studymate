@@ -1,76 +1,96 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study-Mate - 과목 검색</title>
-    <link rel="stylesheet" href="search-styles.css">
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Study-Mate - 과목 검색</title>
+        <link rel="stylesheet" th:href="@{/search-styles.css}">
+    </head>
 <body>
-  <header>
-    <div class="header-left">Study-Mate</div>
-    <nav class="header-right">
-      <a href="../My%20classroom/myclass.html">내 강의실</a>
-      <a href="search.html">과목 찾기</a>
-      <a href="../Main%20Page/paid.html">유료 서비스</a>
-    </nav>
-  </header>
+    <header>
+        <div class="header-left">Study-Mate</div>
+        <nav class="header-right">
+            <a th:href="@{/classroom/my}">내 강의실</a>
+            <a th:href="@{/subject/search-page}">과목 찾기</a>
+            <a th:href="@{/service/paid}">유료 서비스</a>
+        </nav>
+    </header>
 
-  <main>
-    <div class="search-box">
-      <div class="search-top">
-<!--         id, value 추가-->
-<!--        <select class="search-select">-->
-<!--          <option>과목명</option>-->
-<!--          <option>교수명</option>-->
-<!--        </select>-->
-        <select class="search-select" id="searchType">
-          <option value="name">과목명</option>
-          <option value="professor">교수명</option>
-        </select>
-<!--        검색 input에 id="searchInput" 추가-->
-<!--        <input type="text" placeholder="검색어를 입력하세요" class="search-input" />-->
-          <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="search-input" />
-        <button class="search-btn" onclick="searchKeyword()">검색</button>
-      </div>
-      <div class="search-results" id="results">
-        <!-- 검색 결과가 여기에 들어감 -->
-      </div>
-    </div>
-  </main>
+    <main>
+        <div class="search-box">
+            <div class="search-top">
+                <select class="search-select" id="searchType">
+                    <option value="subject">과목명</option>
+                    <option value="group">스터디그룹명</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="search-input" />
+                <button class="search-btn" onclick="searchKeyword()">검색</button>
+            </div>
+            <div class="search-results" id="results">
+                <!-- 검색 결과가 여기에 들어감 -->
+            </div>
+        </div>
+    </main>
 
-  <footer>
-    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
-  </footer>
 
-  <script>
+    <footer>
+        <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 |
+            <span th:text="${'팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬'}"></span>
+        </p>
+    </footer>
+
+    <script th:inline="javascript">
     function searchKeyword() {
-      // type 추가
-      const keyword = document.querySelector('.search-input').value;
-      const type = document.getElementById('searchType').value;
-      // fetch(`/api/search?keyword=${encodeURIComponent(keyword)}`)
-      fetch(`/api/search?keyword=${encodeURIComponent(keyword)}&type=${type}`)
+        const keyword = document.querySelector('.search-input').value;
+        const type = document.getElementById('searchType').value;
+
+        fetch(`[[@{/api/studygroups/search}]]?keyword=${encodeURIComponent(keyword)}&type=${type}`)
+            .then(res => res.json())
+            .then(data => {
+                const results = document.getElementById('results');
+                results.innerHTML = '';
+                if (data.length === 0) {
+                    results.innerHTML = '<p>검색 결과가 없습니다.</p>';
+                    return;
+                }
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'result-line';
+                    div.innerHTML = `
+                        <h3>${item.groupName}</h3>
+                        <p>과목: ${item.subjectName}</p>
+                        <p>인원: ${item.currentMembers}/${item.maxMembers}</p>
+                        <p>상태: ${item.status}</p>
+                        <button onclick="joinStudyGroup(${item.id})">참여하기</button>
+                    `;
+                    results.appendChild(div);
+                });
+            })
+            .catch(err => {
+                console.error('검색 실패:', err);
+            });
+    }
+
+    function joinStudyGroup(groupId) {
+        // 스터디 그룹 참여 로직 구현
+        fetch(`[[@{/api/studygroups/}]]${groupId}/join`, {
+            method: 'POST'
+        })
         .then(res => res.json())
         .then(data => {
-          const results = document.getElementById('results');
-          results.innerHTML = '';
-          if (data.length === 0) {
-            results.innerHTML = '<p>검색 결과가 없습니다.</p>';
-            return;
-          }
-          data.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'result-line';
-            // 과목명 - 교수:교수명
-            // div.textContent = item.name;
-            div.textContent = `${item.name} - 교수: ${item.professor}`;
-            results.appendChild(div);
-          });
+            if (data.success) {
+                alert('스터디 그룹에 참여되었습니다!');
+                searchKeyword(); // 목록 새로고침
+            } else {
+                alert(data.message || '참여에 실패했습니다.');
+            }
         })
         .catch(err => {
-          console.error('검색 실패:', err);
+            console.error('참여 실패:', err);
+            alert('참여 처리 중 오류가 발생했습니다.');
         });
     }
-  </script>
+
+    </script>
 </body>
 </html>

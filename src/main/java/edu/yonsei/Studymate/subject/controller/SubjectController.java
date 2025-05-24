@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/subject")
@@ -30,7 +32,16 @@ public class SubjectController {
     public SubjectDto view(
             @PathVariable Long id
     ){
-        var entity = subjectService.article(id);
-        return entity;
+        return subjectService.article(id);
+    }
+
+    @GetMapping("/api/search")
+    public List<SubjectDto> searchSubjects(
+            @RequestParam String keyword,
+            @RequestParam(required = false, defaultValue = "name") String type
+    ) {
+        return "professor".equalsIgnoreCase(type)
+                ? subjectService.searchByProfessor(keyword)
+                : subjectService.searchBySubjectName(keyword);
     }
 }

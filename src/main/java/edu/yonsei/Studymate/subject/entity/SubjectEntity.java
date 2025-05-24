@@ -4,6 +4,8 @@ package edu.yonsei.Studymate.subject.entity;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,4 +32,23 @@ public class SubjectEntity {
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<StudygroupEntity> groupList = List.of();   // List 로 만든 group 을 반환
+
+
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+
+    }
 }

@@ -2,6 +2,7 @@ package edu.yonsei.Studymate.login.controller;
 
 import edu.yonsei.Studymate.login.entity.User;
 import edu.yonsei.Studymate.login.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,8 @@ public class SignupController {
     @PostMapping("/study-mate/signup")
     public String handleSignup(
             @ModelAttribute User user,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession session
     ) {
 
         // 중복 아이디 체크
@@ -55,9 +57,12 @@ public class SignupController {
         }
 
         // 새 사용자 생성
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        session.setAttribute("loginUser", savedUser);
+
+        // 메인 페이지로 직접 로딩
         redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다. 로그인하세요.");
-        return "redirect:/study-mate/login";
+        return "redirect:/study-mate/main";
     }
 
     @GetMapping("/study-mate/check-email")

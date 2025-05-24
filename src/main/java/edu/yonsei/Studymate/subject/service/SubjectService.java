@@ -8,6 +8,9 @@ import edu.yonsei.Studymate.subject.entity.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
@@ -19,6 +22,13 @@ public class SubjectService {
     public SubjectDto create(
             SubjectRequest subjectRequest
     ){
+
+        // 중복 과목 체크
+        if (subjectRepository.existsBySubjectName(subjectRequest.getSubjectName())) {
+            throw new RuntimeException("Subject already exists: " + subjectRequest.getSubjectName());
+        }
+
+
         var entity = SubjectEntity.builder()                        // SubjectEntity를 builder로 담는다.
                 .subjectName(subjectRequest.getSubjectName())       // 과목명 받아 오고
                 .professorName(subjectRequest.getProfessorName())   // 교수명 받아 온다
@@ -31,8 +41,38 @@ public class SubjectService {
 
     // 특정 과목 검색에 대한 서비스
     public SubjectDto article(Long id){
-        var entity = subjectRepository.findById(id).get();
-        return subjectConverter.toDto(entity);
+        return subjectRepository.findById(id)
+                .map(subjectConverter::toDto)
+                .orElseThrow(() -> new RuntimeException("Subject not found: " + id));
+
     }
+
+    public List<SubjectDto> searchBySubjectName(String keyword) {
+        var entities = subjectRepository.findBySubjectNameContainingIgnoreCase(keyword);
+        return entities.stream()
+                .map(subjectConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    // 교수명으로 과목 검색
+    public List<SubjectDto> searchByProfessor(String keyword) {
+        var entities = subjectRepository.findByProfessorNameContainingIgnoreCase(keyword);
+        return entities.stream()
+                .map(subjectConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    // 전체 과목 목록 조회
+    public List<SubjectDto> getAllSubjects() {
+        var entities = subjectRepository.findAll();
+        return entities.stream()
+                .map(subjectConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
 }
