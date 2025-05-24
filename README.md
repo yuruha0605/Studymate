@@ -11,17 +11,28 @@
 - CrudController : URL로 어떤 데이터가 들어오면 처리
 - StudymateApplication : 메인함수.
 
+
+### 5/25 수정사항
+- search merged with "Subject file" : search file에 readme file 남겨둠
+- subject controller 에서 검색 처리 하도록 변경
+- 
+
+### 5/24 수정 사항
+- signup page 수정 - 유저 정보 좀 더 불러옴 ( 추천 시스템용 )
+- login, signup쪽 백엔드 살짝 수정
+- login, signup, main, studyroom, myclass 프론트 일부 수정
+
+### 5/23 수정 사항
+- 스키마를 subject_entity > t_studygroup > t_board > t_bbs2025 > t_reply2025 에 맞춰 제작 중
+- 현재 오류가 많아 git에 올려두었음
+
 ### 5/21 수정 사항
 - Repository 정리
 - 게시판용 board, bbs, reply 파일 추가
 - a_LogTest.html의 Register를 a href -> a_SignupTest.html으로 연결하도록 수정
 - Myclass의 StudentEntity가 비어있어, 간단하게 id, name만 설정
 
-### 5/23 수정 사항
-- 스키마를 subject_entity > t_studygroup > t_board > t_bbs2025 > t_reply2025 에 맞춰 제작 중
-- 현재 오류가 많아 git에 올려두었음
 
-### 5/24 수정 사항
-- signup page 수정 - 유저 정보 좀 더 불러옴 ( 추천 시스템용 )
-- login, signup쪽 백엔드 살짝 수정
-- login, signup, main, studyroom, myclass 프론트 일부 수정
+
+
+
