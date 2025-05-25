@@ -20,4 +20,11 @@ public class StudygroupRequest {
     @NotBlank
     private String groupName;
 
+    @NotBlank
+    private String subjectName;
+
+    @Builder.Default
+    private Integer maxMembers = 5;
+
+
 }

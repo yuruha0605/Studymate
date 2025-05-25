@@ -17,5 +17,10 @@ public class StudygroupDto {
 
     private Long id;
     private Long subjectId;
-    private  String groupName;
+    private String groupName;
+    private String subjectName;
+    private Integer currentMembers;
+    private Integer maxMembers;
+    private String status;
+
 }

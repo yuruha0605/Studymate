@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 public class BoardConverter {
-
     private final PostConverter postConverter;
 
-    public BoardDto toDto(BoardEntity boardEntity){
-
+    public BoardDto toDto(BoardEntity boardEntity) {
         var postList = boardEntity.getPostList()
                 .stream()
                 .map(postConverter::toDto)
@@ -26,8 +24,10 @@ public class BoardConverter {
                 .id(boardEntity.getId())
                 .boardName(boardEntity.getBoardName())
                 .postList(postList)
-                .build()
-                ;
+                .studygroupId(boardEntity.getStudygroup() != null ?
+                        boardEntity.getStudygroup().getId() : null)
+                .build();
     }
 }
+
 

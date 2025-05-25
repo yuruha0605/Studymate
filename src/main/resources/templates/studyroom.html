@@ -1,256 +1,51 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>학습 페이지</title>
-  <style>
-    /* 전역 스타일 */
-    :root {
-      --primary-color: #4a7ddf;
-      --secondary-color: #3b66b8;
-      --background-color: #f8f9fa;
-      --text-color: #333;
-      --border-color: #e9ecef;
-    }
-
-
-
-    html, body {
-      font-family: 'Noto Sans KR', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      line-height: 1.6;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    /* 헤더 스타일 */
-    header {
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 1rem 0;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 2rem;
-      width: 100%;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #333;
-    }
-
-    .nav-links a {
-      margin-left: 2rem;
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--primary-color);
-    }
-
-    /* 메인 컨테이너 */
-    .container {
-      max-width: 1200px;
-      margin: 80px auto 0;
-      padding: 2rem;
-    }
-
-    /* 헤더 바 */
-    .header-bar {
-      background-color: white;
-      color: var(--text-color);
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-bar strong {
-      font-size: 1.2rem;
-      color: var(--primary-color);
-    }
-
-    /* 스트림 박스 */
-    .stream-box {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      height: 400px;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* 버튼 스타일 */
-    .stream-button,
-    .small-button {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
-    }
-
-    .stream-button:hover,
-    .small-button:hover {
-      background-color: var(--secondary-color);
-    }
-
-    /* 메인 콘텐츠 영역 */
-    .main-content {
-      display: grid;
-      grid-template-columns: 7fr 3fr;
-      gap: 2rem;
-    }
-
-    /* 박스 공통 스타일 */
-    .box {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .box h3 {
-      color: var(--primary-color);
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-    }
-
-    /* 질문 게시판 스타일 */
-    .left-box p {
-      padding: 0.8rem;
-      border-bottom: 1px solid var(--border-color);
-      margin: 0;
-    }
-
-    .left-box p:last-child {
-      border-bottom: none;
-    }
-
-    /* 오른쪽 박스 스타일 */
-    .right-boxes .box {
-      height: fit-content;
-    }
-
-    .right-boxes p {
-      padding: 0.5rem 0;
-      margin: 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .right-boxes p:last-child {
-      border-bottom: none;
-    }
-
-    /* 버튼 바 */
-    .button-bar {
-      margin-top: 1rem;
-      text-align: right;
-    }
-
-    /* 푸터 */
-    footer {
-      background-color: white;
-      color: #666;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    footer p {
-      max-width: 1200px;
-      margin: 0 auto;
-      font-size: 0.9rem;
-    }
-
-    /* 반응형 디자인 */
-    @media (max-width: 768px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links a {
-        margin-left: 1rem;
-      }
-
-      .container {
-        padding: 1rem;
-      }
-    }
-  </style>
+  <title>스터디룸</title>
+  <link rel="stylesheet" th:href="@{/common-styles.css}">
+  <link rel="stylesheet" th:href="@{/studyroom-styles.css}">
 </head>
 <body>
-<header>
-  <nav>
-    <div class="logo">Study-Mate</div>
-    <div class="nav-links">
-      <a href="#">내 강의실</a>
-      <a href="#">과목 찾기</a>
-      <a href="#">유료 서비스</a>
-    </div>
-  </nav>
-</header>
+<!-- 공통 헤더 include -->
+<div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container">
   <div class="header-bar">
     <div>
-      <strong>프로그래밍 기초</strong>
+      <strong th:text="${studygroup?.groupName ?: '스터디 없음'}">프로그래밍 기초</strong>
     </div>
     <div>
-      <span>참여자 23명</span>
-
+      <span th:text="|참여자 ${studygroup?.currentMembers ?: 0}명|">참여자 0명</span>
     </div>
   </div>
 
   <div class="stream-box">
     <video id="localVideo" autoplay playsinline style="width: 100%; height: 100%; display: none;"></video>
-    <button class="stream-button" onclick="startStream()" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">스트림 시작</button>
+    <button class="stream-button" onclick="startStream()"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      스트림 시작
+    </button>
   </div>
 
   <div class="main-content">
     <div class="left-box box">
       <h3>질문 게시판</h3>
-      <div>
-        <p>Java 기초 문법에 대해 질문있습니다.</p>
-        <p>for문과 while문의 차이점이 뭔가요?</p>
-        <p>객체지향 프로그래밍이란 무엇인가요?</p>
-        <p>메소드 오버로딩과 오버라이딩의 차이점</p>
-        <p>String과 StringBuilder의 차이점</p>
-        <p>접근 제어자에 대해 설명해주세요</p>
-        <p>Collection Framework 사용법</p>
+      <div th:if="${board != null && board.postList != null}">
+        <p th:each="post : ${board.postList}" th:text="${post.title}">
+          게시글 제목
+        </p>
+        <p th:if="${#lists.isEmpty(board.postList)}">등록된 게시글이 없습니다.</p>
+      </div>
+      <div th:if="${board == null || board.postList == null}">
+        <p>게시판이 아직 생성되지 않았습니다.</p>
       </div>
       <div class="button-bar">
-        <button class="small-button">질문하기</button>
+        <button class="small-button"
+                th:onclick="'location.href=\'/study/room/' + ${studygroup?.id} + '/post/new\''">
+          질문하기
+        </button>
       </div>
     </div>
 
@@ -258,8 +53,8 @@
       <div class="box">
         <h3>학습자료</h3>
         <div>
-          <p>1주차 - Java 기초 문법.pdf</p>
-          <p>2주차 - 객체지향 프로그래밍.pdf</p>
+          <!-- 학습자료가 없을 때의 메시지 -->
+          <p>등록된 학습자료가 없습니다.</p>
         </div>
         <div class="button-bar">
           <button class="small-button">자료 업로드</button>
@@ -269,8 +64,8 @@
       <div class="box">
         <h3>학습 일정</h3>
         <div>
-          <p>12/1 - 중간고사</p>
-          <p>12/15 - 기말고사</p>
+          <!-- 일정이 없을 때의 메시지 -->
+          <p>등록된 일정이 없습니다.</p>
         </div>
         <div class="button-bar">
           <button class="small-button">일정 추가</button>
@@ -280,45 +75,47 @@
   </div>
 </div>
 
-<footer>
-  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
-</footer>
+<!-- 공통 푸터 include -->
+<div th:replace="~{fragments/footer :: footer}"></div>
 
-<script>
-  // 기존 JavaScript 코드는 그대로 유지
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const studygroupId = [[${studygroupId}]];
+  /*]]>*/
+
   async function startStream() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false
-      });
+      try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+              audio: false
+          });
 
-      const videoElement = document.getElementById('localVideo');
-      videoElement.srcObject = stream;
-      videoElement.style.display = 'block';
+          const videoElement = document.getElementById('localVideo');
+          videoElement.srcObject = stream;
+          videoElement.style.display = 'block';
 
-      const button = document.querySelector('.stream-button');
-      button.textContent = '스트림 종료';
-      button.onclick = stopStream;
+          const button = document.querySelector('.stream-button');
+          button.textContent = '스트림 종료';
+          button.onclick = stopStream;
 
-    } catch (error) {
-      console.error('스트림 시작 실패:', error);
-      alert('카메라 접근에 실패했습니다.');
-    }
+      } catch (error) {
+          console.error('스트림 시작 실패:', error);
+          alert('카메라 접근에 실패했습니다.');
+      }
   }
 
   function stopStream() {
-    const videoElement = document.getElementById('localVideo');
-    const stream = videoElement.srcObject;
-    const tracks = stream.getTracks();
+      const videoElement = document.getElementById('localVideo');
+      const stream = videoElement.srcObject;
+      const tracks = stream.getTracks();
 
-    tracks.forEach(track => track.stop());
-    videoElement.srcObject = null;
-    videoElement.style.display = 'none';
+      tracks.forEach(track => track.stop());
+      videoElement.srcObject = null;
+      videoElement.style.display = 'none';
 
-    const button = document.querySelector('.stream-button');
-    button.textContent = '스트림 시작';
-    button.onclick = startStream;
+      const button = document.querySelector('.stream-button');
+      button.textContent = '스트림 시작';
+      button.onclick = startStream;
   }
 </script>
 </body>

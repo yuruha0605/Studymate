@@ -9,13 +9,18 @@
 - repository : service에서 사용할 함수 선언
 - service : 실질적인 함수 정의 (SQL문 기준으로 작성했어야하는 거 잊지 말아주세요)
 - CrudController : URL로 어떤 데이터가 들어오면 처리
-- StudymateApplication : 메인함수.
+- StudymateApplication : 메인함수
+---
 
+### 5/26 수정사항
+- 각 스터디룸에 대한 각 게시판 작성
+- Studygroup repository에 대한 전편 개편
+- Subject > Studygroup > board 까지는 얼추 구현, 남은건 post랑 reply 정도
 
 ### 5/25 수정사항
 - search merged with "Subject file" : search file에 readme file 남겨둠
 - subject controller 에서 검색 처리 하도록 변경
-- 
+
 
 ### 5/24 수정 사항
 - signup page 수정 - 유저 정보 좀 더 불러옴 ( 추천 시스템용 )

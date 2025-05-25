@@ -1,55 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-  background-color: #f4f4f4;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: #f9f9f9;
-  color: #333;
-  border-bottom: 1px solid #ccc;
-}
-
-footer {
-  border-top: 1px solid #ccc;
-  margin-top: auto;
-  text-align: center;
-  font-size: 0.9rem;
-  padding: 1rem;
-  background-color: #333;
-  color: white;
-}
-
-.header-left {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: auto;
-}
-
-.header-right a {
-  text-decoration: none;
-  color: #000;
-  font-size: 1rem;
-}
-
+/* search-styles.css */
 main {
   flex: 1;
   display: flex;
@@ -61,9 +10,9 @@ main {
 .search-box {
   width: 100%;
   max-width: 800px;
-  background: white;
-  border: 2px solid #4a76fd;
-  border-radius: 12px;
+  background: var(--card-bg);
+  border: 2px solid var(--main-blue);
+  border-radius: var(--border-radius);
   padding: 2rem;
 }
 
@@ -77,9 +26,9 @@ main {
 .search-select {
   padding: 10px;
   font-size: 1rem;
-  border: 1px solid #4a76fd;
+  border: 1px solid var(--main-blue);
   border-radius: 5px;
-  background-color: #4a76fd;
+  background-color: var(--main-blue);
   color: white;
   min-width: 100px;
 }
@@ -88,7 +37,7 @@ main {
   flex: 1;
   padding: 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   min-width: 200px;
 }
@@ -96,11 +45,12 @@ main {
 .search-btn {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #4a76fd;
+  background-color: var(--main-blue);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .search-btn:hover {
@@ -114,9 +64,38 @@ main {
 }
 
 .result-line {
-  height: 20px;
-  background-color: #ddd;
-  border-radius: 4px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+}
+
+.result-line h3 {
+    color: var(--main-blue);
+    margin-bottom: 10px;
+}
+
+.result-line p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.result-line button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: var(--main-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.result-line button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

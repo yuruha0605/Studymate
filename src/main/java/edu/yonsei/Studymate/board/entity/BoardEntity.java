@@ -27,14 +27,13 @@ public class BoardEntity {
     @OneToMany(
             mappedBy = "boardEntity"
     )
-
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<PostEntity> postList = List.of();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
     @JoinColumn(name = "t_studygroup_id")
-    private StudygroupEntity studygroupEntity;
+    private StudygroupEntity studygroup;
 }

@@ -1,81 +1,100 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/common-styles.css}">
+  <link rel="stylesheet" th:href="@{/main-styles.css}">
   <title>StudyMate | Main Page</title>
-  <link rel="stylesheet" href="main-styles.css">
 </head>
 <body>
-<header>
-  <div class="logo">Study-Mate</div>
-  <nav class="top-nav">
-    <a href="../My%20classroom/myclass.html" class="nav-link">내 강의실</a>
-    <a href="../Search%20page/search.html" class="nav-link">과목 찾기</a>
-    <a href="paid.html" class="nav-link">유료 서비스</a>
-  </nav>
-</header>
-<div class="container">
-  <div class="main-top">
-    <!-- 일정 박스 -->
-    <div class="schedule-box">
-      <div class="main-title">Upcoming <span class="accent">Schedule</span></div>
-      <ul class="schedule-list">
-        <li>월요일 10:00 - 데이터베이스 개론</li>
-        <li>화요일 14:00 - 웹프로그래밍 실습</li>
-        <li>수요일 09:00 - 인공지능 개론</li>
-        <li>금요일 11:00 - 캡스톤 디자인</li>
-      </ul>
+  <div th:replace="~{fragments/header :: header}"></div>
+  <div class="container">
+    <div class="welcome-section">
+      <h1>Welcome to <span style="color: var(--main-blue);">Study-Mate</span></h1>
+      <p>함께 공부하고 성장하는 스마트 학습 플랫폼</p>
     </div>
-    <!-- 프로필 박스 -->
+
+    <div class="main-grid">
+      <div class="schedule-box">
+        <h2 class="box-title">Upcoming Schedule</h2>
+        <ul class="schedule-list">
+          <li class="schedule-item">월요일 10:00 - 데이터베이스 개론</li>
+          <li class="schedule-item">화요일 14:00 - 웹프로그래밍 실습</li>
+          <li class="schedule-item">수요일 09:00 - 인공지능 개론</li>
+          <li class="schedule-item">금요일 11:00 - 캡스톤 디자인</li>
+        </ul>
+      </div>
+
     <div class="profile-box">
+      <h2 class="box-title">My Profile</h2>
       <div class="profile-summary">
-        <img src="https://i.pravatar.cc/80" alt="프로필 이미지">
-        <div class="profile-summary-text">
-          <p><strong>👤 이름:</strong> 김민수</p>
-          <p><strong>🎓 학번:</strong> 202112345</p>
+        <img src="https://i.pravatar.cc/150" alt="프로필 이미지" class="profile-image">
+        <div class="profile-info">
+          <p><strong>이름:</strong> 김민수</p>
+          <p><strong>학번:</strong> 202112345</p>
         </div>
       </div>
-      <div class="profile-stats">
-        <div>수강과목<br><span style="font-size:1.1em; font-weight:bold;">4개</span></div>
-        <div>진행 중인 과제 수<br><span style="font-size:1.1em; font-weight:bold;">3개</span></div>
-        <div>학습 시간<br><span style="font-size:1.1em; font-weight:bold;">2시간</span></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div>수강과목</div>
+          <div class="stat-number">4</div>
+        </div>
+        <div class="stat-card">
+          <div>진행 중인 과제</div>
+          <div class="stat-number">3</div>
+        </div>
+        <div class="stat-card">
+          <div>학습 시간</div>
+          <div class="stat-number">2h</div>
+        </div>
       </div>
     </div>
   </div>
-  <!-- 수업 추천 섹션 -->
-  <div class="class-section">
-    <h3>진행 중인 수업 추천</h3>
-    <div class="class-list">
+
+  <div class="classes-section">
+    <h2 class="box-title">진행 중인 수업 추천</h2>
+    <div class="classes-grid">
       <div class="class-card">
-        <h4>캡스톤 디자인</h4>
-        <p class="status">[ 실시간 회의 링크 있음 ]</p>
-        <p>Current : 4 / 5</p>
-        <a href="#" class="join-btn">Join Class</a>
+        <h3>캡스톤 디자인</h3>
+        <div class="class-info">
+          <p>실시간 회의 링크 있음</p>
+          <p>Current: 4 / 5</p>
+        </div>
+        <button class="join-btn">Join Class</button>
       </div>
+
       <div class="class-card">
-        <h4>웹프로그래밍 실습</h4>
-        <p class="status">[ React 기반 프론트엔드 프로젝트 ]</p>
-        <p>Current : 2 / 5</p>
-        <a href="#" class="join-btn">Join Class</a>
+        <h3>웹프로그래밍 실습</h3>
+        <div class="class-info">
+          <p>React 기반 프론트엔드 프로젝트</p>
+          <p>Current: 2 / 5</p>
+        </div>
+        <button class="join-btn">Join Class</button>
       </div>
+
       <div class="class-card full">
-        <h4>인공지능 개론</h4>
-        <p class="status">[ 팀 프로젝트 마감 임박 ]</p>
-        <p>Current : Full</p>
-        <a href="#" class="join-btn">Join Class</a>
+        <h3>인공지능 개론</h3>
+        <div class="class-info">
+          <p>팀 프로젝트 마감 임박</p>
+          <p>Current: Full</p>
+        </div>
+        <button class="join-btn">Join Class</button>
       </div>
+
       <div class="class-card">
-        <h4>데이터베이스 개론</h4>
-        <p class="status">[ 실습 보고서 제출 필요 ]</p>
-        <p>Current : 1 / 5</p>
-        <a href="#" class="join-btn">Join Class</a>
+        <h3>데이터베이스 개론</h3>
+        <div class="class-info">
+          <p>실습 보고서 제출 필요</p>
+          <p>Current: 1 / 5</p>
+        </div>
+        <button class="join-btn">Join Class</button>
       </div>
     </div>
   </div>
 </div>
-<footer>
-  © 2025 웹서비스 응용 팀 프로젝트 | 8조 | 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬
-</footer>
+
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

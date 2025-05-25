@@ -17,8 +17,12 @@ public class StudygroupConverter {
                 .id(studygroupEntity.getId())
                 .subjectId(studygroupEntity.getSubjectEntity().getId())
                 .groupName(studygroupEntity.getGroupName())
-                .build()
-                ;
+                .subjectName(studygroupEntity.getSubjectEntity().getSubjectName())
+                .currentMembers(studygroupEntity.getCurrentMembers())
+                .maxMembers(studygroupEntity.getMaxMembers())
+                .status(studygroupEntity.getStatus().name())
+                .build();
+
 
     }
 
