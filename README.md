@@ -16,6 +16,8 @@
 - 각 스터디룸에 대한 각 게시판 작성
 - Studygroup repository에 대한 전편 개편
 - Subject > Studygroup > board 까지는 얼추 구현, 남은건 post랑 reply 정도
+- header.html의 "내 강의실", "유료 서비스" 메뉴 경로 실제 링크 수정(수정자: 공지혁)
+- MyclassViewController.java 추가 → myclass.html 라우팅 처리(수정자: 공지혁)
 
 ### 5/25 수정사항
 - search merged with "Subject file" : search file에 readme file 남겨둠
