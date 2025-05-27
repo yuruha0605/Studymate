@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Study-Mate 로그인</title>
-    <link rel="stylesheet" th:href="@{/login-styles.css}">
-
+    <link rel="stylesheet" th:href="@{/css/login-styles.css}">
 </head>
 <body>
 <header>
@@ -17,28 +16,26 @@
         <h1>Welcome to<br /><span class="highlight">Study-Mate</span></h1>
         <p class="subtext">스터디 그룹을 찾고, 함께 공부하는 공간 - Study-Mate!</p>
 
-        <!-- 로그인 박스 안에 에러 메시지 영역 추가 -->
-        <div th:if="${errorMessage}" style="color: red; margin-bottom: 10px;">
-            <p th:text="${errorMessage}"></p>
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${error}" style="color: red; margin-bottom: 10px;">
+            <p th:text="${error}"></p>
         </div>
 
-
-        <!-- 로그인 폼 action에 thymeleaf 적용 -->
-        <form th:action="@{/study-mate/login}" method="post">
+        <!-- 로그인 폼 수정 -->
+        <form th:action="@{/study-mate/auth/login}" th:object="${loginRequest}" method="post">
             <div class="input-group">
-                <label for="id">ID :</label>
-                <input type="text" id="id" name="id" required />
+                <label for="username">ID :</label>
+                <input type="text" id="username" th:field="*{username}" required />
             </div>
             <div class="input-group">
-                <label for="pw">PW :</label>
-                <input type="password" id="pw" name="pw" required />
+                <label for="password">PW :</label>
+                <input type="password" id="password" th:field="*{password}" required />
             </div>
             <button type="submit" class="login-btn">Login</button>
         </form>
 
         <div class="links">
-            <!-- 링크에 thymeleaf 적용 -->
-            <a th:href="@{/signup}" class="nav-link">Register</a> /
+            <a th:href="@{/study-mate/auth/signup}" class="btn btn-secondary">회원가입</a> /
             <a th:href="@{/find-id}">Find ID</a> /
             <a th:href="@{/find-password}">Find Password</a>
         </div>

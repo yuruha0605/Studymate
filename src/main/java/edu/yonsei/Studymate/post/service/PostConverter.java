@@ -11,7 +11,7 @@ public class PostConverter {
         return PostDto.builder()
                 .id(postEntity.getId())
                 .boardId(postEntity.getBoardEntity().getId())
-                .subject(postEntity.getSubject())
+                .title(postEntity.getTitle())
                 .content(postEntity.getContent())
                 .written(postEntity.getWritten())
                 .build()

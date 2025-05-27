@@ -1,0 +1,53 @@
+/* studyroom-styles.css */
+:root {
+  --primary-color: #4a7ddf;
+  --secondary-color: #3b66b8;
+  --background-color: #f8f9fa;
+  --text-color: #333;
+  --border-color: #e9ecef;
+}
+
+html, body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* header와 footer 관련 스타일 제거 (common-styles.css에서 관리) */
+
+/* 메인 컨테이너 */
+.studyroom-container {  /* container 클래스명 변경 */
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 2rem;
+}
+
+/* 헤더 바 */
+.header-bar {
+  background-color: white;
+  color: var(--text-color);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 나머지 스타일들은 그대로 유지 */
+/* ... */
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+
+  .studyroom-container {
+    padding: 1rem;
+  }
+}

@@ -12,6 +12,13 @@
 - StudymateApplication : 메인함수
 ---
 
+### 5/28 수정사항
+- 안한다고 한 security 구현
+- 각 유저 별로 my classroom에 뜰 스터디 그룹 구현
+- 본래는 내가 참여한 클래스룸만 보이게 했지만 crud 방식을 위해 create도 추가 구현
+- 위 방식으로 스터디룸 생성 시 subject_entity table과 t_studygroup이 원활히 연동될 수 있도록 List 방식의 선택을 구현 
+- 기타 버그 해결
+
 ### 5/26 수정사항
 - 각 스터디룸에 대한 각 게시판 작성
 - Studygroup repository에 대한 전편 개편

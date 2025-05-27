@@ -1,9 +1,12 @@
 package edu.yonsei.Studymate.post.controller;
 
+import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
 import edu.yonsei.Studymate.post.dto.PostDeleteRequest;
+import edu.yonsei.Studymate.post.dto.PostDto;
 import edu.yonsei.Studymate.post.dto.PostRequest;
 import edu.yonsei.Studymate.post.entity.PostEntity;
+import edu.yonsei.Studymate.post.service.PostConverter;
 import edu.yonsei.Studymate.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,75 +18,76 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("/ch10/post")
+@RestController
+@RequestMapping(ApiUrls.Post.BASE)  // "/api/study-mate/posts"
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final PostConverter postConverter;
 
-    @PostMapping(path="/create")
 
-    public String create(
+
+    @PostMapping(ApiUrls.Post.CREATE)   // "~/create"
+    public PostDto create(
             @Valid
             @ModelAttribute PostRequest postRequest
     ){
-        postService.create(postRequest);
-
-        return "redirect:/ch10/post/articles?page=0&size=10";
+        PostEntity entity = postService.create(postRequest);
+        return postConverter.toDto(entity);
     }
 
-    @GetMapping(path="/articles")
-    public String list (
+
+    @GetMapping(ApiUrls.Post.LIST)  // "~/{groupId}/list"
+    public Content<List<PostDto>> list(
+            @PathVariable Long groupId,
             @RequestParam int page,
-            @RequestParam int size,
-            Model model
+            @RequestParam int size
     ){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Content<List<PostEntity>> content = postService.articles(pageable);
-        model.addAttribute("bbsArticle", content);
 
-        return "bbs";
+        List<PostDto> dtoList = content.getBody().stream()
+                .map(postConverter::toDto)
+                .collect(Collectors.toList());
+
+        return Content.<List<PostDto>>builder()
+                .body(dtoList)
+                .pagination(content.getPagination())
+                .build();
     }
 
-    @PostMapping("/delete")
-    public String delete(
-            @Valid
-            @ModelAttribute PostDeleteRequest postDeleteRequest
+
+
+    @DeleteMapping(ApiUrls.Post.DELETE)   // "/{postId}/delete"
+    public void delete(
+            @PathVariable Long postId
     ){
-        postService.delete(postDeleteRequest);
-
-        return "redirect:/ch10/post/articles?page=0&size=10";
-
+        postService.delete(new PostDeleteRequest(postId));
     }
 
-    @PostMapping(path = "/read")
-    public String updateForm(PostRequest postRequest, Model model) {
-
-        PostEntity post = postService.getPostById(postRequest.getBoardId());
-        postRequest.setSubject(post.getSubject());
-        postRequest.setContent(post.getContent());
-        model.addAttribute("postRequest", postRequest);
-
-        return "update";
+    @GetMapping(ApiUrls.Post.DETAIL)
+    public PostDto getPost(@PathVariable Long postId) {
+        return postConverter.toDto(postService.getPost(postId));
     }
 
+
+    @PutMapping(ApiUrls.Post.UPDATE)
+    public PostDto update(
+            @PathVariable Long postId,
+            @Valid @RequestBody PostRequest postRequest
+    ) {
+        return postConverter.toDto(postService.update(postRequest));
+    }
+
+    // View 관련 메서드들은 별도의 Controller로 분리하는 것이 좋습니다
     @GetMapping("/write")
-    public String write (
-
-    ){
+    public String write() {
         return "post";
     }
 
-    @PostMapping(path="/update")
-    public String update(
-            @Valid
-            @ModelAttribute PostRequest postRequest
-    ){
-        postService.update(postRequest);
 
-        return "redirect:/ch10/post/articles?page=0&size=10";
-    }
 
 }
 

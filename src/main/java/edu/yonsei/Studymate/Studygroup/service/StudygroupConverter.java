@@ -20,11 +20,12 @@ public class StudygroupConverter {
                 .subjectName(studygroupEntity.getSubjectEntity().getSubjectName())
                 .currentMembers(studygroupEntity.getCurrentMembers())
                 .maxMembers(studygroupEntity.getMaxMembers())
-                .status(studygroupEntity.getStatus().name())
+                .status(studygroupEntity.getStatus() != null ?
+                        studygroupEntity.getStatus().name() :
+                        StudygroupEntity.GroupStatus.RECRUITING.name())
                 .build();
-
-
     }
+
 
 
 }

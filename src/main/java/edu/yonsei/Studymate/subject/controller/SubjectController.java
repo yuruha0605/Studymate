@@ -1,5 +1,6 @@
 package edu.yonsei.Studymate.subject.controller;
 
+import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.subject.dto.SubjectDto;
 import edu.yonsei.Studymate.subject.dto.SubjectRequest;
 import edu.yonsei.Studymate.subject.service.SubjectService;
@@ -12,30 +13,36 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/subject")
-public class SubjectController {
+@RequestMapping(ApiUrls.Subject.BASE) // "/api/study-mate/subjects"
+@CrossOrigin(origins = "*")
 
-    // 과목 서비스 불러 오기
+
+public class SubjectController {
     private final SubjectService subjectService;
 
+    @GetMapping("/list")
+    public List<SubjectDto> getSubjectList() {
+        return subjectService.getAllSubjects();
+    }
+
+
+
     // 과목 새로 추가
-    @PostMapping(path = "/create")
-    public SubjectDto addSubject(
-            @Valid      // 유효성 검사
-            @RequestBody SubjectRequest subjectRequest  // Request 용 변수 만들고
-    ){
-        return subjectService.create(subjectRequest);   // service.create 호출 하면서 return
+    @PostMapping(ApiUrls.Subject.CREATE)
+    public SubjectDto addSubject(@Valid @RequestBody SubjectRequest subjectRequest) {
+        return subjectService.create(subjectRequest);
     }
 
-    // 특정 과목 검색
-    @GetMapping(path = "/article/{id}")
-    public SubjectDto view(
-            @PathVariable Long id
-    ){
-        return subjectService.article(id);
+
+
+
+    @GetMapping(ApiUrls.Subject.DETAIL)
+    public SubjectDto view(@PathVariable Long subjectId) {
+        return subjectService.article(subjectId);
     }
 
-    @GetMapping("/api/search")
+
+    @GetMapping(ApiUrls.Subject.SEARCH)
     public List<SubjectDto> searchSubjects(
             @RequestParam String keyword,
             @RequestParam(required = false, defaultValue = "name") String type
@@ -44,4 +51,5 @@ public class SubjectController {
                 ? subjectService.searchByProfessor(keyword)
                 : subjectService.searchBySubjectName(keyword);
     }
+
 }

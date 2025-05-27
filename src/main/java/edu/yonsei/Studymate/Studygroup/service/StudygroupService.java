@@ -17,8 +17,13 @@ import edu.yonsei.Studymate.subject.entity.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 
 @Service
@@ -29,8 +34,7 @@ public class StudygroupService {
     private final SubjectRepository subjectRepository;
     private final StudygroupConverter studygroupConverter;
     private final UserRepository userRepository;
-    private final GroupMemberRepository groupMemberRepository;  // 이 부분
-
+    private final GroupMemberRepository groupMemberRepository;
 
 
     // study group 을 새로 만들었을 때
@@ -40,7 +44,7 @@ public class StudygroupService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid subject ID"));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userId));
 
         var entity = StudygroupEntity.builder()
                 .subjectEntity(subjectEntity)
@@ -114,9 +118,25 @@ public class StudygroupService {
     }
 
     // 상태별 스터디 그룹 조회
-    public List<StudygroupEntity> getStudyGroupsByStatus(StudygroupEntity.GroupStatus status) {
-        return studygroupRepository.findByStatus(status);
+    public Content<List<StudygroupDto>> getStudyGroupsByStatus(Pageable pageable) {
+        var page = studygroupRepository.findAll(pageable);
+
+        var dtoList = page.getContent().stream()
+                .map(studygroupConverter::toDto)
+                .collect(Collectors.toList());
+
+        return Content.<List<StudygroupDto>>builder()
+                .body(dtoList)
+                .pagination(Pagination.builder()
+                        .page(page.getNumber())
+                        .size(page.getSize())
+                        .totalElements(page.getTotalElements())
+                        .totalPage(page.getTotalPages())
+                        .currentElements(page.getNumberOfElements())
+                        .build())
+                .build();
     }
+
 
 
     // 특정 과목의 스터디 그룹 검색
@@ -131,7 +151,7 @@ public class StudygroupService {
                 .orElseThrow(() -> new GroupNotFoundException("Group not found: " + groupId));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userId));
 
         // 이미 가입했는지 확인
         if (groupMemberRepository.existsByGroupAndUser(group, user)) {
@@ -171,7 +191,7 @@ public class StudygroupService {
                 .orElseThrow(() -> new GroupNotFoundException("Group not found: " + groupId));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userId));
 
         // 현재 사용자가 그룹의 리더인지 확인
         GroupMember member = groupMemberRepository.findByGroupAndUser(group, user)
@@ -194,7 +214,7 @@ public class StudygroupService {
                 .orElseThrow(() -> new GroupNotFoundException("Group not found: " + groupId));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userId));
 
         // 현재 사용자가 그룹의 리더인지 확인
         GroupMember member = groupMemberRepository.findByGroupAndUser(group, user)
@@ -206,5 +226,29 @@ public class StudygroupService {
 
         studygroupRepository.delete(group);
     }
+
+
+    public Map<String, List<StudygroupDto>> getUserStudyGroups(Long userId) {
+        List<GroupMember> userGroups = groupMemberRepository.findByUser_Id(userId);
+
+        Map<String, List<StudygroupDto>> result = new HashMap<>();
+
+        // 내가 리더인 그룹들
+        result.put("myGroups", userGroups.stream()
+                .filter(gm -> gm.getRole() == MemberRole.LEADER)
+                .map(GroupMember::getGroup)
+                .map(studygroupConverter::toDto)
+                .collect(Collectors.toList()));
+
+        // 내가 멤버로 참여중인 그룹들
+        result.put("joinedGroups", userGroups.stream()
+                .filter(gm -> gm.getRole() == MemberRole.MEMBER)
+                .map(GroupMember::getGroup)
+                .map(studygroupConverter::toDto)
+                .collect(Collectors.toList()));
+
+        return result;
+    }
+
 
 }

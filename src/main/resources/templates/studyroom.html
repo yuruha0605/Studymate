@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>스터디룸</title>
-  <link rel="stylesheet" th:href="@{/common-styles.css}">
-  <link rel="stylesheet" th:href="@{/studyroom-styles.css}">
+  <link rel="stylesheet" th:href="@{/css/common-styles.css}">
+  <link rel="stylesheet" th:href="@{/css/studyroom-styles.css}">
 </head>
 <body>
 <!-- 공통 헤더 include -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container">
+<div class="studyroom-container">
   <div class="header-bar">
     <div>
       <strong th:text="${studygroup?.groupName ?: '스터디 없음'}">프로그래밍 기초</strong>
@@ -20,6 +20,9 @@
       <span th:text="|참여자 ${studygroup?.currentMembers ?: 0}명|">참여자 0명</span>
     </div>
   </div>
+
+  <input type="hidden" name="studygroupId" th:value="${studygroup?.id}">
+
 
   <div class="stream-box">
     <video id="localVideo" autoplay playsinline style="width: 100%; height: 100%; display: none;"></video>
@@ -30,30 +33,57 @@
   </div>
 
   <div class="main-content">
+    <!-- studyroom.html의 일부 수정 -->
     <div class="left-box box">
       <h3>질문 게시판</h3>
-      <div th:if="${board != null && board.postList != null}">
-        <p th:each="post : ${board.postList}" th:text="${post.title}">
-          게시글 제목
-        </p>
-        <p th:if="${#lists.isEmpty(board.postList)}">등록된 게시글이 없습니다.</p>
+      <div class="post-list" th:if="${board != null && board.body != null && board.body.postList != null}">
+        <div class="post-item" th:each="post : ${board.body.postList}">
+          <p th:text="${post.title}">게시글 제목</p>
+        </div>
+        <p th:if="${#lists.isEmpty(board.body.postList)}">등록된 게시글이 없습니다.</p>
       </div>
-      <div th:if="${board == null || board.postList == null}">
+      <div th:if="${board == null || board.body == null}">
         <p>게시판이 아직 생성되지 않았습니다.</p>
       </div>
-      <div class="button-bar">
-        <button class="small-button"
-                th:onclick="'location.href=\'/study/room/' + ${studygroup?.id} + '/post/new\''">
-          질문하기
-        </button>
+
+      <div class="board-footer">
+        <!-- 페이지네이션 (게시글이 있을 때만 표시) -->
+        <div class="pagination"
+             th:if="${board != null && board.body != null && board.pagination.totalElements > 0}">
+          <button class="page-button"
+                  th:disabled="${board.pagination.page == 0}"
+                  th:onclick="'location.href=\'?page=' + (${board.pagination.page - 1}) + '&size=10\''">
+            &lt;
+          </button>
+
+          <th:block th:each="pageNum : ${#numbers.sequence(0, board.pagination.totalPage - 1)}">
+            <button class="page-button"
+                    th:classappend="${pageNum == board.pagination.page ? 'active' : ''}"
+                    th:onclick="'location.href=\'?page=' + ${pageNum} + '&size=10\''">
+              [[${pageNum + 1}]]
+            </button>
+          </th:block>
+
+          <button class="page-button"
+                  th:disabled="${board.pagination.page >= board.pagination.totalPage - 1}"
+                  th:onclick="'location.href=\'?page=' + (${board.pagination.page + 1}) + '&size=10\''">
+            &gt;
+          </button>
+        </div>
+
+        <!-- 질문하기 버튼 -->
+        <div class="button-bar">
+          <button class="small-button" onclick="openQuestionModal()">질문하기</button>
+        </div>
       </div>
     </div>
+
+
 
     <div class="right-boxes">
       <div class="box">
         <h3>학습자료</h3>
         <div>
-          <!-- 학습자료가 없을 때의 메시지 -->
           <p>등록된 학습자료가 없습니다.</p>
         </div>
         <div class="button-bar">
@@ -64,7 +94,6 @@
       <div class="box">
         <h3>학습 일정</h3>
         <div>
-          <!-- 일정이 없을 때의 메시지 -->
           <p>등록된 일정이 없습니다.</p>
         </div>
         <div class="button-bar">
@@ -73,50 +102,35 @@
       </div>
     </div>
   </div>
+
+
+  <div id="questionModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeQuestionModal()">&times;</span>
+        <h2>질문하기</h2>
+        <form id="questionForm">
+            <input type="hidden" name="boardId" th:value="${board?.body?.id}">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" required>  <!-- subject에서 title로 변경 -->
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="submitQuestion()" class="submit-button">작성완료</button>
+                <button type="button" onclick="closeQuestionModal()" class="cancel-button">취소</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 </div>
 
 <!-- 공통 푸터 include -->
 <div th:replace="~{fragments/footer :: footer}"></div>
-
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  const studygroupId = [[${studygroupId}]];
-  /*]]>*/
-
-  async function startStream() {
-      try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-              video: true,
-              audio: false
-          });
-
-          const videoElement = document.getElementById('localVideo');
-          videoElement.srcObject = stream;
-          videoElement.style.display = 'block';
-
-          const button = document.querySelector('.stream-button');
-          button.textContent = '스트림 종료';
-          button.onclick = stopStream;
-
-      } catch (error) {
-          console.error('스트림 시작 실패:', error);
-          alert('카메라 접근에 실패했습니다.');
-      }
-  }
-
-  function stopStream() {
-      const videoElement = document.getElementById('localVideo');
-      const stream = videoElement.srcObject;
-      const tracks = stream.getTracks();
-
-      tracks.forEach(track => track.stop());
-      videoElement.srcObject = null;
-      videoElement.style.display = 'none';
-
-      const button = document.querySelector('.stream-button');
-      button.textContent = '스트림 시작';
-      button.onclick = startStream;
-  }
-</script>
+<script th:src="@{/js/studyroom.js}"></script>
 </body>
 </html>

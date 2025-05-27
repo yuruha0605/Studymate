@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class StudygroupRequest {
 
+    private Long userid;
     private Long studyGroupId;
     private Long subjectId;
     @NotBlank

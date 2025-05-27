@@ -28,7 +28,7 @@ public class PostEntity {
     @JoinColumn(name = "t_board_id")
     private BoardEntity boardEntity;
 
-    private String subject;
+    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;

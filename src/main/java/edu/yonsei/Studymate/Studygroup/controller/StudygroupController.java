@@ -4,11 +4,15 @@ package edu.yonsei.Studymate.Studygroup.controller;
 import edu.yonsei.Studymate.Studygroup.dto.StudygroupDto;
 import edu.yonsei.Studymate.Studygroup.dto.StudygroupRequest;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
+import edu.yonsei.Studymate.Studygroup.entity.StudygroupRepository;
+import edu.yonsei.Studymate.Studygroup.exception.GroupNotFoundException;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupConverter;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupService;
+import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -24,85 +28,86 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/study-mate") // 이 쪽 URL 로 들어올 경우
+@RequestMapping(ApiUrls.StudyGroup.BASE) //
+@Slf4j
 public class StudygroupController {
 
     private final StudygroupService studygroupService;
     private final StudygroupConverter studygroupConverter;
+    private final StudygroupRepository studygroupRepository;
 
     // 새로운 스터디 그룹 생성
-    @PostMapping(path = "/create")
+    @PostMapping("/create")
     public StudygroupDto create(
-            @Valid @RequestBody StudygroupRequest studygroupRequest,
-            @RequestParam Long userId
-    ) {
-        StudygroupEntity entity = studygroupService.create(studygroupRequest, userId);
-        return studygroupConverter.toDto(entity);
-    }
-
-
-
-
-    // 전체 스터디 그룹 반환
-    @GetMapping(path = "/articles")
-    public Content<List<StudygroupDto>> List(
-            @RequestParam int page,
-            @RequestParam int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC,"id"));
-        Content<List<StudygroupEntity>> content = studygroupService.articles(pageable);
-
-        List<StudygroupDto> dtoList = content
-                .getBody()
-                .stream()
-                .map(studygroupConverter::toDto)
-                .collect(Collectors.toList());
-
-        return Content.<List<StudygroupDto>>builder()
-                .body(dtoList)
-                .pagination(content.getPagination())
-                .build();
-    }
-
-
-
-    @GetMapping("/search")
-    @ResponseBody
-    public List<StudygroupDto> searchStudyGroups(
-            @RequestParam String keyword,
-            @RequestParam String type  // searchType -> type으로 변경
-    ) {
-        // Service의 결과를 바로 반환
-        return studygroupService.searchStudyGroups(keyword, type);
-    }
-
-    @PutMapping("/{groupId}")
-    public StudygroupDto updateGroup(
-            @PathVariable Long groupId,
             @Valid @RequestBody StudygroupRequest request,
             @RequestParam Long userId
     ) {
-        return studygroupService.updateGroupInfo(groupId, request, userId);
+        log.info("Received request to create study group. Request: {}, UserId: {}", request, userId);
+        return studygroupConverter.toDto(studygroupService.create(request, userId));  // userId 파라미터 사용
     }
 
 
-    @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroup(
+    // 전체 스터디 그룹 반환
+    @GetMapping(ApiUrls.StudyGroup.LIST)
+    public Content<List<StudygroupDto>> list(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return studygroupService.getStudyGroupsByStatus(pageable);
+    }
+
+
+
+
+    @GetMapping(ApiUrls.StudyGroup.DETAIL)
+    public ResponseEntity<?> getGroup(@PathVariable Long groupId) {
+        try {
+            StudygroupEntity group = studygroupRepository.findById(groupId)
+                    .orElseThrow(() -> new GroupNotFoundException("스터디 그룹을 찾을 수 없습니다. ID: " + groupId));
+            return ResponseEntity.ok(studygroupConverter.toDto(group));
+        } catch (GroupNotFoundException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "스터디 그룹 조회 중 오류가 발생했습니다.");
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+
+
+    @PostMapping(ApiUrls.StudyGroup.JOIN)
+    public StudygroupDto joinGroup(
+            @PathVariable Long groupId,
+            @RequestParam Long userId
+    ) {
+        return studygroupService.joinGroup(groupId, userId);
+    }
+
+
+    @DeleteMapping(ApiUrls.StudyGroup.DELETE)
+    public void deleteGroup(
             @PathVariable Long groupId,
             @RequestParam Long userId
     ) {
         studygroupService.deleteGroup(groupId, userId);
-        return ResponseEntity.noContent().build();
     }
 
 
-    @PostMapping("/{groupId}/join")
-    public StudygroupDto joinGroup(
-            @PathVariable Long groupId,
-            @RequestParam Long userId  // userId 파라미터 추가
+    @GetMapping(ApiUrls.StudyGroup.SEARCH)
+    @CrossOrigin(origins = "*")
+    public List<StudygroupDto> searchStudyGroups(
+            @RequestParam String keyword,
+            @RequestParam String type
     ) {
-        return studygroupService.joinGroup(groupId, userId);
+        return studygroupService.searchStudyGroups(keyword, type);
     }
+
+
+
 
 
 

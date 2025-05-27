@@ -9,7 +9,10 @@ import edu.yonsei.Studymate.Myclass.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,4 +54,28 @@ public class MateService {
                         .build()
         );
     }
+
+    // 특정 학생의 모든 수업 목록을 가져오는 메서드
+    public List<MyclassEntity> getStudentClasses(Long studentId) {
+        return mateRepository.findByStudent_Id(studentId)
+                .stream()
+                .map(MateEntity::getMyclass)
+                .collect(Collectors.toList());
+    }
+
+    // 수업별 참여자 현황을 가져오는 메서드
+    public Map<String, List<MyclassEntity>> getStudentClassesByRole(Long studentId) {
+        List<MateEntity> userClasses = mateRepository.findByStudent_Id(studentId);
+
+        Map<String, List<MyclassEntity>> result = new HashMap<>();
+        result.put("myClasses", userClasses.stream()
+                .map(MateEntity::getMyclass)
+                .collect(Collectors.toList()));
+
+        return result;
+    }
+
+
+
+
 }

@@ -22,5 +22,6 @@ public class BoardDto {
     private List<PostDto> postList = List.of();
     private Long studygroupId;  // 추가
 
+
 }
 

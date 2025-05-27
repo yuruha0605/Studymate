@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MateRepository extends JpaRepository<MateEntity, Long> {
     List<MateEntity> findByMyclass(MyclassEntity myclass);
+    List<MateEntity> findByStudent_Id(Long studentId);
+
 }

@@ -302,5 +302,10 @@ footer {
         flex-wrap: wrap;
         justify-content: center;
     }
-
 }
+
+.error-message {
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+

@@ -1,352 +1,122 @@
+
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StudyMate - 내 강의실</title>
-  <style>
-    :root {
-        --main-blue: #4285f4;
-        --main-bg: #f4f4f4;
-        --card-bg: #fff;
-        --shadow: 0 4px 16px rgba(66,133,244,0.10), 0 1.5px 4px rgba(0,0,0,0.05);
-        --border-radius: 14px;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-        background: var(--main-bg);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    header {
-        background: var(--card-bg);
-        padding: 1rem 2rem;
-        box-shadow: var(--shadow);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 1.7rem;
-        font-weight: bold;
-        color: #222;
-        cursor: pointer;
-    }
-
-    .top-nav {
-        display: flex;
-        gap: 2rem;
-    }
-
-    .nav-link {
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        transition: all 0.2s;
-    }
-
-    .nav-link:hover {
-        background: #e3edfa;
-        color: var(--main-blue);
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 2rem;
-        flex: 1;
-        width: 100%;
-    }
-
-    .main-title {
-        font-size: 2.2rem;
-        font-weight: bold;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
-    .accent {
-        color: var(--main-blue);
-    }
-
-    .subject-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        width: 100%;
-    }
-
-    .course-card {
-        background: var(--card-bg);
-        border-radius: var(--border-radius);
-        padding: 0.8rem 2rem;
-        box-shadow: var(--shadow);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: transform 0.2s;
-        width: 100%;
-    }
-
-    .course-card:hover {
-        transform: translateX(10px);
-    }
-
-    .course-info {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .course-details {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-
-    .course-name {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #333;
-
-    }
-
-    .status {
-        color: #666;
-        font-size: 0.9rem;
-    }
-
-    .card-right {
-        display: flex;
-        align-items: center;
-        padding-left: 2rem;
-    }
-
-    .enroll-info {
-        color: #666;
-        font-size: 0.9rem;
-        white-space: nowrap;
-    }
-
-    .join-btn {
-        background: var(--main-blue);
-        color: white;
-        border: none;
-        padding: 0.6rem 1.2rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-decoration: none;
-        font-size: 0.95rem;
-        white-space: nowrap;
-    }
-
-    .join-btn:hover {
-        background: #3367d6;
-        transform: translateY(-2px);
-    }
-
-    .mate-status {
-        background: var(--card-bg);
-        border-radius: var(--border-radius);
-        padding: 2rem;
-        box-shadow: var(--shadow);
-        margin-top: 2rem;
-    }
-
-    .mate-status h2 {
-        margin-bottom: 1.5rem;
-        color: #333;
-        font-size: 1.5rem;
-        text-align: center;
-    }
-
-    .mate-display {
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .mate-entry {
-        text-align: center;
-    }
-
-    .circle {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        background-size: cover;
-        background-position: center;
-        margin-bottom: 0.5rem;
-        border: 3px solid var(--main-blue);
-    }
-
-    .mate-entry p {
-        color: #333;
-        font-weight: 500;
-        font-size: 0.95rem;
-    }
-
-    footer {
-        background: #333;
-        color: white;
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 0.9rem;
-        margin-top: 2rem;
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            padding: 0 1rem;
-        }
-
-        .course-card {
-            padding: 1.5rem;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .course-info {
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-right {
-            width: 100%;
-            justify-content: space-between;
-            gap: 1rem;
-            padding-left: 0;
-        }
-
-        .course-card:hover {
-            transform: translateY(-5px);
-        }
-
-        header {
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        .container {
-            padding: 0 1rem;
-        }
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/common-styles.css}">
+  <link rel="stylesheet" th:href="@{/css/myclass-styles.css}">
 </head>
 <body>
-<header>
-  <div class="logo" onclick="location.href='StudyMate_Main.html'">Study-Mate</div>
-  <nav class="top-nav">
-    <a href="myclass.html" class="nav-link">내 강의실</a>
-    <a href="../Search%20page/search.html" class="nav-link">과목 찾기</a>
-    <a href="../Main%20Page/paid.html" class="nav-link">유료 서비스</a>
-  </nav>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container">
+  <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
   <div class="main-title">My <span class="accent">Classroom</span></div>
 
+  <!-- 내가 만든 스터디 섹션 -->
   <section class="subject-wrapper">
-    <div class="course-card">
-      <div class="course-info">
-        <div class="course-name">데이터베이스</div>
-        <div class="course-details">
-          <div class="status">[ 실습 보고서 제출 필요 ]</div>
-          <div class="enroll-info">참여 인원 : 12 / 50</div>
+    <h2>내가 만든 스터디</h2>
+    <div class="classes-section">
+      <div th:if="${#lists.isEmpty(myGroups)}" class="no-groups">
+        <p>아직 생성한 스터디가 없습니다. 새로 만드시겠습니까?</p>
+        <a href="/study-mate/create-study" class="join-btn">새 스터디 만들기</a>
+      </div>
+      <div th:if="${not #lists.isEmpty(myGroups)}" class="groups-container">
+        <div class="course-card" th:each="group : ${myGroups}">
+          <div class="course-info">
+            <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
+            <div class="course-details">
+              <div class="status" th:text="${group.status}">상태</div>
+              <div class="enroll-info" th:text="|참여 인원 : ${group.currentMembers} / ${group.maxMembers}|">
+                참여 인원
+              </div>
+              <div class="subject-name" th:text="${group.subjectName}">과목명</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">입장하기</a>
+          </div>
         </div>
-
-      </div>
-      <div class="card-right">
-        <a href="#" class="join-btn">Join Class</a>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="course-info">
-        <div class="course-name">알고리즘 기초</div>
-        <div class="course-details">
-          <div class="status">[ 실습 보고서 제출 필요 ]</div>
-          <div class="enroll-info">참여 인원 : 12 / 50</div>
-        </div>
-
-      </div>
-      <div class="card-right">
-        <a href="#" class="join-btn">Join Class</a>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="course-info">
-        <div class="course-name">운영 체제</div>
-        <div class="course-details">
-          <div class="status">[ 실습 보고서 제출 필요 ]</div>
-          <div class="enroll-info">참여 인원 : 12 / 50</div>
-        </div>
-
-      </div>
-      <div class="card-right">
-        <a href="#" class="join-btn">Join Class</a>
-      </div>
-    </div>
-
-    <div class="course-card">
-      <div class="course-info">
-        <div class="course-name">데이터 마이닝</div>
-        <div class="course-details">
-          <div class="status">[ 실습 보고서 제출 필요 ]</div>
-          <div class="enroll-info">참여 인원 : 12 / 50</div>
-        </div>
-
-      </div>
-      <div class="card-right">
-        <a href="#" class="join-btn">Join Class</a>
       </div>
     </div>
   </section>
 
+  <!-- 참여중인 스터디 섹션 -->
+  <section class="subject-wrapper">
+    <h2>참여중인 스터디</h2>
+    <div class="classes-section">
+      <div th:if="${#lists.isEmpty(joinedGroups)}" class="no-groups">
+        <p>참여중인 스터디가 없습니다. 스터디를 찾아보시겠습니까?</p>
+        <a href="/study-mate/search" class="join-btn">스터디 찾아보기</a>
+      </div>
+      <div th:if="${not #lists.isEmpty(joinedGroups)}" class="groups-container">
+        <div class="course-card" th:each="group : ${joinedGroups}">
+          <div class="course-info">
+            <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
+            <div class="course-details">
+              <div class="status" th:text="${group.status}">상태</div>
+              <div class="enroll-info" th:text="|참여 인원 : ${group.currentMembers} / ${group.maxMembers}|">
+                참여 인원
+              </div>
+              <div class="subject-name" th:text="${group.subjectName}">과목명</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">입장하기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 스터디 메이트 상태 섹션 -->
   <section class="mate-status">
     <h2>스터디 메이트 상태</h2>
     <div class="mate-display">
-      <div class="mate-entry">
-        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=34');"></div>
-        <p>김민수</p>
-      </div>
-      <div class="mate-entry">
-        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=31');"></div>
-        <p>이수정</p>
-      </div>
-      <div class="mate-entry">
-        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=32');"></div>
-        <p>박지우</p>
-      </div>
-      <div class="mate-entry">
-        <div class="circle" style="background-image: url('https://i.pravatar.cc/100?img=33');"></div>
-        <p>홍길동</p>
+      <!-- 추후 실제 데이터와 연동 필요 -->
+      <div class="mate-entry" th:if="${false}">
+        <div class="circle" th:style="'background-image: url(' + ${mate.profileImage} + ');'"></div>
+        <p th:text="${mate.name}">이름</p>
       </div>
     </div>
   </section>
 </div>
 
-<footer>
-  <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
-</footer>
+<!-- 모달 팝업 -->
+<div id="createStudyModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>새 스터디 만들기</h2>
+    <form id="createStudyForm" action="/study-mate/studygroups/create" method="POST">
+      <div class="form-group">
+        <label for="subjectSelect">과목</label>
+        <select class="form-control" id="subjectSelect" name="subjectId" required>
+          <option value="">과목을 선택해주세요</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="groupName">스터디 그룹명</label>
+        <input type="text" id="groupName" name="groupName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="maxMembers">최대 인원</label>
+        <select id="maxMembers" name="maxMembers">
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명</option>
+          <option value="5" selected>5명</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">스터디 만들기</button>
+    </form>
+  </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/study-group.js}"></script>
 </body>
 </html>
