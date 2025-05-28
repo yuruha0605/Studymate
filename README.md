@@ -12,6 +12,12 @@
 - StudymateApplication : 메인함수
 ---
 
+### 5/29 수정사항
+- schedule table 완성 <<< 지금 보니까 데이터베이스에 누가 만들어놨었네요 못봤습니다.
+- 질문게시판 연동 완료
+- 자잘한 버그 수정
+
+
 ### 5/28 수정사항
 - header.html에서 Study-Mate 로고의 href 경로를 "/" → "/study-mate/main"으로 변경(로고 클릭하면 메인화면으로 링크)(수정자: 공지혁)
 - Myclass.html의 "내가 만든 스터디" 부분에 t_studygroup 중 test용 스터디 그룹 나오도록 설정 (박명환)
