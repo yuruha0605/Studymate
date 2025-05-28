@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,6 +16,7 @@ public class PostRequest {
 
     private Long postId; // 게시글 수정 시 필요
     private Long boardId = 1L;
+    private Long studygroupId;
 
     @NotBlank( message = "제목을 입력해주세요.")
     private String title;

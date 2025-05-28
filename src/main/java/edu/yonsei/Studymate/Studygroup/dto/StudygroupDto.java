@@ -22,5 +22,7 @@ public class StudygroupDto {
     private Integer currentMembers;
     private Integer maxMembers;
     private String status;
+    private String memberRole;
+
 
 }

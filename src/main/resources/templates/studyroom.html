@@ -1,135 +1,233 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>스터디룸</title>
+  <title>StudyMate - Study Room</title>
   <link rel="stylesheet" th:href="@{/css/common-styles.css}">
   <link rel="stylesheet" th:href="@{/css/studyroom-styles.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-<!-- 공통 헤더 include -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="studyroom-container">
-  <div class="header-bar">
-    <div>
-      <strong th:text="${studygroup?.groupName ?: '스터디 없음'}">프로그래밍 기초</strong>
+<div class="container">
+  <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
+  <div class="studyroom-header">
+    <div class="header-top">
+      <h1 class="group-title" th:text="${group.groupName}">스터디룸</h1>
+      <!-- 리더인 경우 -->
+      <div class="settings-area" th:if="${group.memberRole == 'LEADER'}">
+        <button class="settings-btn" onclick="openSettingsModal()">
+          <i class="fas fa-cog"></i> 설정
+        </button>
+      </div>
+      <!-- 일반 멤버인 경우 -->
+      <div class="settings-area" th:if="${group.memberRole == 'MEMBER'}">
+        <button class="leave-btn" onclick="confirmLeave()">
+          <i class="fas fa-sign-out-alt"></i> 나가기
+        </button>
+      </div>
     </div>
-    <div>
-      <span th:text="|참여자 ${studygroup?.currentMembers ?: 0}명|">참여자 0명</span>
+
+    <div class="study-info">
+      <span class="status" th:text="${group.status}">RECRUITING</span>
+      <span class="members" th:text="|참여 인원: ${group.currentMembers} / ${group.maxMembers}|">
+                참여 인원: 1/5
+            </span>
+      <span class="subject" th:text="${group.subjectName}">과목명</span>
     </div>
   </div>
 
-  <input type="hidden" name="studygroupId" th:value="${studygroup?.id}">
-
-
-  <div class="stream-box">
-    <video id="localVideo" autoplay playsinline style="width: 100%; height: 100%; display: none;"></video>
-    <button class="stream-button" onclick="startStream()"
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      스트림 시작
-    </button>
-  </div>
-
-  <div class="main-content">
-    <!-- studyroom.html의 일부 수정 -->
-    <div class="left-box box">
-      <h3>질문 게시판</h3>
-      <div class="post-list" th:if="${board != null && board.body != null && board.body.postList != null}">
-        <div class="post-item" th:each="post : ${board.body.postList}">
-          <p th:text="${post.title}">게시글 제목</p>
-        </div>
-        <p th:if="${#lists.isEmpty(board.body.postList)}">등록된 게시글이 없습니다.</p>
+  <!-- 스트리밍 섹션 추가 -->
+  <div class="streaming-section">
+    <div class="video-container">
+      <div class="main-video">
+        <video id="localVideo" autoplay muted playsinline></video>
       </div>
-      <div th:if="${board == null || board.body == null}">
-        <p>게시판이 아직 생성되지 않았습니다.</p>
-      </div>
-
-      <div class="board-footer">
-        <!-- 페이지네이션 (게시글이 있을 때만 표시) -->
-        <div class="pagination"
-             th:if="${board != null && board.body != null && board.pagination.totalElements > 0}">
-          <button class="page-button"
-                  th:disabled="${board.pagination.page == 0}"
-                  th:onclick="'location.href=\'?page=' + (${board.pagination.page - 1}) + '&size=10\''">
-            &lt;
-          </button>
-
-          <th:block th:each="pageNum : ${#numbers.sequence(0, board.pagination.totalPage - 1)}">
-            <button class="page-button"
-                    th:classappend="${pageNum == board.pagination.page ? 'active' : ''}"
-                    th:onclick="'location.href=\'?page=' + ${pageNum} + '&size=10\''">
-              [[${pageNum + 1}]]
-            </button>
-          </th:block>
-
-          <button class="page-button"
-                  th:disabled="${board.pagination.page >= board.pagination.totalPage - 1}"
-                  th:onclick="'location.href=\'?page=' + (${board.pagination.page + 1}) + '&size=10\''">
-            &gt;
-          </button>
-        </div>
-
-        <!-- 질문하기 버튼 -->
-        <div class="button-bar">
-          <button class="small-button" onclick="openQuestionModal()">질문하기</button>
-        </div>
+      <div class="video-controls">
+        <button id="muteButton"><i class="fas fa-microphone"></i></button>
+        <button id="videoButton"><i class="fas fa-video"></i></button>
+        <button id="screenShareButton"><i class="fas fa-desktop"></i></button>
       </div>
     </div>
-
-
-
-    <div class="right-boxes">
-      <div class="box">
-        <h3>학습자료</h3>
-        <div>
-          <p>등록된 학습자료가 없습니다.</p>
-        </div>
-        <div class="button-bar">
-          <button class="small-button">자료 업로드</button>
-        </div>
-      </div>
-
-      <div class="box">
-        <h3>학습 일정</h3>
-        <div>
-          <p>등록된 일정이 없습니다.</p>
-        </div>
-        <div class="button-bar">
-          <button class="small-button">일정 추가</button>
-        </div>
-      </div>
+    <div class="participants-videos">
+      <!-- 참가자 비디오들이 동적으로 추가될 공간 -->
     </div>
   </div>
 
 
-  <div id="questionModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeQuestionModal()">&times;</span>
-        <h2>질문하기</h2>
-        <form id="questionForm">
-            <input type="hidden" name="boardId" th:value="${board?.body?.id}">
-            <div class="form-group">
-                <label for="title">제목</label>
-                <input type="text" id="title" name="title" required>  <!-- subject에서 title로 변경 -->
+  <div class="studyroom-content">
+    <div class="content-wrapper">  <!-- 새로운 wrapper div 추가 -->
+      <div class="content-grid">
+        <div class="left-section">
+          <div class="content-box">
+            <h2>질문 게시판</h2>
+            <div class="post-list" th:if="${not #lists.isEmpty(posts)}">
+            <div class="post-item" th:each="post : ${posts}">
+            <h3 th:text="${post.title}">게시글 제목</h3>
+            <p class="post-info">
+              <span th:text="${post.authorName}">작성자</span>
+              <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">
+                                    작성일
+                                </span>
+            </p>
+          </div>
+        </div>
+          <div class="no-content" th:if="${#lists.isEmpty(posts)}">
+            <p>등록된 게시글이 없습니다.</p>
+          </div>
+          <button class="action-btn" onclick="openQuestionModal()">질문하기</button>
+        </div>
+      </div>
+
+
+        <div class="right-section">
+          <div class="content-box">
+            <h2>학습 자료실</h2>
+            <div class="no-content">
+              <p>등록된 학습자료가 없습니다.</p>
             </div>
-            <div class="form-group">
-                <label for="content">내용</label>
-                <textarea id="content" name="content" required></textarea>
+            <button class="action-btn">자료 업로드</button>
+          </div>
+
+          <div class="content-box">
+            <h2>학습 일정</h2>
+            <div class="no-content">
+              <p>등록된 일정이 없습니다.</p>
             </div>
-            <div class="form-actions">
-                <button type="button" onclick="submitQuestion()" class="submit-button">작성완료</button>
-                <button type="button" onclick="closeQuestionModal()" class="cancel-button">취소</button>
-            </div>
-        </form>
+            <button class="action-btn">일정 추가</button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+  <!-- 자료 업로드 모달 -->
+<div id="uploadModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeUploadModal()">&times;</span>
+    <h2>자료 업로드</h2>
+    <form id="uploadForm">
+      <div class="form-group">
+        <label for="fileTitle">자료 제목</label>
+        <input type="text" id="fileTitle" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="fileDescription">설명</label>
+        <textarea id="fileDescription" name="description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="fileUpload">파일 선택</label>
+        <input type="file" id="fileUpload" name="file" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">업로드</button>
+        <button type="button" onclick="closeUploadModal()" class="cancel-btn">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 일정 추가 모달 -->
+<div id="scheduleModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeScheduleModal()">&times;</span>
+    <h2>일정 추가</h2>
+    <form id="scheduleForm">
+      <div class="form-group">
+        <label for="scheduleTitle">일정 제목</label>
+        <input type="text" id="scheduleTitle" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="scheduleDate">날짜</label>
+        <input type="date" id="scheduleDate" name="date" required>
+      </div>
+      <div class="form-group">
+        <label for="scheduleTime">시간</label>
+        <input type="time" id="scheduleTime" name="time" required>
+      </div>
+      <div class="form-group">
+        <label for="scheduleDescription">설명</label>
+        <textarea id="scheduleDescription" name="description"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">저장</button>
+        <button type="button" onclick="closeScheduleModal()" class="cancel-btn">취소</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 
+<!-- 질문하기 모달 -->
+<div id="questionModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeQuestionModal()">&times;</span>
+    <h2>질문하기</h2>
+    <form id="questionForm">
+      <input type="hidden" id="studygroupId" name="studygroupId" th:value="${param.id}">
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea id="content" name="content" required></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">작성완료</button>
+        <button type="button" onclick="closeQuestionModal()" class="cancel-btn">취소</button>
+      </div>
+    </form>
+
+  </div>
 </div>
 
-<!-- 공통 푸터 include -->
+<!-- 설정 모달 -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSettingsModal()">&times;</span>
+    <h2>스터디 설정</h2>
+    <form id="settingsForm">
+      <div class="form-group">
+        <label for="groupName">스터디 그룹명</label>
+        <input type="text" id="groupName" name="groupName"
+               th:value="${group.groupName}" required>
+      </div>
+      <div class="form-group">
+        <label for="maxMembers">최대 인원</label>
+        <select id="maxMembers" name="maxMembers">
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명</option>
+          <option value="5">5명</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">저장</button>
+        <button type="button" onclick="confirmDelete()" class="delete-btn">스터디 삭제</button>
+        <button type="button" onclick="closeSettingsModal()" class="cancel-btn">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 나가기 확인 모달 -->
+<div id="leaveConfirmModal" class="modal">
+  <div class="modal-content">
+    <h2>스터디 탈퇴</h2>
+    <p>정말로 스터디에서 탈퇴하시겠습니까?</p>
+    <div class="modal-actions">
+      <button onclick="leaveGroup()" class="submit-btn">확인</button>
+      <button onclick="closeLeaveConfirmModal()" class="cancel-btn">취소</button>
+    </div>
+  </div>
+</div>
+
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script th:src="@{/js/studyroom.js}"></script>
 </body>

@@ -38,15 +38,16 @@ public final class ApiUrls {
     }
 
     public static final class View {
+        public static final String BASE = VIEW_BASE;
         public static final String LOGIN = VIEW_BASE + "/login";
         public static final String SIGNUP = VIEW_BASE + "/signup";
         public static final String MAIN = VIEW_BASE + "/main";
-        public static final String STUDY_ROOM = VIEW_BASE + "/studygroups/{groupId}";
+        public static final String STUDY_ROOM = "/studyroom/{groupId}";  // URL 패턴 수정
         public static final String SEARCH = VIEW_BASE + "/search";
         public static final String MY_CLASS = VIEW_BASE + "/view/myclass";
         public static final String STUDY_GROUPS = VIEW_BASE + "/view/study-groups";
-
     }
+
 
     public static final class Board {
         public static final String BASE = API_BASE + "/boards";

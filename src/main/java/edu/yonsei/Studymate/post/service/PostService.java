@@ -69,4 +69,18 @@ public class PostService {
         return postRepository.save(post);
     }
 
+
+    public Content<List<PostEntity>> getStudyRoomPosts(Long studyRoomId, Pageable pageable) {
+        Page<PostEntity> page = postRepository.findAllByStudyRoomIdOrderByIdDesc(studyRoomId, pageable);
+        return Content.<List<PostEntity>>builder()
+                .body(page.getContent())
+                .pagination(Pagination.builder()
+                        .page(page.getNumber())
+                        .size(page.getSize())
+                        .totalElements(page.getTotalElements())
+                        .totalPage(page.getTotalPages())
+                        .currentElements(page.getNumberOfElements())
+                        .build())
+                .build();
+    }
 }

@@ -250,5 +250,17 @@ public class StudygroupService {
         return result;
     }
 
+    public StudygroupDto getStudyGroupDto(Long groupId) {
+        StudygroupEntity group = studygroupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotFoundException("스터디 그룹을 찾을 수 없습니다: " + groupId));
+        return studygroupConverter.toDto(group);
+    }
+
+    public StudygroupEntity getStudyGroup(Long groupId) {
+        return studygroupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotFoundException("스터디 그룹을 찾을 수 없습니다: " + groupId));
+    }
+
+
 
 }
