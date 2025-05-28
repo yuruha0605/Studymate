@@ -52,8 +52,8 @@ public class SecurityConfig {
                 )
 
                 .logout(logout -> logout
-                        .logoutUrl("/study-mate/auth/logout")
-                        .logoutSuccessUrl("/study-mate/main")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/study-mate/auth/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll()
