@@ -18,6 +18,7 @@
 - 본래는 내가 참여한 클래스룸만 보이게 했지만 crud 방식을 위해 create도 추가 구현
 - 위 방식으로 스터디룸 생성 시 subject_entity table과 t_studygroup이 원활히 연동될 수 있도록 List 방식의 선택을 구현 
 - 기타 버그 해결
+- header.html에서 Study-Mate 로고의 href 경로를 "/" → "/study-mate/main"으로 변경(로고 클릭하면 메인화면으로 링크)(수정자: 공지혁)
 
 ### 5/26 수정사항
 - 각 스터디룸에 대한 각 게시판 작성
