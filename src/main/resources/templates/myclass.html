@@ -16,15 +16,17 @@
   <div class="main-title">My <span class="accent">Classroom</span></div>
 
   <!-- 내가 만든 스터디 섹션 -->
+
+  <!-- 내가 만든 스터디 섹션 -->
   <section class="subject-wrapper">
     <h2>내가 만든 스터디</h2>
     <div class="classes-section">
-      <div th:if="${#lists.isEmpty(myGroups)}" class="no-groups">
+      <div th:if="${#lists.isEmpty(userClasses.myClasses)}" class="no-groups">
         <p>아직 생성한 스터디가 없습니다. 새로 만드시겠습니까?</p>
         <a href="/study-mate/create-study" class="join-btn">새 스터디 만들기</a>
       </div>
-      <div th:if="${not #lists.isEmpty(myGroups)}" class="groups-container">
-        <div class="course-card" th:each="group : ${myGroups}">
+      <div th:if="${not #lists.isEmpty(userClasses.myClasses)}" class="groups-container">
+        <div class="course-card" th:each="group : ${userClasses.myClasses}">
           <div class="course-info">
             <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
             <div class="course-details">
@@ -32,11 +34,10 @@
               <div class="enroll-info" th:text="|참여 인원 : ${group.currentMembers} / ${group.maxMembers}|">
                 참여 인원
               </div>
-              <div class="subject-name" th:text="${group.subjectName}">과목명</div>
             </div>
           </div>
           <div class="card-right">
-            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">입장하기</a>
+            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">Join Class</a>
           </div>
         </div>
       </div>

@@ -49,27 +49,29 @@
 .classes-section {
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    padding: 2rem;
+    padding: 1rem 2rem; /* 상하 패딩을 줄여서 높이 감소 */
     box-shadow: var(--shadow);
-    width: 100%;
+    width: 100%; /* 원래 가로폭으로 복원 */
 }
+
 
 .course-card {
     background: #f8f9fa;
     border-radius: var(--border-radius);
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem; /* 상하 패딩을 줄여서 카드 높이 감소 */
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem; /* 카드 간 간격도 약간 줄임 */
     position: relative;
     overflow: hidden;
     transition: transform 0.2s;
 }
 
+
 .course-card:hover {
-    transform: translateX(10px);
+    transform: translateX(3px);
 }
 
 .course-info {
@@ -77,26 +79,25 @@
 }
 
 .course-name {
-    font-size: 1.5rem;
+    font-size: 1.2rem; /* 스터디 그룹명 글자 크기 축소 */
     font-weight: 600;
     color: #333;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
+
 
 .course-details {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem; /* 요소들 간의 간격도 약간 줄임 */
     align-items: center;
     flex-wrap: wrap;
 }
 
 .status {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    padding: 0.2rem 0.6rem; /* 상태 표시 패딩도 약간 줄임 */
+    font-size: 0.8rem;
 }
+
 
 .status[th\:text~="RECRUITING"] {
     background: #e8f5e9;
@@ -114,9 +115,9 @@
 }
 
 .enroll-info {
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* 참여 인원 글자 크기도 약간 줄임 */
 }
+
 
 .subject-name {
     color: var(--main-blue);
@@ -131,12 +132,14 @@
     background: var(--main-blue);
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 8px;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s;
     display: inline-block;
+    font-size: 0.9rem; /* 버튼 글자 크기 축소 */
+
 }
 
 .join-btn:hover {
@@ -233,6 +236,10 @@
     .no-groups {
         padding: 2rem 1rem;
     }
+    .classes-section {
+        width: 90%;
+    }
+
 }
 
 @media screen and (min-width: 1400px) {
@@ -279,6 +286,10 @@
     .main-title {
         font-size: 2rem;
     }
+    .classes-section {
+        width: 95%;
+    }
+
 }
 
 @media screen and (max-width: 575px) {
