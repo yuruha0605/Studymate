@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,17 @@ public class BoardController {
     ) {
         return boardService.getBoardWithPosts(studygroupId, page, size);
     }
+
+    @GetMapping("/studygroup/{studygroupId}")
+    public ResponseEntity<BoardDto> getBoardByStudygroup(@PathVariable Long studygroupId) {
+        try {
+            BoardDto board = boardService.getByStudygroup(studygroupId);
+            return ResponseEntity.ok(board);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 
 

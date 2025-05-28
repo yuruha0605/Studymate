@@ -25,7 +25,7 @@ public class BoardEntity {
     private String boardName;
 
     @OneToMany(
-            mappedBy = "boardEntity"
+            mappedBy = "board"
     )
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")

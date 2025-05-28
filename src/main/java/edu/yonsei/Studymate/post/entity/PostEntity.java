@@ -1,6 +1,7 @@
 package edu.yonsei.Studymate.post.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.board.entity.BoardEntity;
 import edu.yonsei.Studymate.reply.entity.ReplyEntity;
 import jakarta.persistence.*;
@@ -22,17 +23,24 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studygroup_id")
+    private StudygroupEntity studygroup;
+
+
     @ManyToOne
     @JsonIgnore
     @ToString.Exclude
     @JoinColumn(name = "t_board_id")
-    private BoardEntity boardEntity;
+    private BoardEntity board;
 
+    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column
     private LocalDateTime written;
 
     @OneToMany(
@@ -41,4 +49,10 @@ public class PostEntity {
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<ReplyEntity> replyList = List.of();
+
+    @PrePersist
+    protected void onCreate() {
+        written = LocalDateTime.now();
+    }
+
 }

@@ -23,8 +23,8 @@ public final class ApiUrls {
 
     public static final class Post {
         public static final String BASE = API_BASE + "/posts";
-        public static final String CREATE = BASE + "/create";
-        public static final String LIST = BASE + "/{groupId}/list";
+        public static final String CREATE = "/create";
+        public static final String LIST = "/{groupId}/list";
         public static final String DETAIL = BASE + "/{postId}";
         public static final String UPDATE = DETAIL + "/update";
         public static final String DELETE = DETAIL + "/delete";

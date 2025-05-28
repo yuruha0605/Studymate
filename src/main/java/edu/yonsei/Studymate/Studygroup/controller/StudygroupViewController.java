@@ -6,6 +6,8 @@ import edu.yonsei.Studymate.Studygroup.entity.GroupMemberRepository;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupConverter;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupService;
+import edu.yonsei.Studymate.board.dto.BoardDto;
+import edu.yonsei.Studymate.board.service.BoardService;
 import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
 import edu.yonsei.Studymate.login.entity.User;
@@ -41,8 +43,8 @@ public class StudygroupViewController {
     private final SubjectService subjectService;
     private final GroupMemberRepository groupMemberRepository;
     private final UserRepository userRepository;
+    private final BoardService boardService;
 
-    // 스터디룸 상세 페이지
     @GetMapping(ApiUrls.View.STUDY_ROOM)
     public String studyroom(@PathVariable Long groupId, Model model,
                             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -57,9 +59,15 @@ public class StudygroupViewController {
         StudygroupDto groupDto = studygroupConverter.toDto(group, user);
         groupDto.setMemberRole(member.getRole().name());
 
+        // 스터디그룹의 게시판과 게시글 정보 가져오기
+        Content<BoardDto> boardContent = boardService.getBoardWithPosts(groupId, 0, 10);
+
         model.addAttribute("group", groupDto);
+        model.addAttribute("board", boardContent.getBody());
+
         return "studyroom";
     }
+
 
     // 마이 클래스 페이지
     @GetMapping(ApiUrls.View.MY_CLASS)

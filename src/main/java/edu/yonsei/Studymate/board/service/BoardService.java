@@ -85,7 +85,7 @@ public class BoardService {
         // BoardDto 생성 및 반환
         BoardDto boardDto = boardConverter.toDto(board);
         boardDto.setPostList(postContent.getBody().stream()
-                .filter(post -> post.getBoardEntity().getId().equals(board.getId()))
+                .filter(post -> post.getBoard().getId().equals(board.getId()))
                 .map(postConverter::toDto)
                 .collect(Collectors.toList()));
 

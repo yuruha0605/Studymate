@@ -9,15 +9,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
-    Page<PostEntity> findAllByBoardEntityId(Long boardId, Pageable pageable);
+    // boardEntityId를 board.id로 수정
+    @Query("SELECT p FROM t_bbs2025 p WHERE p.board.id = :boardId ORDER BY p.id DESC")
+    Page<PostEntity> findAllByBoardIdOrderByIdDesc(@Param("boardId") Long boardId, Pageable pageable);
 
-    // 스터디그룹별 게시글 조회 (ID 역순)
-    @Query("SELECT p FROM t_bbs2025 p WHERE p.boardEntity.studygroup.id = :studygroupId ORDER BY p.id DESC")
-    Page<PostEntity> findAllByStudyRoomIdOrderByIdDesc(@Param("studygroupId") Long studygroupId, Pageable pageable);
+    Page<PostEntity> findAllByBoardId(Long boardId, Pageable pageable);
 
-    // 스터디그룹별 게시글 수 조회
-    @Query("SELECT COUNT(p) FROM t_bbs2025 p WHERE p.boardEntity.studygroup.id = :studygroupId")
-    long countByStudyRoomId(@Param("studygroupId") Long studygroupId);
 }
+
 
 

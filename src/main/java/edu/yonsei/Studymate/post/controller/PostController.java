@@ -1,15 +1,20 @@
 package edu.yonsei.Studymate.post.controller;
 
+import edu.yonsei.Studymate.board.entity.BoardEntity;
+import edu.yonsei.Studymate.board.entity.BoardRepository;
 import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
+import edu.yonsei.Studymate.common.Pagination;
 import edu.yonsei.Studymate.post.dto.PostDeleteRequest;
 import edu.yonsei.Studymate.post.dto.PostDto;
 import edu.yonsei.Studymate.post.dto.PostRequest;
 import edu.yonsei.Studymate.post.entity.PostEntity;
+import edu.yonsei.Studymate.post.entity.PostRepository;
 import edu.yonsei.Studymate.post.service.PostConverter;
 import edu.yonsei.Studymate.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,17 +31,19 @@ import java.util.stream.Collectors;
 public class PostController {
     private final PostService postService;
     private final PostConverter postConverter;
-
+    private final BoardRepository boardRepository;
+    private final PostRepository postRepository;
 
 
     @PostMapping(ApiUrls.Post.CREATE)   // "~/create"
     public PostDto create(
             @Valid
-            @ModelAttribute PostRequest postRequest
+            @RequestBody PostRequest postRequest  // @ModelAttribute -> @RequestBody
     ){
         PostEntity entity = postService.create(postRequest);
         return postConverter.toDto(entity);
     }
+
 
 
     @GetMapping(ApiUrls.Post.LIST)  // "~/{groupId}/list"
@@ -44,19 +51,31 @@ public class PostController {
             @PathVariable Long groupId,
             @RequestParam int page,
             @RequestParam int size
-    ){
+    ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Content<List<PostEntity>> content = postService.articles(pageable);
 
-        List<PostDto> dtoList = content.getBody().stream()
+        // 해당 스터디그룹의 게시판에 속한 게시글만 조회
+        BoardEntity board = boardRepository.findByStudygroupId(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("게시판을 찾을 수 없습니다."));
+
+        Page<PostEntity> postPage = postRepository.findAllByBoardIdOrderByIdDesc(board.getId(), pageable);
+
+        List<PostDto> dtoList = postPage.getContent().stream()
                 .map(postConverter::toDto)
                 .collect(Collectors.toList());
 
         return Content.<List<PostDto>>builder()
                 .body(dtoList)
-                .pagination(content.getPagination())
+                .pagination(Pagination.builder()
+                        .page(postPage.getNumber())
+                        .size(postPage.getSize())
+                        .totalElements(postPage.getTotalElements())
+                        .totalPage(postPage.getTotalPages())
+                        .currentElements(postPage.getNumberOfElements())
+                        .build())
                 .build();
     }
+
 
 
 

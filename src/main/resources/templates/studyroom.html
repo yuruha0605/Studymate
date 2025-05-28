@@ -59,28 +59,19 @@
 
 
   <div class="studyroom-content">
-    <div class="content-wrapper">  <!-- 새로운 wrapper div 추가 -->
+    <div class="content-wrapper">
       <div class="content-grid">
         <div class="left-section">
           <div class="content-box">
             <h2>질문 게시판</h2>
-            <div class="post-list" th:if="${not #lists.isEmpty(posts)}">
-            <div class="post-item" th:each="post : ${posts}">
-            <h3 th:text="${post.title}">게시글 제목</h3>
-            <p class="post-info">
-              <span th:text="${post.authorName}">작성자</span>
-              <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">
-                                    작성일
-                                </span>
-            </p>
+            <!-- 게시글 목록을 보여주는 영역 -->
+            <div class="post-list">
+              <!-- 게시글이 동적으로 로드됩니다 -->
+            </div>
+            <button class="action-btn" onclick="openQuestionModal()">질문하기</button>
           </div>
         </div>
-          <div class="no-content" th:if="${#lists.isEmpty(posts)}">
-            <p>등록된 게시글이 없습니다.</p>
-          </div>
-          <button class="action-btn" onclick="openQuestionModal()">질문하기</button>
-        </div>
-      </div>
+
 
 
         <div class="right-section">
@@ -94,10 +85,10 @@
 
           <div class="content-box">
             <h2>학습 일정</h2>
-            <div class="no-content">
-              <p>등록된 일정이 없습니다.</p>
+            <div class="schedule-list">
+              <!-- 일정이 동적으로 로드됩니다 -->
             </div>
-            <button class="action-btn">일정 추가</button>
+            <button class="action-btn" onclick="openScheduleModal()">일정 추가</button>
           </div>
         </div>
       </div>
@@ -168,7 +159,8 @@
     <span class="close" onclick="closeQuestionModal()">&times;</span>
     <h2>질문하기</h2>
     <form id="questionForm">
-      <input type="hidden" id="studygroupId" name="studygroupId" th:value="${param.id}">
+      <input type="hidden" id="boardId" name="boardId">
+      <input type="hidden" id="studygroupId" name="studygroupId" th:value="${group.id}">
       <div class="form-group">
         <label for="title">제목</label>
         <input type="text" id="title" name="title" required>
@@ -182,9 +174,10 @@
         <button type="button" onclick="closeQuestionModal()" class="cancel-btn">취소</button>
       </div>
     </form>
-
   </div>
 </div>
+
+
 
 <!-- 설정 모달 -->
 <div id="settingsModal" class="modal">

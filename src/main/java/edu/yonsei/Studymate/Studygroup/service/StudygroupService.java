@@ -11,6 +11,7 @@ import edu.yonsei.Studymate.login.entity.User;
 import edu.yonsei.Studymate.login.repository.UserRepository;
 import edu.yonsei.Studymate.post.entity.PostEntity;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Pageable;
 import edu.yonsei.Studymate.subject.entity.SubjectRepository;
@@ -27,7 +28,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class StudygroupService {
 
     private final StudygroupRepository studygroupRepository;

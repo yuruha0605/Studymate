@@ -315,3 +315,27 @@
     margin-bottom: 2rem;
   }
 }
+
+.schedule-actions {
+  margin-top: 10px;
+}
+
+.schedule-actions button {
+  margin-right: 5px;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}

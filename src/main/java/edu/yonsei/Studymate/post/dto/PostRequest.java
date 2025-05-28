@@ -15,7 +15,7 @@ import lombok.*;
 public class PostRequest {
 
     private Long postId; // 게시글 수정 시 필요
-    private Long boardId = 1L;
+    private Long boardId;
     private Long studygroupId;
 
     @NotBlank( message = "제목을 입력해주세요.")

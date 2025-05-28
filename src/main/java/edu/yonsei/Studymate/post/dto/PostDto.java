@@ -17,6 +17,7 @@ public class PostDto {
 
     private Long id;
     private Long boardId;
+    private Long studygroupId;
     private String title;
     private String content;
     private LocalDateTime written;
