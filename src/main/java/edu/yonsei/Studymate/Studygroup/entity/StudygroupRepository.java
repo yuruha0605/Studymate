@@ -1,6 +1,7 @@
 package edu.yonsei.Studymate.Studygroup.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,9 @@ public interface StudygroupRepository extends JpaRepository<StudygroupEntity, Lo
 
     // 상태별 검색
     List<StudygroupEntity> findByStatus(StudygroupEntity.GroupStatus status);
+
+    // 스터디 그룹 랜덤 5개 검색
+    @Query(value = "SELECT * FROM t_studygroup ORDER BY RAND() LIMIT 5", nativeQuery = true)
+    List<StudygroupEntity> findRandom5();
 }
 

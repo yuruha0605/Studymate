@@ -1,5 +1,6 @@
 package edu.yonsei.Studymate.main.dto;
 
+import edu.yonsei.Studymate.Studygroup.dto.StudygroupDto;
 import lombok.*;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public class MainPageDto {
     private int activeAssignmentsCount;
     private List<String> personalSchedules;
     private String studyTime;               //  학습시간
+    private List<StudygroupDto> recommendedStudyGroups;
 }
