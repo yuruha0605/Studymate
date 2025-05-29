@@ -15,17 +15,12 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class StudygroupRequest {
 
-    private Long userid;
-    private Long studyGroupId;
+    @NotNull(message = "과목 ID는 null일 수 없습니다.")
     private Long subjectId;
-    @NotBlank
+
+    @NotBlank(message = "스터디 그룹명은 공백일 수 없습니다.")
     private String groupName;
 
-    @NotBlank
-    private String subjectName;
-
-    @Builder.Default
-    private Integer maxMembers = 5;
-
-
+    @NotNull(message = "최대 인원 수는 null일 수 없습니다.")
+    private Integer maxMembers;
 }
