@@ -39,11 +39,16 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     public List<ScheduleDto> getSchedulesByStudygroup(Long studygroupId) {
+        // 스터디 그룹 존재 여부 확인
+        studygroupRepository.findById(studygroupId)
+                .orElseThrow(() -> new EntityNotFoundException("스터디 그룹을 찾을 수 없습니다."));
+
         return scheduleRepository.findByStudygroupIdOrderByScheduleDateTimeAsc(studygroupId)
                 .stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
 
     private ScheduleDto convertToDto(ScheduleEntity entity) {
         return ScheduleDto.builder()
@@ -51,7 +56,7 @@ public class ScheduleService {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .scheduleDateTime(entity.getScheduleDateTime())
-                .studygroupId(entity.getStudygroup().getId())
+                .studygroupId(entity.getStudygroup().getId())  // LAZY 로딩 문제 발생 지점
                 .createdAt(entity.getCreatedAt())
                 .build();
     }
@@ -72,5 +77,13 @@ public class ScheduleService {
                 .orElseThrow(() -> new EntityNotFoundException("일정을 찾을 수 없습니다."));
         scheduleRepository.delete(schedule);
     }
+
+    @Transactional(readOnly = true)
+    public ScheduleDto getSchedule(Long id) {
+        ScheduleEntity schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("일정을 찾을 수 없습니다: " + id));
+        return convertToDto(schedule);
+    }
+
 
 }

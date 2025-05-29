@@ -25,10 +25,11 @@ public final class ApiUrls {
         public static final String BASE = API_BASE + "/posts";
         public static final String CREATE = "/create";
         public static final String LIST = "/{groupId}/list";
-        public static final String DETAIL = BASE + "/{postId}";
-        public static final String UPDATE = DETAIL + "/update";
-        public static final String DELETE = DETAIL + "/delete";
+        public static final String DETAIL = "/{postId}";  // BASE가 포함되지 않도록 수정
+        public static final String UPDATE = "/{postId}/update";
+        public static final String DELETE = "/{postId}/delete";
     }
+
 
     public static final class Subject {
         public static final String BASE = API_BASE + "/subjects";

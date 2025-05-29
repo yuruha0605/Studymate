@@ -6,10 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -32,27 +35,27 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/study-mate/auth/**",
                                 "/api/study-mate/auth/**",
-                                "/api/study-mate/studygroups/**",  // 이 줄 추가
+                                "/api/study-mate/studygroups/**",
                                 "/",
                                 "/study-mate/main",
                                 "/study-mate/search-page",
+                                "/find-id",
+                                "/find-password",
                                 "/error"
-                        )
-                        .permitAll()
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/study-mate/auth/login")
                         .loginProcessingUrl("/study-mate/auth/login")
-                        .defaultSuccessUrl("/study-mate/main", true)  // 이 부분이 중요합니다
+                        .defaultSuccessUrl("/study-mate/main", true)
                         .failureUrl("/study-mate/auth/login?error=true")
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .permitAll()
                 )
-
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/study-mate/auth/logout")
                         .logoutSuccessUrl("/study-mate/auth/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
@@ -63,16 +66,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder)
-                .and()
-                .build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+        AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+        return auth.build();
     }
 }

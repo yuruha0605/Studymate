@@ -1,5 +1,7 @@
 package edu.yonsei.Studymate.reply.service;
 
+import edu.yonsei.Studymate.login.entity.User;
+import edu.yonsei.Studymate.post.entity.PostEntity;
 import edu.yonsei.Studymate.post.entity.PostRepository;
 import edu.yonsei.Studymate.reply.dto.ReplyDto;
 import edu.yonsei.Studymate.reply.dto.ReplyRequest;
@@ -7,6 +9,8 @@ import edu.yonsei.Studymate.reply.entity.ReplyEntity;
 import edu.yonsei.Studymate.reply.entity.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,19 +21,23 @@ public class ReplyService {
     private final ReplyConverter replyConverter;
 
 
-    public ReplyDto create(
-            ReplyRequest replyRequest
-    ){
-        var entity = postRepository.findById(replyRequest.getPostId()).get();
+    public ReplyDto create(ReplyRequest replyRequest, User currentUser) {
+        var postEntity = postRepository.findById(replyRequest.getPostId())
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
         var saveEntity = ReplyEntity.builder()
-                .postEntity(entity)
+                .postEntity(postEntity)
                 .content(replyRequest.getContent())
-                .build()
-                ;
+                .user(currentUser)  // 현재 사용자 정보 저장
+                .build();
 
         var savedEntity = replyRepository.save(saveEntity);
-
         return replyConverter.toDto(savedEntity);
     }
+
+
+    public List<ReplyEntity> findAllByPostEntityOrderById(PostEntity postEntity) {
+        return replyRepository.findAllByPostEntityOrderById(postEntity);
+    }
+
 }

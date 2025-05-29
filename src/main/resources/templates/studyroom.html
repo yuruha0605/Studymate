@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <!-- 스트리밍 섹션 추가 -->
+  <!-- 스트리밍 섹션 -->
   <div class="streaming-section">
     <div class="video-container">
       <div class="main-video">
@@ -57,30 +57,56 @@
     </div>
   </div>
 
-
   <div class="studyroom-content">
     <div class="content-wrapper">
       <div class="content-grid">
         <div class="left-section">
           <div class="content-box">
             <h2>질문 게시판</h2>
+            <!-- 선택된 게시글의 상세 내용을 보여주는 영역 -->
+            <div id="selectedPost" class="selected-post" style="display: none;">
+              <div class="post-header">
+                <button class="back-btn" onclick="hideSelectedPost()">
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+                <h3 class="selected-title"></h3>
+                <div class="post-actions">
+                  <span class="selected-author"></span>
+                  <div class="post-buttons">
+                    <button class="edit-btn" onclick="editPost()" style="display: none;">
+                      <i class="fas fa-edit"></i> 수정
+                    </button>
+                    <button class="delete-btn" onclick="deletePost()" style="display: none;">
+                      <i class="fas fa-trash-alt"></i> 삭제
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="post-content"></div>
+              <div class="post-comments">
+                <h4>댓글</h4>
+                <div class="comments-list"></div>
+                <div class="comment-form">
+                  <textarea id="commentText" placeholder="댓글을 입력하세요..."></textarea>
+                  <button onclick="addComment()">댓글 작성</button>
+                </div>
+              </div>
+            </div>
             <!-- 게시글 목록을 보여주는 영역 -->
             <div class="post-list">
-              <!-- 게시글이 동적으로 로드됩니다 -->
+              <!-- 게시글 목록이 동적으로 로드됩니다 -->
             </div>
             <button class="action-btn" onclick="openQuestionModal()">질문하기</button>
           </div>
         </div>
 
-
-
         <div class="right-section">
           <div class="content-box">
             <h2>학습 자료실</h2>
-            <div class="no-content">
-              <p>등록된 학습자료가 없습니다.</p>
+            <div class="material-list">
+              <!-- 자료 목록이 동적으로 로드됩니다 -->
             </div>
-            <button class="action-btn">자료 업로드</button>
+            <button class="action-btn" onclick="openUploadModal()">자료 업로드</button>
           </div>
 
           <div class="content-box">
@@ -96,11 +122,11 @@
   </div>
 </div>
 
-  <!-- 자료 업로드 모달 -->
+<!-- 자료 업로드 모달 -->
 <div id="uploadModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeUploadModal()">&times;</span>
-    <h2>자료 업로드</h2>
+    <h2 class="modal-title">자료 업로드</h2>
     <form id="uploadForm">
       <div class="form-group">
         <label for="fileTitle">자료 제목</label>
@@ -122,11 +148,11 @@
   </div>
 </div>
 
-<!-- 일정 추가 모달 -->
+<!-- 일정 추가/수정 모달 -->
 <div id="scheduleModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeScheduleModal()">&times;</span>
-    <h2>일정 추가</h2>
+    <h2 class="modal-title">일정 추가</h2>
     <form id="scheduleForm">
       <div class="form-group">
         <label for="scheduleTitle">일정 제목</label>
@@ -152,12 +178,11 @@
   </div>
 </div>
 
-
 <!-- 질문하기 모달 -->
 <div id="questionModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeQuestionModal()">&times;</span>
-    <h2>질문하기</h2>
+    <h2 class="modal-title">질문하기</h2>
     <form id="questionForm">
       <input type="hidden" id="boardId" name="boardId">
       <input type="hidden" id="studygroupId" name="studygroupId" th:value="${group.id}">
@@ -177,13 +202,11 @@
   </div>
 </div>
 
-
-
 <!-- 설정 모달 -->
 <div id="settingsModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeSettingsModal()">&times;</span>
-    <h2>스터디 설정</h2>
+    <h2 class="modal-title">스터디 설정</h2>
     <form id="settingsForm">
       <div class="form-group">
         <label for="groupName">스터디 그룹명</label>
@@ -211,7 +234,7 @@
 <!-- 나가기 확인 모달 -->
 <div id="leaveConfirmModal" class="modal">
   <div class="modal-content">
-    <h2>스터디 탈퇴</h2>
+    <h2 class="modal-title">스터디 탈퇴</h2>
     <p>정말로 스터디에서 탈퇴하시겠습니까?</p>
     <div class="modal-actions">
       <button onclick="leaveGroup()" class="submit-btn">확인</button>
@@ -220,8 +243,15 @@
   </div>
 </div>
 
-
 <div th:replace="~{fragments/footer :: footer}"></div>
-<script th:src="@{/js/studyroom.js}"></script>
+<script th:src="@{/js/utils.js}"></script>
+<script th:src="@{/js/model-handlers.js}"></script>
+<script th:src="@{/js/stream-handlers.js}"></script>
+<script th:src="@{/js/post-handlers.js}"></script>
+<script th:src="@{/js/comment-handlers.js}"></script>
+<script th:src="@{/js/schedule-handlers.js}"></script>
+<script th:src="@{/js/material-handlers.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
 </body>
 </html>

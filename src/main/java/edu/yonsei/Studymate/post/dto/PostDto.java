@@ -16,11 +16,15 @@ import java.time.LocalDateTime;
 public class PostDto {
 
     private Long id;
-    private Long boardId;
-    private Long studygroupId;
     private String title;
     private String content;
     private LocalDateTime written;
+    private String authorEmail;
+    private Long authorId;
+    private Long boardId;
+
+
+
 
 }
 

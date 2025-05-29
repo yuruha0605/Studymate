@@ -1,6 +1,5 @@
 package edu.yonsei.Studymate.login.security;
 
-
 import edu.yonsei.Studymate.login.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,13 +14,20 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    // User 엔티티를 반환하는 메소드 추가
+    public User getUser() {
+        return user;
+    }
+
+    // User의 ID를 반환하는 메소드 추가
     public Long getId() {
         return user.getId();
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // 필요한 경우 권한 설정
+        return Collections.emptyList();
     }
 
     @Override

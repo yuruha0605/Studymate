@@ -1,5 +1,6 @@
 package edu.yonsei.Studymate.post.controller;
 
+import edu.yonsei.Studymate.post.dto.PostDto;
 import edu.yonsei.Studymate.post.dto.PostRequest;
 import edu.yonsei.Studymate.post.entity.PostEntity;
 import edu.yonsei.Studymate.post.service.PostService;
@@ -23,8 +24,13 @@ public class PostViewController {
 
     @GetMapping("/{postId}")
     public String updateForm(@PathVariable Long postId, Model model) {
-        PostEntity post = postService.getPost(postId);
-        model.addAttribute("postRequest", new PostRequest(post.getId(), post.getTitle(), post.getContent()));
+        PostDto post = postService.getPost(postId);  // Entity 대신 Dto 사용
+        model.addAttribute("postRequest", new PostRequest(
+                post.getId(),
+                post.getTitle(),
+                post.getContent()
+        ));
         return "update";
     }
+
 }

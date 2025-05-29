@@ -65,6 +65,7 @@ public class BoardService {
         }
     }
 
+
     public Content<BoardDto> getBoardWithPosts(Long studygroupId, int page, int size) {
         // 보드 조회 또는 생성
         BoardEntity board = boardRepository.findByStudygroupId(studygroupId)
@@ -80,7 +81,7 @@ public class BoardService {
 
         // 게시글 페이지네이션 조회
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Content<List<PostEntity>> postContent = postService.articles(pageable);
+        Content<List<PostEntity>> postContent = postService.getPostsByStudygroup(studygroupId, pageable);
 
         // BoardDto 생성 및 반환
         BoardDto boardDto = boardConverter.toDto(board);
@@ -93,7 +94,6 @@ public class BoardService {
                 .body(boardDto)
                 .pagination(postContent.getPagination())
                 .build();
-
     }
 
 }

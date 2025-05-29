@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReplyConverter {
-
-    public ReplyDto toDto(ReplyEntity replyEntity){
+    public ReplyDto toDto(ReplyEntity replyEntity) {
         return ReplyDto.builder()
                 .id(replyEntity.getId())
                 .content(replyEntity.getContent())
-                .build()
-                ;
+                .authorEmail(replyEntity.getUser() != null ? replyEntity.getUser().getLoginId() : null)
+                .createdAt(replyEntity.getCreatedAt())
+                .build();
     }
 }
+
+

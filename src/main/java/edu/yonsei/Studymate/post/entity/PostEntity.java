@@ -3,6 +3,7 @@ package edu.yonsei.Studymate.post.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.board.entity.BoardEntity;
+import edu.yonsei.Studymate.login.entity.User;
 import edu.yonsei.Studymate.reply.entity.ReplyEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -49,6 +50,11 @@ public class PostEntity {
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<ReplyEntity> replyList = List.of();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;  // 추가
+
 
     @PrePersist
     protected void onCreate() {

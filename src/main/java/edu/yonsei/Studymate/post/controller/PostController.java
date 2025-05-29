@@ -5,6 +5,7 @@ import edu.yonsei.Studymate.board.entity.BoardRepository;
 import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
 import edu.yonsei.Studymate.common.Pagination;
+import edu.yonsei.Studymate.login.security.CustomUserDetails;
 import edu.yonsei.Studymate.post.dto.PostDeleteRequest;
 import edu.yonsei.Studymate.post.dto.PostDto;
 import edu.yonsei.Studymate.post.dto.PostRequest;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +37,14 @@ public class PostController {
     private final PostRepository postRepository;
 
 
-    @PostMapping(ApiUrls.Post.CREATE)   // "~/create"
+    @PostMapping(ApiUrls.Post.CREATE)
     public PostDto create(
-            @Valid
-            @RequestBody PostRequest postRequest  // @ModelAttribute -> @RequestBody
-    ){
-        PostEntity entity = postService.create(postRequest);
-        return postConverter.toDto(entity);
+            @Valid @RequestBody PostRequest postRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails  // 현재 사용자 정보 주입
+    ) {
+        return postService.create(postRequest, userDetails.getUser());
     }
+
 
 
 
@@ -79,26 +81,32 @@ public class PostController {
 
 
 
-    @DeleteMapping(ApiUrls.Post.DELETE)   // "/{postId}/delete"
+    @DeleteMapping("/{postId}")  // DELETE 메소드 매핑 수정
     public void delete(
-            @PathVariable Long postId
-    ){
-        postService.delete(new PostDeleteRequest(postId));
+            @PathVariable Long postId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        postService.delete(postId, userDetails.getUser());
     }
 
-    @GetMapping(ApiUrls.Post.DETAIL)
+
+    @GetMapping("/{postId}")  // 단순히 /{postId}로 수정
     public PostDto getPost(@PathVariable Long postId) {
-        return postConverter.toDto(postService.getPost(postId));
+        return postService.getPost(postId);
     }
 
 
-    @PutMapping(ApiUrls.Post.UPDATE)
+    @PutMapping("/{postId}")  // PUT 메소드 매핑 추가
     public PostDto update(
             @PathVariable Long postId,
-            @Valid @RequestBody PostRequest postRequest
+            @Valid @RequestBody PostRequest postRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return postConverter.toDto(postService.update(postRequest));
+        return postService.update(postId, postRequest, userDetails.getUser());
     }
+
+
+
 
     // View 관련 메서드들은 별도의 Controller로 분리하는 것이 좋습니다
     @GetMapping("/write")

@@ -52,47 +52,28 @@
     </div>
   </div>
 
-  <div class="classes-section">
-    <h2 class="box-title">진행 중인 수업 추천</h2>
-    <div class="classes-grid">
-      <div class="class-card">
-        <h3>캡스톤 디자인</h3>
-        <div class="class-info">
-          <p>실시간 회의 링크 있음</p>
-          <p>Current: 4 / 5</p>
+    <div class="classes-section">
+      <h2 class="box-title">진행 중인 수업 추천</h2>
+      <div class="classes-grid">
+        <div class="class-card" th:each="group : ${recommendedGroups}"
+             th:classappend="${group.status == 'FULL'} ? 'full'">
+          <h3 th:text="${group.groupName}">스터디 그룹명</h3>
+          <div class="class-info">
+            <p th:text="|과목: ${group.subjectName}|">과목 정보</p>
+            <p th:if="${group.status == 'FULL'}">Current: Full</p>
+            <p th:unless="${group.status == 'FULL'}"
+               th:text="|Current: ${group.currentMembers} / ${group.maxMembers}|">
+              참여 현황
+            </p>
+          </div>
+          <button class="join-btn"
+                  th:onclick="'location.href=\'/study-mate/studyroom/' + ${group.id} + '\''">
+            Join Class
+          </button>
         </div>
-        <button class="join-btn">Join Class</button>
-      </div>
-
-      <div class="class-card">
-        <h3>웹프로그래밍 실습</h3>
-        <div class="class-info">
-          <p>React 기반 프론트엔드 프로젝트</p>
-          <p>Current: 2 / 5</p>
-        </div>
-        <button class="join-btn">Join Class</button>
-      </div>
-
-      <div class="class-card full">
-        <h3>인공지능 개론</h3>
-        <div class="class-info">
-          <p>팀 프로젝트 마감 임박</p>
-          <p>Current: Full</p>
-        </div>
-        <button class="join-btn">Join Class</button>
-      </div>
-
-      <div class="class-card">
-        <h3>데이터베이스 개론</h3>
-        <div class="class-info">
-          <p>실습 보고서 제출 필요</p>
-          <p>Current: 1 / 5</p>
-        </div>
-        <button class="join-btn">Join Class</button>
       </div>
     </div>
   </div>
-</div>
 
   <div th:replace="~{fragments/footer :: footer}"></div>
 

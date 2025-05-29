@@ -3,7 +3,11 @@ package edu.yonsei.Studymate.login.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import edu.yonsei.Studymate.subject.entity.SubjectEntity;
+
 
 @Entity
 @Getter
@@ -43,4 +47,13 @@ public class User {
         this.loginId = loginId;
         this.password = password;
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_subjects",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private Set<SubjectEntity> subjects = new HashSet<>();
+
 }
