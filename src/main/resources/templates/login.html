@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Study-Mate 로그인</title>
+    <link rel="stylesheet" th:href="@{/css/login-styles.css}">
+</head>
+<body>
+<header>
+    <div class="header-left">Study-Mate</div>
+</header>
+
+<main>
+    <div class="login-box">
+        <h1>Welcome to<br /><span class="highlight">Study-Mate</span></h1>
+        <p class="subtext">스터디 그룹을 찾고, 함께 공부하는 공간 - Study-Mate!</p>
+
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${error}" style="color: red; margin-bottom: 10px;">
+            <p th:text="${error}"></p>
+        </div>
+
+        <!-- 로그인 폼 수정 -->
+        <form th:action="@{/study-mate/auth/login}" th:object="${loginRequest}" method="post">
+            <div class="input-group">
+                <label for="username">ID :</label>
+                <input type="text" id="username" th:field="*{username}" required />
+            </div>
+            <div class="input-group">
+                <label for="password">PW :</label>
+                <input type="password" id="password" th:field="*{password}" required />
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <div class="links">
+            <a th:href="@{/study-mate/auth/signup}" class="btn btn-secondary">회원가입</a> /
+            <a th:href="@{/find-id}">Find ID</a> /
+            <a th:href="@{/find-password}">Find Password</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
+</footer>
+</body>
+</html>

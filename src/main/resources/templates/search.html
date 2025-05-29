@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Study-Mate - 과목 검색</title>
+        <link rel="stylesheet" th:href="@{/css/common-styles.css}">
+        <link rel="stylesheet" th:href="@{/css/search-styles.css}">
+        <title>StudyMate | 과목 찾기</title>
+    </head>
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+
+<main>
+        <div class="search-box">
+            <div class="search-top">
+                <select class="search-select" id="searchType">
+                    <option value="subject">과목명</option>
+                    <option value="group">스터디그룹명</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="검색어를 입력하세요" class="search-input" />
+                <button class="search-btn" onclick="searchKeyword()">검색</button>
+            </div>
+            <div class="search-results" id="results">
+                <!-- 검색 결과가 여기에 들어감 -->
+            </div>
+        </div>
+    </main>
+
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+    <script th:src="@{/js/search.js}"></script>
+</body>
+</html>

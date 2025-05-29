@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate - 내 강의실</title>
+  <link rel="stylesheet" th:href="@{/css/common-styles.css}">
+  <link rel="stylesheet" th:href="@{/css/myclass-styles.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+  <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
+  <div class="main-title">My <span class="accent">Classroom</span></div>
+
+  <!-- 내가 만든 스터디 섹션 -->
+
+  <!-- 내가 만든 스터디 섹션 -->
+  <section class="subject-wrapper">
+    <h2>내가 만든 스터디</h2>
+    <div class="classes-section">
+      <div th:if="${#lists.isEmpty(userClasses.myClasses)}" class="no-groups">
+        <p>아직 생성한 스터디가 없습니다. 새로 만드시겠습니까?</p>
+        <a href="/study-mate/create-study" class="join-btn">새 스터디 만들기</a>
+      </div>
+      <div th:if="${not #lists.isEmpty(userClasses.myClasses)}" class="groups-container">
+        <div class="course-card" th:each="group : ${userClasses.myClasses}">
+          <div class="course-info">
+            <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
+            <div class="course-details">
+              <div class="status" th:text="${group.status}">상태</div>
+              <div class="enroll-info" th:text="|참여 인원 : ${group.currentMembers} / ${group.maxMembers}|">
+                참여 인원
+              </div>
+            </div>
+          </div>
+          <div class="card-right">
+            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">Join Class</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 참여중인 스터디 섹션 -->
+  <section class="subject-wrapper">
+    <h2>참여중인 스터디</h2>
+    <div class="classes-section">
+      <div th:if="${#lists.isEmpty(joinedGroups)}" class="no-groups">
+        <p>참여중인 스터디가 없습니다. 스터디를 찾아보시겠습니까?</p>
+        <a href="/study-mate/search" class="join-btn">스터디 찾아보기</a>
+      </div>
+      <div th:if="${not #lists.isEmpty(joinedGroups)}" class="groups-container">
+        <div class="course-card" th:each="group : ${joinedGroups}">
+          <div class="course-info">
+            <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
+            <div class="course-details">
+              <div class="status" th:text="${group.status}">상태</div>
+              <div class="enroll-info" th:text="|참여 인원 : ${group.currentMembers} / ${group.maxMembers}|">
+                참여 인원
+              </div>
+              <div class="subject-name" th:text="${group.subjectName}">과목명</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <a th:href="@{/study-mate/studyroom/{id}(id=${group.id})}" class="join-btn">입장하기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 스터디 메이트 상태 섹션 -->
+  <section class="mate-status">
+    <h2>스터디 메이트 상태</h2>
+    <div class="mate-display">
+      <!-- 추후 실제 데이터와 연동 필요 -->
+      <div class="mate-entry" th:if="${false}">
+        <div class="circle" th:style="'background-image: url(' + ${mate.profileImage} + ');'"></div>
+        <p th:text="${mate.name}">이름</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 모달 팝업 -->
+<div id="createStudyModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>새 스터디 만들기</h2>
+    <form id="createStudyForm" action="/study-mate/studygroups/create" method="POST">
+      <div class="form-group">
+        <label for="subjectSelect">과목</label>
+        <select class="form-control" id="subjectSelect" name="subjectId" required>
+          <option value="">과목을 선택해주세요</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="groupName">스터디 그룹명</label>
+        <input type="text" id="groupName" name="groupName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="maxMembers">최대 인원</label>
+        <select id="maxMembers" name="maxMembers">
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명</option>
+          <option value="5" selected>5명</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">스터디 만들기</button>
+    </form>
+  </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/study-group.js}"></script>
+</body>
+</html>

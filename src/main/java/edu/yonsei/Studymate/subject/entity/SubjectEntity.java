@@ -1,0 +1,58 @@
+package edu.yonsei.Studymate.subject.entity;
+
+
+import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
+//@Entity(name = "subject_entity") // table name
+@Entity(name = "StudySubjectEntity")
+@Table(name = "subject_entity")
+public class SubjectEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 알아서 증가
+    private Long id;
+
+    @Column(name = "subject_name")
+    private String subjectName;
+    @Column(name = "professor_name")
+    private String professorName;
+
+    // subject -> study group 이랑 1-N 관계
+    @OneToMany(
+            mappedBy = "subjectEntity"
+    )
+
+    @Builder.Default
+    @org.hibernate.annotations.SQLOrder("id")
+    private List<StudygroupEntity> groupList = List.of();   // List 로 만든 group 을 반환
+
+
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+
+    }
+}

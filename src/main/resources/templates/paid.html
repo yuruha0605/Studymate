@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study-Mate - 유료 서비스</title>
+    <style>
+        :root {
+            --main-blue: #4285f4;
+            --main-bg: #f4f4f4;
+            --card-bg: #fff;
+            --shadow: 0 4px 16px rgba(66,133,244,0.10), 0 1.5px 4px rgba(0,0,0,0.05);
+            --border-radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--main-bg);
+            color: #222;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #222;
+            margin-left: 2rem;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #222;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .plan-card.featured {
+            border: 2px solid var(--main-blue);
+            position: relative;
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--main-blue);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .plan-name {
+            color: var(--main-blue);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .features li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "✓";
+            color: var(--main-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        .subscribe-btn {
+            background: var(--main-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .subscribe-btn:hover {
+            background: #2a6ad7;
+        }
+
+        .benefits {
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .benefits h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--main-blue);
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 900px) {
+            .plans-grid, .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .plans-grid, .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">Study-Mate</div>
+        <div class="nav-links">
+            <a href="myclass.html">내 강의실</a>
+            <a href="search.html">과목 찾기</a>
+            <a href="paid.html">유료 서비스</a>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Study-Mate Premium</h1>
+        <p>더 나은 학습 경험을 위한 프리미엄 서비스를 만나보세요</p>
+    </div>
+
+    <div class="plans-grid">
+        <div class="plan-card">
+            <div class="plan-name">Basic</div>
+            <div class="plan-price">₩Free<span>/월</span></div>
+            <ul class="features">
+                <li>화상 스터디 30분/일</li>
+                <li>기본 학습 통계</li>
+                <li>5인 그룹 스터디</li>
+                <li>기본 학습 자료 제공</li>
+            </ul>
+            <button class="subscribe-btn">시작하기</button>
+        </div>
+
+        <div class="plan-card featured">
+            <div class="featured-tag">인기</div>
+            <div class="plan-name">Premium</div>
+            <div class="plan-price">₩19,900<span>/월</span></div>
+            <ul class="features">
+                <li>무제한 화상 스터디</li>
+                <li>상세 학습 분석 리포트</li>
+                <li>15인 그룹 스터디</li>
+                <li>프리미엄 학습 자료</li>
+                <li>월 1회 전문가 상담</li>
+                <li>광고 없음</li>
+            </ul>
+            <button class="subscribe-btn">시작하기</button>
+        </div>
+
+        <div class="plan-card">
+            <div class="plan-name">Professional</div>
+            <div class="plan-price">₩39,900<span>/월</span></div>
+            <ul class="features">
+                <li>모든 Premium 혜택 포함</li>
+                <li>주 1회 전문가 멘토링</li>
+                <li>무제한 그룹 스터디</li>
+                <li>맞춤형 학습 계획</li>
+                <li>실시간 학습 코칭</li>
+                <li>취업 상담 서비스</li>
+            </ul>
+            <button class="subscribe-btn">시작하기</button>
+        </div>
+    </div>
+
+    <div class="benefits">
+        <h2>프리미엄 서비스의 특별한 혜택</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">👥</div>
+                <h3>전문가 멘토링</h3>
+                <p>각 분야 전문가들의 1:1 맞춤 멘토링으로 학습 효율을 높여보세요.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📊</div>
+                <h3>상세 학습 분석</h3>
+                <p>AI 기반 학습 패턴 분석으로 최적의 학습 방법을 제안해드립니다.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <h3>맞춤형 학습 자료</h3>
+                <p>개인의 학습 수준과 목표에 맞는 최적의 학습 자료를 제공합니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 웹서비스 응용 팀 프로젝트 | 8조 | 팀원: 박명환, 공지혁, 남윤록, 박진우, 이동규, 이세준, 이채연, 한인찬</p>
+</footer>
+</body>
+</html>

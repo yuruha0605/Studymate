@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate - 회원가입</title>
+  <link rel="stylesheet" th:href="@{/css/signup-styles.css}">
+</head>
+<body>
+<header class="header">
+  <div class="header-container">
+    <a th:href="@{/}" class="logo">Study-Mate</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="signup-container">
+    <div class="progress-bar">
+      <div class="progress-step active">1</div>
+      <div class="progress-step">2</div>
+      <div class="progress-step">3</div>
+      <div class="progress-step">4</div>
+    </div>
+
+    <form id="signupForm" th:action="@{/study-mate/auth/signup}" th:object="${signupRequest}" method="post">
+      <!-- Step 1: 기본 정보 -->
+      <div class="form-section active" id="step1">
+        <h2>기본 정보</h2>
+        <div class="form-group">
+          <label for="loginId">이메일</label>
+          <input type="email" id="loginId" th:field="*{loginId}" required>
+          <div class="error-message" id="emailError"></div>
+        </div>
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" th:field="*{password}" required>
+        </div>
+        <div class="form-group">
+          <label for="passwordConfirm">비밀번호 확인</label>
+          <input type="password" id="passwordConfirm" name="passwordConfirm" required>
+          <div class="error-message" id="passwordError"></div>
+        </div>
+        <div class="button-group">
+          <div></div>
+          <button type="button" class="btn btn-primary" onclick="nextStep(1)">다음</button>
+        </div>
+        <!-- 로그인 링크 -->
+        <div class="login-link">
+          계정이 있으신가요? <a th:href="@{/study-mate/auth/login}">로그인</a>
+        </div>
+
+      </div>
+
+      <!-- Step 2: 개인 정보 -->
+      <div class="form-section" id="step2">
+        <h2>개인 정보</h2>
+        <div class="form-group">
+          <label for="name">이름</label>
+          <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+          <label for="studentId">학번</label>
+          <input type="text" id="studentId" th:field="*{studentId}" required>
+        </div>
+        <div class="form-group">
+          <label for="major">전공</label>
+          <select id="major" th:field="*{major}" required>
+            <option value="">전공을 선택해주세요</option>
+            <option value="computer">소프트웨어학과</option>
+            <option value="electronics">전자공학과</option>
+            <option value="mechanical">기계공학과</option>
+            <option value="business">경영학과</option>
+          </select>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(2)">이전</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(2)">다음</button>
+        </div>
+      </div>
+
+      <!-- Step 3: 학습 스타일 -->
+      <div class="form-section" id="step3">
+        <h2>학습 스타일</h2>
+        <div class="form-group">
+          <label>선호하는 학습 방식</label>
+          <div class="tag-container">
+            <div th:each="style : ${learningStyles}" class="tag">
+              <input type="checkbox" th:field="*{selectedLearningStyles}"
+                     th:value="${style}" style="display: none;">
+              <label th:for="${#ids.prev('selectedLearningStyles')}"
+                     th:text="${style}"
+                     onclick="toggleTag(this)"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="studyTime">선호하는 학습 시간</label>
+          <select id="studyTime" th:field="*{studyTime}" required>
+            <option value="">시간대를 선택해주세요</option>
+            <option value="morning">아침형 (06:00-12:00)</option>
+            <option value="afternoon">오후형 (12:00-18:00)</option>
+            <option value="evening">저녁형 (18:00-24:00)</option>
+            <option value="night">야간형 (24:00-06:00)</option>
+          </select>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(3)">이전</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(3)">다음</button>
+        </div>
+      </div>
+
+      <!-- Step 4: 관심 분야 -->
+      <div class="form-section" id="step4">
+        <h2>관심 분야</h2>
+        <div class="form-group">
+          <label>관심 있는 학습 분야</label>
+          <div class="tag-container">
+            <div th:each="interest : ${interests}" class="tag">
+              <input type="checkbox" th:field="*{selectedInterests}"
+                     th:value="${interest}" style="display: none;">
+              <label th:for="${#ids.prev('selectedInterests')}"
+                     th:text="${interest}"
+                     onclick="toggleTag(this)"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="skillLevel">현재 학습 수준</label>
+          <select id="skillLevel" th:field="*{skillLevel}" required>
+            <option value="">수준을 선택해주세요</option>
+            <option value="beginner">입문</option>
+            <option value="intermediate">중급</option>
+            <option value="advanced">고급</option>
+          </select>
+        </div>
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(4)">이전</button>
+          <button type="submit" class="btn btn-primary">가입하기</button>
+        </div>
+      </div>
+
+      <!-- 에러 메시지 표시 -->
+      <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  function nextStep(currentStep) {
+      // 현재 단계의 유효성 검사
+      if (!validateStep(currentStep)) {
+          return;
+      }
+
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep + 1}`).classList.add('active');
+
+      const steps = document.querySelectorAll('.progress-step');
+      steps[currentStep-1].classList.add('completed');
+      steps[currentStep].classList.add('active');
+  }
+
+  function prevStep(currentStep) {
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep - 1}`).classList.add('active');
+
+      const steps = document.querySelectorAll('.progress-step');
+      steps[currentStep-1].classList.remove('active');
+      steps[currentStep-2].classList.remove('completed');
+  }
+
+  function validateStep(step) {
+      if (step === 1) {
+          const password = document.getElementById('password').value;
+          const passwordConfirm = document.getElementById('passwordConfirm').value;
+          const email = document.getElementById('loginId').value;
+
+          if (!email) {
+              alert('이메일을 입력해주세요.');
+              return false;
+          }
+
+          if (!password || !passwordConfirm) {
+              alert('비밀번호를 입력해주세요.');
+              return false;
+          }
+
+          if (password !== passwordConfirm) {
+              alert('비밀번호가 일치하지 않습니다.');
+              return false;
+          }
+
+          if (password.length < 8) {
+              alert('비밀번호는 8자 이상이어야 합니다.');
+              return false;
+          }
+      }
+      return true;
+  }
+
+  // 이메일 중복 체크
+  document.getElementById('loginId').addEventListener('blur', function() {
+      const email = this.value;
+      if (!email) return;
+
+      fetch(`/api/study-mate/auth/check-email?email=${encodeURIComponent(email)}`)
+          .then(response => response.json())
+          .then(data => {
+              const errorDiv = document.getElementById('emailError');
+              if (data.isDuplicate) {
+                  errorDiv.textContent = '이미 사용중인 이메일입니다.';
+                  errorDiv.style.color = 'red';
+              } else {
+                  errorDiv.textContent = '사용 가능한 이메일입니다.';
+                  errorDiv.style.color = 'green';
+              }
+          });
+  });
+
+  // 비밀번호 실시간 확인
+  function checkPasswordMatch() {
+      const password = document.getElementById('password').value;
+      const passwordConfirm = document.getElementById('passwordConfirm').value;
+      const errorDiv = document.getElementById('passwordError');
+
+      if (passwordConfirm) {
+          if (password === passwordConfirm) {
+              errorDiv.textContent = '비밀번호가 일치합니다.';
+              errorDiv.style.color = 'green';
+          } else {
+              errorDiv.textContent = '비밀번호가 일치하지 않습니다.';
+              errorDiv.style.color = 'red';
+          }
+      } else {
+          errorDiv.textContent = '';
+      }
+  }
+
+  document.getElementById('password').addEventListener('input', checkPasswordMatch);
+  document.getElementById('passwordConfirm').addEventListener('input', checkPasswordMatch);
+
+  // 태그 토글 함수
+  function toggleTag(label) {
+      label.classList.toggle('selected');
+      const checkbox = label.previousElementSibling;
+      checkbox.checked = !checkbox.checked;
+  }
+
+</script>
+
+</body>
+</html>

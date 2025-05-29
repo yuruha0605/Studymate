@@ -1,0 +1,8 @@
+
+
+    [ t_studygroup ]
+    ----------------
+    id
+    subject_entity_id
+    group_name
+    ----------------
