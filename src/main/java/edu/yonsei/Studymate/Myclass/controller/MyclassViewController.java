@@ -1,5 +1,8 @@
 package edu.yonsei.Studymate.Myclass.controller;
 
+import edu.yonsei.Studymate.Myclass.dto.MateDto;
+import edu.yonsei.Studymate.Myclass.entity.MateEntity;
+import edu.yonsei.Studymate.Myclass.service.MateService;
 import edu.yonsei.Studymate.Myclass.service.MyclassService;
 import edu.yonsei.Studymate.Studygroup.dto.StudygroupDto;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupService;
@@ -22,6 +25,7 @@ import java.util.Map;
 public class MyclassViewController {
     private final StudygroupService studygroupService;
     private final MyclassService myclassService;
+    private final MateService mateService;
 
 
 //    @GetMapping("/myclass")
@@ -40,9 +44,16 @@ public class MyclassViewController {
     public String myClass(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Long userId = userDetails.getId();
         Map<String, List<StudygroupDto>> userClasses = myclassService.getUserClasses(userId);
+
+        // DTO 사용
+        List<MateDto> topMates = mateService.getTopMates(userId, 4);
+        model.addAttribute("studyMates", topMates);
+
         model.addAttribute("userClasses", userClasses);
-        return "myclass";  // myclass.html 템플릿을 사용
+        return "myclass";
     }
+
+
 
 }
 

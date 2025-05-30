@@ -41,6 +41,8 @@ public class User {
     @Transient
     private String passwordConfirm;
 
+
+
     // loginId와 password만을 위한 생성자는 유지
     @Builder
     public User(String loginId, String password) {

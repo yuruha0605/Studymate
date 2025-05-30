@@ -36,13 +36,16 @@ public class SecurityConfig {
                                 "/study-mate/auth/**",
                                 "/api/study-mate/auth/**",
                                 "/api/study-mate/studygroups/**",
+                                "/api/study-mate/mate/**",  // 메이트 관련 API 추가
+                                "/api/study-mate/subjects/**",  // 과목 관련 API 추가
                                 "/",
                                 "/study-mate/main",
-                                "/study-mate/search-page",
                                 "/find-id",
                                 "/find-password",
                                 "/error"
+
                         ).permitAll()
+                        .requestMatchers("/study-mate/search-page").authenticated()  // 이 부분 수정
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
