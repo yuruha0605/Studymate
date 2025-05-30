@@ -11,7 +11,10 @@
 .welcome-section {
     text-align: center;
     margin-bottom: 3rem;
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
 }
+
 
 .welcome-section h1 {
     font-size: 2.5rem;
@@ -36,6 +39,11 @@
     border-radius: var(--border-radius);
     padding: 2rem;
     box-shadow: var(--shadow);
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
+    /* 호버 효과 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 .profile-box {
@@ -43,7 +51,11 @@
     border-radius: var(--border-radius);
     padding: 2rem;
     box-shadow: var(--shadow);
+    animation: slideUpFade 0.6s ease-out 0.2s; /* 0.2초 딜레이 */
+    animation-fill-mode: both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .box-title {
     color: var(--main-blue);
@@ -87,32 +99,48 @@
     font-size: 1.1rem;
 }
 
+/* stats-grid 부분만 수정 */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    margin-top: 1.5rem;
 }
+
 
 .stat-card {
-    background: #f0f7ff;
+    background: var(--card-bg);
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
     text-align: center;
+    flex: 1;
 }
 
-.stat-number {
+
+.stat-card div:first-child {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-number {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--main-blue);
-    margin-top: 0.5rem;
 }
+
 
 .classes-section {
     background: var(--card-bg);
     border-radius: var(--border-radius);
     padding: 2rem;
     box-shadow: var(--shadow);
+    animation: slideUpFade 0.6s ease-out 0.4s; /* 0.4초 딜레이 */
+    animation-fill-mode: both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .classes-grid {
     display: grid;
@@ -126,13 +154,26 @@
     border-radius: 12px;
     padding: 1.5rem;
     border: 1px solid #e0e0e0;
-    transition: transform 0.2s;
     position: relative;
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+
+.schedule-box:hover,
+.profile-box:hover,
+.classes-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
 
 .class-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .class-card h3 {
     color: var(--main-blue);
@@ -170,6 +211,15 @@
     cursor: not-allowed;
 }
 
+.schedule-box,
+.profile-box,
+.classes-section,
+.welcome-section,
+.class-card {
+    opacity: 0;
+}
+
+
 @media (max-width: 900px) {
     .main-grid {
         grid-template-columns: 1fr;
@@ -191,5 +241,16 @@
 
     .welcome-section h1 {
         font-size: 2rem;
+    }
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

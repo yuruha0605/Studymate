@@ -14,6 +14,8 @@ public class MainPageDto {
     private String studentId;
     private String studyTime;
     private String profileImageUrl;
-    private List<String> enrolledSubjects;
-    private List<String> activeSchedules;  // Assignment를 Schedule로 변경
+    private List<String> activeSchedules; // 예정된 일정 목록
+    private int enrolledSubjectsCount;    // 수강 과목 수
+    private int activeClassesCount;       // 진행 중인 클래스 수
+
 }

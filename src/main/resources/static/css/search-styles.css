@@ -14,7 +14,10 @@ main {
   border: 2px solid var(--main-blue);
   border-radius: var(--border-radius);
   padding: 2rem;
+  animation: slideUpFade 0.6s ease-out;
+  animation-fill-mode: both;
 }
+
 
 .search-top {
   display: flex;
@@ -50,12 +53,21 @@ main {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
+
 
 .search-btn:hover {
   background-color: #375fc7;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
 }
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+
 
 .search-results {
   display: flex;
@@ -70,7 +82,30 @@ main {
     padding: 20px;
     margin-bottom: 10px;
     box-shadow: var(--shadow);
+    opacity: 0; /* 초기 상태는 투명 */
+    animation: slideUpFade 0.5s ease-out forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.result-line:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(66, 133, 244, 0.15);
+}
+
+.result-line button {
+    transition: all 0.3s ease;
+}
+
+.result-line button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+}
+
+.result-line button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
 
 .result-line h3 {
     color: var(--main-blue);
@@ -102,4 +137,15 @@ main {
   .search-top {
     flex-direction: column;
   }
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

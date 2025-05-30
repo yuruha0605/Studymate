@@ -7,6 +7,8 @@ function initializePostHandlers() {
     }
 }
 
+
+
 async function loadBoardInfo() {
     const pathParts = window.location.pathname.split('/');
     const studygroupId = pathParts[pathParts.length - 1];
@@ -164,19 +166,20 @@ async function showPost(postId) {
         const currentUserId = document.querySelector('input[name="userId"]').value;
 
         const selectedPost = document.getElementById('selectedPost');
-        selectedPost.style.display = 'block';
+        selectedPost.style.display = 'block'; // 이 부분이 중요합니다
         selectedPost.classList.add('show');
         selectedPost.dataset.postId = post.id;
 
+        // 각 요소 업데이트
         const titleElement = selectedPost.querySelector('.selected-title');
         const contentElement = selectedPost.querySelector('.post-content');
         const authorElement = selectedPost.querySelector('.selected-author');
 
         if (titleElement) titleElement.textContent = post.title;
         if (contentElement) contentElement.textContent = post.content;
-        // 이메일 마스킹 적용
         if (authorElement) authorElement.textContent = `작성자: ${maskEmail(post.author_email)}`;
 
+        // 수정/삭제 버튼 표시 여부
         const editBtn = selectedPost.querySelector('.edit-btn');
         const deleteBtn = selectedPost.querySelector('.delete-btn');
 
@@ -186,12 +189,16 @@ async function showPost(postId) {
             deleteBtn.style.display = isAuthor ? 'block' : 'none';
         }
 
-        loadComments(postId);
+        // 댓글 로드
+        await loadComments(postId);
+        
+        // z-index 설정 추가
+        selectedPost.style.zIndex = '1000';
+        
     } catch (error) {
         console.error('Error in showPost:', error);
         alert(error.message);
     }
-
 }
 
 async function editPost() {

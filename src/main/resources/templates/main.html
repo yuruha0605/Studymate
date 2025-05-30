@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,77 +6,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" th:href="@{/css/common-styles.css}">
   <link rel="stylesheet" th:href="@{/css/main-styles.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <title>StudyMate | Main Page</title>
 </head>
 <body>
-  <div th:replace="~{fragments/header :: header}"></div>
-  <div class="container">
-    <div class="welcome-section">
-      <h1>Welcome to <span style="color: var(--main-blue);">Study-Mate</span></h1>
-      <p>함께 공부하고 성장하는 스마트 학습 플랫폼</p>
-    </div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="container">
+  <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
+  <div class="welcome-section">
+    <h1>Welcome to <span style="color: var(--main-blue);">Study-Mate</span></h1>
+    <p>함께 공부하고 성장하는 스마트 학습 플랫폼</p>
+  </div>
 
-    <div class="main-grid">
-      <div class="schedule-box">
-        <h2 class="box-title">Upcoming Schedule</h2>
-        <ul class="schedule-list">
-          <li class="schedule-item">월요일 10:00 - 데이터베이스 개론</li>
-          <li class="schedule-item">화요일 14:00 - 웹프로그래밍 실습</li>
-          <li class="schedule-item">수요일 09:00 - 인공지능 개론</li>
-          <li class="schedule-item">금요일 11:00 - 캡스톤 디자인</li>
-        </ul>
+  <div class="main-grid">
+    <div class="schedule-box">
+      <h2 class="box-title">Upcoming Schedule</h2>
+      <div class="schedule-list">
+        <div th:if="${mainData.activeSchedules != null and !mainData.activeSchedules.empty}">
+          <div th:each="schedule : ${mainData.activeSchedules}" class="schedule-item">
+            <div class="schedule-content">
+              <span th:text="${schedule}" class="schedule-text"></span>
+            </div>
+          </div>
+        </div>
+        <div th:if="${mainData.activeSchedules == null or mainData.activeSchedules.empty}" class="no-schedules">
+          <p>예정된 일정이 없습니다.</p>
+        </div>
       </div>
+    </div>
 
     <div class="profile-box">
       <h2 class="box-title">My Profile</h2>
       <div class="profile-summary">
         <img src="https://i.pravatar.cc/150" alt="프로필 이미지" class="profile-image">
         <div class="profile-info">
-          <p><strong>이름:</strong> 김민수</p>
-          <p><strong>학번:</strong> 202112345</p>
+          <p><strong>이름:</strong> <span th:text="${mainData.name}">이름</span></p>
+          <p><strong>학번:</strong> <span th:text="${mainData.studentId}">학번</span></p>
         </div>
       </div>
       <div class="stats-grid">
         <div class="stat-card">
           <div>수강과목</div>
-          <div class="stat-number">4</div>
+          <div class="stat-number" th:text="${mainData.enrolledSubjectsCount}">0</div>
         </div>
         <div class="stat-card">
-          <div>진행 중인 과제</div>
-          <div class="stat-number">3</div>
-        </div>
-        <div class="stat-card">
-          <div>학습 시간</div>
-          <div class="stat-number">2h</div>
+          <div>참가한 클래스</div>
+          <div class="stat-number" th:text="${mainData.activeClassesCount}">0</div>
         </div>
       </div>
     </div>
+
   </div>
 
-    <div class="classes-section">
-      <h2 class="box-title">진행 중인 수업 추천</h2>
-      <div class="classes-grid">
-        <div class="class-card" th:each="group : ${recommendedGroups}"
-             th:classappend="${group.status == 'FULL'} ? 'full'">
-          <h3 th:text="${group.groupName}">스터디 그룹명</h3>
-          <div class="class-info">
-            <p th:text="|과목: ${group.subjectName}|">과목 정보</p>
-            <p th:if="${group.status == 'FULL'}">Current: Full</p>
-            <p th:unless="${group.status == 'FULL'}"
-               th:text="|Current: ${group.currentMembers} / ${group.maxMembers}|">
-              참여 현황
-            </p>
-          </div>
-          <button class="join-btn"
-                  th:onclick="'location.href=\'/study-mate/studyroom/' + ${group.id} + '\''">
-            Join Class
-          </button>
+  <div class="classes-section">
+    <h2 class="box-title">진행 중인 수업 추천</h2>
+    <div class="classes-grid">
+      <div class="class-card" th:each="group : ${recommendedGroups}"
+           th:classappend="${group.status == 'FULL'} ? 'full'">
+        <h3 th:text="${group.groupName}">스터디 그룹명</h3>
+        <div class="class-info">
+          <p th:text="|과목: ${group.subjectName}|">과목 정보</p>
+          <p th:if="${group.status == 'FULL'}">Current: Full</p>
+          <p th:unless="${group.status == 'FULL'}"
+             th:text="|Current: ${group.currentMembers} / ${group.maxMembers}|">
+            참여 현황
+          </p>
         </div>
+        <button class="join-btn"
+                th:attr="onclick=|joinStudyGroup(${group.id}, ${group.currentMembers}, ${group.maxMembers})|"
+                th:disabled="${group.status == 'FULL'}">
+          Join Class
+        </button>
       </div>
     </div>
   </div>
+</div>
 
-  <div th:replace="~{fragments/footer :: footer}"></div>
-
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/main-page.js}"></script>
+<script th:src="@{/js/schedule-handlers.js}"></script>
 </body>
 </html>

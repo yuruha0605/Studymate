@@ -45,11 +45,14 @@ public class PostEntity {
     private LocalDateTime written;
 
     @OneToMany(
-            mappedBy = "postEntity"
+            mappedBy = "postEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<ReplyEntity> replyList = List.of();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")

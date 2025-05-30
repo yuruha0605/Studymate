@@ -25,8 +25,9 @@ public class ScheduleRequest {
     private String description;
 
     @NotNull(message = "일정 날짜와 시간을 입력해주세요.")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime scheduleDateTime;
+
 
     private Long studygroupId;
 

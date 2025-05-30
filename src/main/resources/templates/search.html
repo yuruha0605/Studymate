@@ -6,14 +6,15 @@
         <title>Study-Mate - 과목 검색</title>
         <link rel="stylesheet" th:href="@{/css/common-styles.css}">
         <link rel="stylesheet" th:href="@{/css/search-styles.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <title>StudyMate | 과목 찾기</title>
     </head>
 <body>
 
     <div th:replace="~{fragments/header :: header}"></div>
+    <input type="hidden" name="userId" th:value="${userId}">
 
-
-<main>
+    <main>
         <div class="search-box">
             <div class="search-top">
                 <select class="search-select" id="searchType">
@@ -31,8 +32,6 @@
 
 
     <div th:replace="~{fragments/footer :: footer}"></div>
-
-
     <script th:src="@{/js/search.js}"></script>
 </body>
 </html>

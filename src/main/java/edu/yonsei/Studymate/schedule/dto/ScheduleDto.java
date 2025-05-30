@@ -26,8 +26,12 @@ public class ScheduleDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "Asia/Seoul")
     private LocalDateTime scheduleDateTime;
 
+    private Long creatorId;        // creator의 id만 유지
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
+    private String subjectName;  // 추가
+
 
 }
 

@@ -15,13 +15,35 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/*body {*/
+/*    background: var(--main-bg);*/
+/*    color: var(--text-color);*/
+/*    min-height: 100vh;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
 body {
     background: var(--main-bg);
     color: var(--text-color);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
 }
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+
 
 /* 헤더 스타일 */
 header {
@@ -32,14 +54,37 @@ header {
 }
 
 
+/*.header-container {*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*    padding: 0 2rem;*/
+/*}*/
+
 .header-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
+    box-sizing: border-box;
 }
+
+html,
+body,
+#root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+
 
 
 .logo {
@@ -109,4 +154,28 @@ footer {
     .container {
         padding: 1rem;
     }
+}
+
+/* 기존 스타일 유지하고 아래 내용 추가 */
+
+.premium-link {
+    color: #ffd700 !important;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.2) 100%);
+    transition: all 0.3s ease;
+}
+
+
+.premium-link:hover {
+    background: linear-gradient(135deg, rgba(255,215,0,0.2) 0%, rgba(255,215,0,0.3) 100%);
+    transform: translateY(-2px);
+}
+
+
+.premium-link i {
+    font-size: 1.1em;
 }

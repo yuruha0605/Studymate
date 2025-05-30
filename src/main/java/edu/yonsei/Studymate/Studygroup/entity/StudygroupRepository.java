@@ -26,11 +26,12 @@ public interface StudygroupRepository extends JpaRepository<StudygroupEntity, Lo
     @Query("SELECT DISTINCT sg FROM t_studygroup sg JOIN sg.members m WHERE m.user = :user")
     List<StudygroupEntity> findByMemberUser(@Param("user") User user);
 
-    @Query(value = "SELECT * FROM t_studygroup ORDER BY RAND() LIMIT 5", nativeQuery = true)
-    List<StudygroupEntity> findRandom5();
+    @Query(value = "SELECT * FROM t_studygroup ORDER BY RAND() LIMIT 6", nativeQuery = true)
+    List<StudygroupEntity> findRandom6();  // 메서드 이름도 변경
 
-
-
-
+    // findByMemberUser_Id 대신 다음 쿼리 사용
+    @Query("SELECT DISTINCT sg FROM t_studygroup sg JOIN sg.members m WHERE m.user.id = :userId")
+    List<StudygroupEntity> findByUserId(@Param("userId") Long userId);
 }
+
 

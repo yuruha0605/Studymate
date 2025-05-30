@@ -1,7 +1,9 @@
 package edu.yonsei.Studymate.schedule.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
+import edu.yonsei.Studymate.login.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +24,9 @@ public class ScheduleEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studygroup_id")
+    @JsonIgnore
     private StudygroupEntity studygroup;
+
 
     @Column(nullable = false)
     private String title;
@@ -32,6 +36,12 @@ public class ScheduleEntity {
 
     @Column(nullable = false)
     private LocalDateTime scheduleDateTime;
+
+    // 작성자 필드 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private User creator;
+
 
     @Column
     private LocalDateTime createdAt;

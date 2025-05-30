@@ -53,7 +53,36 @@ main {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     text-align: center;
+
+    /* 애니메이션 효과 추가 */
+    animation: slideUp 0.6s ease-out;
+
+    /* 추가: 호버 효과를 위한 transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* 추가: 호버 효과 */
+.login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 필드 포커스 효과 개선 */
+.input-group input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #4a76fd;
+    box-shadow: 0 0 0 2px rgba(74, 118, 253, 0.1);
+    outline: none;
+}
+
+
 
 .login-box h1 {
     font-size: 2rem;
@@ -89,6 +118,8 @@ main {
     border-radius: 5px;
 }
 
+
+/* 로그인 버튼 효과 개선 */
 .login-btn {
     background-color: #4a76fd;
     color: white;
@@ -98,11 +129,20 @@ main {
     border-radius: 8px;
     cursor: pointer;
     margin-top: 1rem;
+    transition: all 0.3s ease;
 }
+
 
 .login-btn:hover {
     background-color: #375fc7;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(74, 118, 253, 0.2);
 }
+.login-btn:active {
+    transform: translateY(0);
+}
+
+
 
 .links {
     margin-top: 1rem;
@@ -128,5 +168,16 @@ main {
     .input-group label {
         text-align: left;
         margin-bottom: 5px;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

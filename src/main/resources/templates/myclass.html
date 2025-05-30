@@ -7,6 +7,7 @@
   <title>StudyMate - 내 강의실</title>
   <link rel="stylesheet" th:href="@{/css/common-styles.css}">
   <link rel="stylesheet" th:href="@{/css/myclass-styles.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
@@ -48,12 +49,12 @@
   <section class="subject-wrapper">
     <h2>참여중인 스터디</h2>
     <div class="classes-section">
-      <div th:if="${#lists.isEmpty(joinedGroups)}" class="no-groups">
+      <div th:if="${#lists.isEmpty(userClasses.joinedGroups)}" class="no-groups">
         <p>참여중인 스터디가 없습니다. 스터디를 찾아보시겠습니까?</p>
         <a href="/study-mate/search" class="join-btn">스터디 찾아보기</a>
       </div>
-      <div th:if="${not #lists.isEmpty(joinedGroups)}" class="groups-container">
-        <div class="course-card" th:each="group : ${joinedGroups}">
+      <div th:if="${not #lists.isEmpty(userClasses.joinedGroups)}" class="groups-container">
+        <div class="course-card" th:each="group : ${userClasses.joinedGroups}">
           <div class="course-info">
             <div class="course-name" th:text="${group.groupName}">스터디 그룹명</div>
             <div class="course-details">
@@ -72,35 +73,49 @@
     </div>
   </section>
 
+
   <!-- 스터디 메이트 상태 섹션 -->
   <section class="mate-status">
     <h2>스터디 메이트 상태</h2>
     <div class="mate-display">
-      <!-- 추후 실제 데이터와 연동 필요 -->
-      <div class="mate-entry" th:if="${false}">
-        <div class="circle" th:style="'background-image: url(' + ${mate.profileImage} + ');'"></div>
-        <p th:text="${mate.name}">이름</p>
+      <div th:if="${#lists.isEmpty(studyMates)}" class="no-mates">
+        <p>아직 스터디메이트가 없습니다.</p>
+      </div>
+      <div th:if="${not #lists.isEmpty(studyMates)}" class="mate-entries">
+        <div class="mate-entry" th:each="mate : ${studyMates}">
+          <div class="mate-avatar">
+            <div class="status-indicator"
+                 th:classappend="${T(java.time.LocalDateTime).now().minusMinutes(1).isBefore(mate.lastActiveTime)} ? 'online' : 'offline'">
+            </div>
+            <div class="circle"></div>
+          </div>
+          <p class="mate-name" th:text="${mate.studentName}">이름</p>
+        </div>
       </div>
     </div>
   </section>
+
+
 </div>
 
 <!-- 모달 팝업 -->
+<!-- 스터디 생성 모달 -->
 <div id="createStudyModal" class="modal">
   <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>새 스터디 만들기</h2>
-    <form id="createStudyForm" action="/study-mate/studygroups/create" method="POST">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 class="modal-title">새 스터디 그룹 만들기</h2>
+    <form id="createStudyForm">
       <div class="form-group">
-        <label for="subjectSelect">과목</label>
-        <select class="form-control" id="subjectSelect" name="subjectId" required>
-          <option value="">과목을 선택해주세요</option>
-        </select>
+        <label for="groupName">스터디 그룹 이름 *</label>
+        <input type="text" id="groupName" name="groupName" required
+               placeholder="스터디 그룹 이름을 입력해주세요">
       </div>
 
       <div class="form-group">
-        <label for="groupName">스터디 그룹명</label>
-        <input type="text" id="groupName" name="groupName" required>
+        <label for="subjectSelect">과목 *</label>
+        <select id="subjectSelect" name="subjectId" required>
+          <option value="">과목을 선택해주세요</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -113,11 +128,16 @@
         </select>
       </div>
 
-      <button type="submit" class="submit-btn">스터디 만들기</button>
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">스터디 만들기</button>
+      </div>
     </form>
   </div>
 </div>
+
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script th:src="@{/js/study-group.js}"></script>
+<script th:src="@{/js/mate-activity.js}"></script>
 </body>
 </html>

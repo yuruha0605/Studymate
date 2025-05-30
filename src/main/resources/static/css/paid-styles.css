@@ -1,0 +1,230 @@
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #222;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    color: #666;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.plan-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+
+}
+
+
+.plan-card:nth-child(1) {
+    animation: fadeInUp 0.6s ease-out 0.4s forwards;
+}
+
+.plan-card:nth-child(2) {
+    animation: fadeInUp 0.6s ease-out 0.6s forwards;
+}
+
+.plan-card:nth-child(3) {
+    animation: fadeInUp 0.6s ease-out 0.8s forwards;
+}
+
+
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.plan-card.featured {
+    border: 2px solid var(--main-blue);
+    position: relative;
+}
+
+.featured-tag {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--main-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.plan-name {
+    color: var(--main-blue);
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.plan-price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.plan-price span {
+    font-size: 1rem;
+    color: #666;
+}
+
+.features {
+    list-style: none;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+}
+
+.features li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.features li::before {
+    content: "✓";
+    color: var(--main-blue);
+    position: absolute;
+    left: 0;
+}
+
+.subscribe-btn {
+    background: var(--main-blue);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.subscribe-btn:hover {
+    background: #2a6ad7;
+}
+
+.benefits {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.benefits h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.benefits h2.fade-in {
+    animation-delay: 1s;
+}
+
+
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.benefit-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-3px);
+}
+
+
+.benefit-card:nth-child(1) {
+    animation: fadeInUp 0.6s ease-out 1.2s forwards;
+}
+
+.benefit-card:nth-child(2) {
+    animation: fadeInUp 0.6s ease-out 1.4s forwards;
+}
+
+.benefit-card:nth-child(3) {
+    animation: fadeInUp 0.6s ease-out 1.6s forwards;
+}
+
+
+.benefit-icon {
+    font-size: 2.5rem;
+    color: var(--main-blue);
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+    .plans-grid, .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .plans-grid, .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.hero.fade-in {
+    animation-delay: 0.2s;
+}
+
+
+

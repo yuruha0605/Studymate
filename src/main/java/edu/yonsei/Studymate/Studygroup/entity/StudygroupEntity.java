@@ -50,7 +50,7 @@ public class StudygroupEntity {
 
 
     // 각 그룹은 또 각각에 대한 게시판이 있다
-    @OneToMany(mappedBy = "studygroup")
+    @OneToMany(mappedBy = "studygroup", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @org.hibernate.annotations.SQLOrder("id")
     private List<BoardEntity> boardList = List.of();

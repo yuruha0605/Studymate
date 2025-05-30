@@ -3,6 +3,7 @@ package edu.yonsei.Studymate.Studygroup.controller;
 
 import edu.yonsei.Studymate.Studygroup.dto.StudygroupDto;
 import edu.yonsei.Studymate.Studygroup.dto.StudygroupRequest;
+import edu.yonsei.Studymate.Studygroup.entity.GroupMember;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupRepository;
 import edu.yonsei.Studymate.Studygroup.exception.GroupNotFoundException;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Pageable;
@@ -79,7 +81,7 @@ public class StudygroupController {
 
 
 
-    @PostMapping(ApiUrls.StudyGroup.JOIN)
+    @PostMapping("/{groupId}/join")
     public StudygroupDto joinGroup(
             @PathVariable Long groupId,
             @RequestParam Long userId
@@ -88,7 +90,7 @@ public class StudygroupController {
     }
 
 
-    @DeleteMapping(ApiUrls.StudyGroup.DELETE)
+    @DeleteMapping("/delete/{groupId}")  // ApiUrls.StudyGroup.DELETE 대신 상대 경로 사용
     public void deleteGroup(
             @PathVariable Long groupId,
             @RequestParam Long userId
@@ -106,10 +108,47 @@ public class StudygroupController {
         return studygroupService.searchStudyGroups(keyword, type);
     }
 
+    @DeleteMapping("/{groupId}/leave")
+    public ResponseEntity<?> leaveGroup(
+            @PathVariable Long groupId,
+            @RequestParam Long userId
+    ) {
+        try {
+            studygroupService.leaveGroup(groupId, userId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
 
 
+    @PutMapping("/{groupId}/update")
+    public ResponseEntity<?> updateGroup(
+            @PathVariable Long groupId,
+            @Valid @RequestBody StudygroupRequest request,
+            @RequestParam Long userId
+    ) {
+        try {
+            StudygroupDto updatedGroup = studygroupService.updateGroupInfo(groupId, request, userId);
+            return ResponseEntity.ok(updatedGroup);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("message", "스터디 그룹 수정 중 오류가 발생했습니다."));
+        }
+    }
 
 
+    @GetMapping("/study-mates")
+    public ResponseEntity<List<GroupMember>> getStudyMates(
+            @RequestParam Long userId,
+            @RequestParam(defaultValue = "4") int limit
+    ) {
+        List<GroupMember> studyMates = studygroupService.getOnlineStudyMates(userId, limit);
+        return ResponseEntity.ok(studyMates);
+    }
 
 
 

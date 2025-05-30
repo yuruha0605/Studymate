@@ -48,7 +48,31 @@ async function loadSchedules() {
     }
 }
 
+// schedule-handlers.js 파일에서 일정을 표시하는 부분 수정
+function displaySchedule(schedule) {
+    const scheduleItem = document.createElement('div');
+    scheduleItem.className = 'schedule-item';
+    scheduleItem.setAttribute('data-id', schedule.id);
 
+    const scheduleContent = `
+        <div class="schedule-info">
+            <h3>${schedule.title}</h3>
+            <p>${schedule.description || ''}</p>
+            <p class="schedule-datetime">${formatDateTime(schedule.scheduleDateTime)}</p>
+        </div>
+        <div class="schedule-actions">
+            <button onclick="editSchedule(${schedule.id})" class="edit-btn">
+                <i class="fas fa-edit"></i> 수정
+            </button>
+            <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
+                <i class="fas fa-trash-alt"></i> 삭제
+            </button>
+        </div>
+    `;
+
+    scheduleItem.innerHTML = scheduleContent;
+    return scheduleItem;
+}
 
 async function handleScheduleSubmit(event) {
     event.preventDefault();
@@ -107,37 +131,47 @@ async function handleScheduleSubmit(event) {
 
 
 function updateScheduleList(schedules) {
-    const scheduleContainer = document.querySelector('.content-box:nth-child(2) .schedule-list');
-    if (!scheduleContainer) {
-        console.error('Schedule container not found');
-        return;
-    }
+    const scheduleContainer = document.querySelector('.right-section .content-box:last-child');
+    if (!scheduleContainer) return;
 
-    if (!schedules || schedules.length === 0) {
-        scheduleContainer.innerHTML = '<div class="no-content"><p>등록된 일정이 없습니다.</p></div>';
-        return;
-    }
+    // 현재 로그인한 사용자의 ID 가져오기
+    const currentUserId = document.querySelector('input[name="userId"]').value;
 
-    const scheduleItems = schedules.map(schedule => {
-        console.log('Schedule data:', schedule); // 디버깅용
-        const formattedDate = formatDateTime(schedule.scheduleDateTime);
-        return `
-            <div class="schedule-item" data-schedule-id="${schedule.id}">
-                <h3>${escapeHtml(schedule.title)}</h3>
-                <p class="schedule-info">
-                    <span>${formattedDate}</span>
-                </p>
-                ${schedule.description ? `<p class="schedule-description">${escapeHtml(schedule.description)}</p>` : ''}
-                <div class="schedule-actions">
-                    <button class="edit-schedule-btn" onclick="editSchedule(${schedule.id})">수정</button>
-                    <button class="delete-schedule-btn" onclick="deleteSchedule(${schedule.id})">삭제</button>
+    const content = `
+        <h2>
+            학습 일정
+            <button class="action-btn" onclick="openScheduleModal()">
+                <i class="fas fa-plus"></i> 일정 추가
+            </button>
+        </h2>
+        <div class="schedule-list">
+            ${!schedules || schedules.length === 0 ?
+        '<div class="no-content">등록된 일정이 없습니다.</div>' :
+        schedules.map(schedule => `
+                <div class="schedule-item">
+                    <div class="schedule-info">
+                        <h3>${schedule.title}</h3>
+                        <p>${schedule.description || ''}</p>
+                        <p class="schedule-datetime">${formatDateTime(schedule.scheduleDateTime)}</p>
+                    </div>
+                    ${currentUserId == schedule.creatorId ? `
+                        <div class="schedule-actions">
+                            <button onclick="editSchedule(${schedule.id})" class="edit-btn">
+                                <i class="fas fa-edit"></i> 수정
+                            </button>
+                            <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> 삭제
+                            </button>
+                        </div>
+                    ` : ''}
                 </div>
-            </div>
-        `;
-    }).join('');
+            `).join('')}
+        </div>
+    `;
 
-    scheduleContainer.innerHTML = scheduleItems;
+    scheduleContainer.innerHTML = content;
 }
+
 
 // 수정 함수 분리
 async function editSchedule(scheduleId) {
@@ -209,8 +243,17 @@ async function deleteSchedule(id) {
 }
 
 function showScheduleError() {
-    const scheduleContainer = document.querySelector('.content-box:nth-child(2) .schedule-list');
+    const scheduleContainer = document.querySelector('.right-section .content-box:last-child');
     if (scheduleContainer) {
-        scheduleContainer.innerHTML = '<div class="error-message">일정을 불러오는데 실패했습니다.</div>';
+        scheduleContainer.innerHTML = `
+            <h2>
+                학습 일정
+                <button class="action-btn" onclick="openScheduleModal()">
+                    <i class="fas fa-plus"></i> 일정 추가
+                </button>
+            </h2>
+            <div class="error-message">일정을 불러오는데 실패했습니다.</div>
+        `;
     }
 }
+

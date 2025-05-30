@@ -12,6 +12,7 @@ import edu.yonsei.Studymate.post.dto.PostDto;
 import edu.yonsei.Studymate.post.dto.PostRequest;
 import edu.yonsei.Studymate.post.entity.PostEntity;
 import edu.yonsei.Studymate.post.entity.PostRepository;
+import edu.yonsei.Studymate.reply.entity.ReplyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final BoardRepository boardRepository;
     private final PostConverter postConverter;
+    private final ReplyRepository replyRepository;
 
     @Transactional
     public PostDto create(PostRequest request, User currentUser) {
@@ -76,17 +78,17 @@ public class PostService {
 
 
     @Transactional
-    public void delete(Long postId, User currentUser) {
+    public void deletePost(Long postId) {
         PostEntity post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-        // 작성자 본인만 삭제 가능
-        if (!post.getAuthor().getId().equals(currentUser.getId())) {
-            throw new IllegalStateException("게시글 작성자만 삭제할 수 있습니다.");
-        }
+        // 먼저 해당 게시글의 모든 댓글을 삭제
+        replyRepository.deleteAllByPostEntity(post);
 
+        // 그 다음 게시글 삭제
         postRepository.delete(post);
     }
+
 
 
     // 다른 메서드들도 Entity 대신 Dto를 반환하도록 수정

@@ -18,6 +18,7 @@ public class MaterialDto {
     private String description;
     private String fileName;
     private Long studygroupId;
-    private LocalDateTime uploadDateTime;
+    private Long creatorId;  // 추가
+
 }
 

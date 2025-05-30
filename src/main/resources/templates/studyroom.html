@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -63,56 +62,95 @@
         <div class="left-section">
           <div class="content-box">
             <h2>질문 게시판</h2>
-            <!-- 선택된 게시글의 상세 내용을 보여주는 영역 -->
-            <div id="selectedPost" class="selected-post" style="display: none;">
+            <div class="post-list">
+              <!-- 게시글 아이템 구조 변경 -->
+              <div class="post-item" th:each="post : ${posts}" th:onclick="|showPost(${post.id})|">
+                <div class="post-title" th:text="${post.title}">게시글 제목</div>
+                <div class="post-author" th:text="${post.authorName}">작성자</div>
+                <div class="post-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">2024-03-21</div>
+                <div class="post-arrow">
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+              </div>
+            </div>
+            <!-- studyroom.html의 post-list 다음에 추가 -->
+            <div id="selectedPost" class="selected-post">
               <div class="post-header">
                 <button class="back-btn" onclick="hideSelectedPost()">
                   <i class="fas fa-arrow-left"></i>
                 </button>
-                <h3 class="selected-title"></h3>
-                <div class="post-actions">
-                  <span class="selected-author"></span>
-                  <div class="post-buttons">
-                    <button class="edit-btn" onclick="editPost()" style="display: none;">
-                      <i class="fas fa-edit"></i> 수정
-                    </button>
-                    <button class="delete-btn" onclick="deletePost()" style="display: none;">
-                      <i class="fas fa-trash-alt"></i> 삭제
-                    </button>
-                  </div>
-                </div>
+                <h2 class="selected-title"></h2>
+                <span class="selected-author"></span>
               </div>
               <div class="post-content"></div>
-              <div class="post-comments">
-                <h4>댓글</h4>
+              <div class="post-actions">
+                <button class="edit-btn" onclick="editPost()">
+                  <i class="fas fa-edit"></i> 수정
+                </button>
+                <button class="delete-btn" onclick="deletePost()">
+                  <i class="fas fa-trash"></i> 삭제
+                </button>
+              </div>
+              <div class="comments-section">
+                <h3>댓글</h3>
                 <div class="comments-list"></div>
                 <div class="comment-form">
-                  <textarea id="commentText" placeholder="댓글을 입력하세요..."></textarea>
-                  <button onclick="addComment()">댓글 작성</button>
+                  <textarea id="commentText" placeholder="댓글을 입력하세요"></textarea>
+                  <button onclick="addComment()">등록</button>
                 </div>
               </div>
             </div>
-            <!-- 게시글 목록을 보여주는 영역 -->
-            <div class="post-list">
-              <!-- 게시글 목록이 동적으로 로드됩니다 -->
-            </div>
-            <button class="action-btn" onclick="openQuestionModal()">질문하기</button>
+            <button class="action-btn" onclick="openQuestionModal()">
+              <i class="fas fa-plus"></i> 질문하기
+            </button>
           </div>
         </div>
+
 
         <div class="right-section">
           <div class="content-box">
             <h2>학습 자료실</h2>
             <div class="material-list">
-              <!-- 자료 목록이 동적으로 로드됩니다 -->
+              <!-- 자료 아이템 구조 변경 -->
+              <div class="material-item" th:each="material : ${materials}" th:data-material-id="${material.id}">
+                <div class="material-title" th:text="${material.title}">자료 제목</div>
+                <div class="material-actions">
+                  <button class="material-menu-btn" onclick="toggleMaterialMenu(this)">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <div class="material-menu">
+                    <button onclick="editMaterial(this)">수정</button>
+                    <button onclick="deleteMaterial(this)">삭제</button>
+                  </div>
+                </div>
+              </div>
             </div>
             <button class="action-btn" onclick="openUploadModal()">자료 업로드</button>
           </div>
 
+          <!-- 학습 일정 부분 수정 -->
           <div class="content-box">
             <h2>학습 일정</h2>
             <div class="schedule-list">
-              <!-- 일정이 동적으로 로드됩니다 -->
+              <div class="schedule-item" th:each="schedule : ${schedules}">
+                <div class="schedule-info">
+                  <div class="schedule-title" th:text="${schedule.title}">일정 제목</div>
+                  <div class="schedule-datetime" th:text="${#temporals.format(schedule.scheduleDateTime, 'yyyy-MM-dd HH:mm')}">
+                    2024-03-21 14:00
+                  </div>
+                  <!-- 작성자 정보 추가 -->
+                  <div class="schedule-creator" th:text="${'작성자: ' + schedule.creatorName}">작성자: 홍길동</div>
+                </div>
+                <!-- 작성자인 경우에만 수정/삭제 버튼 표시 -->
+                <div class="schedule-actions" th:if="${#authentication.principal.id == schedule.creatorId}">
+                  <button class="edit-btn" th:onclick="editSchedule([[${schedule.id}]])">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="delete-btn" th:onclick="deleteSchedule([[${schedule.id}]])">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
             <button class="action-btn" onclick="openScheduleModal()">일정 추가</button>
           </div>
@@ -141,7 +179,7 @@
         <input type="file" id="fileUpload" name="file" required>
       </div>
       <div class="form-actions">
-        <button type="submit" class="submit-btn">업로드</button>
+        <button type="submit" class="submit-btn"><i class="fas fa-upload"></i> 업로드</button>
         <button type="button" onclick="closeUploadModal()" class="cancel-btn">취소</button>
       </div>
     </form>
@@ -171,7 +209,7 @@
         <textarea id="scheduleDescription" name="description"></textarea>
       </div>
       <div class="form-actions">
-        <button type="submit" class="submit-btn">저장</button>
+        <button type="submit" class="submit-btn"><i class="fas fa-calendar-plus"></i> 저장</button>
         <button type="button" onclick="closeScheduleModal()" class="cancel-btn">취소</button>
       </div>
     </form>
@@ -195,7 +233,7 @@
         <textarea id="content" name="content" required></textarea>
       </div>
       <div class="form-actions">
-        <button type="submit" class="submit-btn">작성완료</button>
+        <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> 작성완료</button>
         <button type="button" onclick="closeQuestionModal()" class="cancel-btn">취소</button>
       </div>
     </form>
@@ -207,7 +245,7 @@
   <div class="modal-content">
     <span class="close" onclick="closeSettingsModal()">&times;</span>
     <h2 class="modal-title">스터디 설정</h2>
-    <form id="settingsForm">
+    <form id="updateStudyForm">
       <div class="form-group">
         <label for="groupName">스터디 그룹명</label>
         <input type="text" id="groupName" name="groupName"
@@ -223,9 +261,8 @@
         </select>
       </div>
       <div class="form-actions">
-        <button type="submit" class="submit-btn">저장</button>
-        <button type="button" onclick="confirmDelete()" class="delete-btn">스터디 삭제</button>
-        <button type="button" onclick="closeSettingsModal()" class="cancel-btn">취소</button>
+        <button type="submit" class="submit-btn"><i class="fas fa-save"></i> 저장</button>
+        <button type="button" onclick="confirmDelete()" class="delete-btn"><i class="fas fa-trash-alt"></i> 스터디 삭제</button>
       </div>
     </form>
   </div>
@@ -243,6 +280,7 @@
   </div>
 </div>
 
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 <script th:src="@{/js/utils.js}"></script>
 <script th:src="@{/js/model-handlers.js}"></script>
@@ -252,6 +290,8 @@
 <script th:src="@{/js/schedule-handlers.js}"></script>
 <script th:src="@{/js/material-handlers.js}"></script>
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/study-group.js}"></script>
+
 
 </body>
 </html>

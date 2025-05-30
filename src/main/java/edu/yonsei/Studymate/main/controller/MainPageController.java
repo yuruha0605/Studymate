@@ -38,7 +38,7 @@ public class MainPageController {
         MainPageDto mainPageDto = mainPageService.getMainPageData(loginId);
 
         // 추천 스터디 그룹 추가
-        List<StudygroupDto> recommendedGroups = studygroupRepository.findRandom5().stream()
+        List<StudygroupDto> recommendedGroups = studygroupRepository.findRandom6().stream()
                 .map(group -> {
                     SubjectEntity subject = group.getSubjectEntity();
                     return StudygroupDto.builder()

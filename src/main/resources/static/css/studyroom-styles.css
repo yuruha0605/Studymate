@@ -1,3 +1,14 @@
+/* 공통 메인 컬러 정의 */
+:root {
+  --primary-blue: #007bff;
+  --primary-hover: #0056b3;
+  --danger-color: #dc3545;
+  --text-primary: #2c3e50;
+  --text-secondary: #64748b;
+  --border-light: #e9ecef;
+}
+
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -114,6 +125,12 @@
   height: 100%;
 }
 
+.content-box {
+  background-color: #f8f9fa;  /* 질문 게시판과 동일한 회색 배경 */
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
 .left-section .content-box {
   position: relative;
   background: var(--main-bg);
@@ -133,20 +150,31 @@
 }
 
 .right-section .content-box {
-  position: relative;
-  background: var(--main-bg);
-  border-radius: var(--border-radius);
+  background: white;
+  border-radius: 12px;
   padding: 1.5rem;
   height: calc((100% - 2rem) / 2);
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
+
+.right-section .content-box:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+
 
 /* 콘텐츠 박스 공통 스타일 */
 .content-box h2 {
-  color: var(--text-color);
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* 게시글 관련 스타일 */
@@ -159,19 +187,20 @@
 
 
 
+/* 질문 게시판 스타일 */
 .post-item {
-  background: white;
-  border-radius: 6px;
-  padding: 0.75rem;  /* 패딩 줄임 */
-  margin-bottom: 0.5rem;  /* 간격 줄임 */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);  /* 그림자도 좀 더 섬세하게 */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #eee;
   display: grid;
-  grid-template-columns: 120px 1fr 120px;  /* 양쪽 컬럼 폭 줄임 */
+  grid-template-columns: 2fr 1fr auto auto;
   align-items: center;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-light);
+  transition: all 0.2s ease;
   cursor: pointer;
 }
+
 
 .post-info {
   display: flex;
@@ -180,9 +209,11 @@
 }
 
 .post-author {
-  color: #666;
-  font-size: 0.85rem;  /* 작성자 글씨 크기 줄임 */
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-align: center;
 }
+
 
 .post-actions {
   display: flex;
@@ -193,9 +224,11 @@
 
 
 .post-title {
-  font-size: 0.95rem;  /* 제목 글씨 크기 줄임 */
+  font-size: 0.95rem;
   font-weight: 500;
+  color: var(--text-primary);
 }
+
 
 .post-buttons {
   display: flex;
@@ -203,12 +236,25 @@
 }
 
 
-
 .post-date {
-  color: #999;
-  font-size: 0.85rem;  /* 날짜 글씨 크기 줄임 */
-  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-right: 1rem;
 }
+
+.post-arrow {
+  color: var(--text-secondary);
+}
+
+.post-arrow i {
+  font-size: 1rem;
+}
+
+.post-item:hover {
+  transform: translateX(5px);
+  border-color: var(--primary-blue);
+}
+
 
 
 
@@ -258,20 +304,20 @@
 
 /* 선택된 게시글 스타일 */
 .selected-post {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: white;
-  z-index: 2;
-  padding: 1rem;
-  overflow-y: auto;
-  display: none; /* 초기에는 숨김 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 1.5rem;
+    z-index: 1000;
+    overflow-y: auto;
+    display: none;
 }
 
 .selected-post.show {
-  display: block;
+    display: block;
 }
 
 
@@ -300,24 +346,66 @@
   color: var(--main-blue);
 }
 
-/* 버튼 스타일 */
+/* 수정된 action-btn 스타일 */
 .action-btn {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  background: var(--main-blue);
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-blue);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
+  border-radius: 4px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+  position: relative;
+  bottom: auto;
+  right: auto;
+  margin-top: auto;
+  background: var(--primary-blue);
+
+
+
+
+  font-weight: 500;
+
+
+
+
+  justify-content: center;
+
+  width: fit-content;
+  align-self: flex-end;
 }
 
+
 .action-btn:hover {
-  background: #3367d6;
+  background-color: var(--primary-hover);
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
+.material-list::-webkit-scrollbar {
+  width: 6px;
+}
+.material-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.material-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.material-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+
+
 
 /* 모달 스타일 */
 .modal {
@@ -455,6 +543,40 @@
     height: 400px;
   }
 }
+
+@media (max-width: 1024px) {
+  .material-list, .schedule-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .material-list, .schedule-list {
+    grid-template-columns: 1fr;
+  }
+
+  .right-section .content-box {
+    height: auto;
+    min-height: 300px;
+  }
+}
+
+
+
+@media (max-width: 600px) {
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .schedule-actions {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+
 /* 설정 및 나가기 버튼 */
 .settings-btn, .leave-btn {
   padding: 0.7rem 1.5rem;
@@ -482,15 +604,149 @@
   background: #c82333;
 }
 
+.schedule-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+
+
+/* 학습 일정 스타일 */
+.schedule-list {
+  background-color: white;
+  border-radius: 6px;
+}
+
+
+
+
+
 /* 일정 관련 버튼 */
 .schedule-actions button {
-  padding: 0.25rem 0.5rem;
-  margin-right: 5px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.7rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: white;
+  transition: background-color 0.2s ease;
 }
+
+
+.schedule-actions button:hover {
+  background-color: #555;
+}
+
+
+.schedule-actions .edit-btn {
+  background-color: #4CAF50;
+}
+
+
+
+.schedule-actions .edit-btn:hover {
+  background-color: #45a049;
+}
+
+
+/* 삭제 버튼 스타일 - 다른 삭제 버튼들과 통일 */
+.schedule-actions .delete-btn {
+  background-color: #dc3545;
+}
+
+
+
+.schedule-actions .delete-btn:hover {
+  background-color: #c82333;
+}
+
+
+
+/* 아이콘 크기 조정 */
+.schedule-actions button i {
+  font-size: 0.7rem;
+}
+
+
+
+
+.schedule-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 0.5rem;
+}
+
+
+.schedule-item:hover {
+  background-color: #f8f9fa;
+}
+
+
+
+
+
+.schedule-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.schedule-title {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 500;
+}
+
+
+
+
+.schedule-info h3 {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+
+
+.schedule-info p {
+  margin: 1px 0;
+  color: #666;
+  font-size: 0.7rem;  /* 설명 텍스트 크기 더 줄임 */
+}
+
+
+.schedule-description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+
+
+.schedule-datetime {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+
+.schedule-arrow {
+  color: var(--text-secondary);
+  margin-left: 1rem;
+}
+
+
+
+
+
 
 .btn-danger {
   background-color: #dc3545;
@@ -500,5 +756,376 @@
 .btn-primary {
   background-color: #007bff;
   color: white;
+}
+
+
+/* 리스트 컨테이너 스타일 */
+.material-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  max-height: calc(100% - 60px);
+  overflow-y: auto;
+}
+
+
+
+.material-list::-webkit-scrollbar,
+.schedule-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.material-list::-webkit-scrollbar-track,
+.schedule-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.material-list::-webkit-scrollbar-thumb,
+.schedule-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.material-list::-webkit-scrollbar-thumb:hover,
+.schedule-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+
+/* material 관련 스타일 수정 */
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 0.5rem;
+}
+
+.material-info {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  gap: 1rem;
+}
+
+.material-title {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.material-description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.material-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.material-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.material-actions button {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.7rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.material-item:hover {
+  background-color: #f8f9fa;
+}
+
+.material-actions .edit-btn {
+  background-color: #4CAF50;
+}
+
+.material-actions .edit-btn:hover {
+  background-color: #45a049;
+}
+
+.material-actions .delete-btn {
+  background-color: #dc3545;
+}
+
+.material-actions .delete-btn:hover {
+  background-color: #c82333;
+}
+
+.download-link {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--primary-blue);
+  font-size: 0.8rem;
+  text-decoration: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.download-link:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* 학습 자료실 헤더 */
+.content-box h2 {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* 자료 없을 때 메시지 */
+.no-content {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.material-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.material-title {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  flex-grow: 1;
+  margin-right: 1rem;
+}
+
+.material-actions {
+  position: relative;
+}
+
+.material-menu-btn {
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.material-menu-btn:hover {
+  color: var(--text-primary);
+}
+
+
+
+.material-menu-btn i {
+  font-size: 1rem;
+}
+
+.material-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 120px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: none;
+  z-index: 100;
+  border: 1px solid var(--border-light);
+}
+
+
+.material-menu.active {
+  display: block;
+}
+
+.material-menu button {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
+}
+
+
+.material-menu button:hover {
+  background-color: #f8f9fa;
+  color: var(--primary-blue);
+}
+
+.material-menu button:first-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.material-menu button:last-child {
+  border-radius: 0 0 4px 4px;
+}
+
+
+.material-actions button {
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.material-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.download-link {
+  color: var(--main-blue);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+.material-date {
+  color: #999;
+}
+
+.material-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+/* 모달 버튼 공통 스타일 */
+.modal .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal .form-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal .submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.modal .submit-btn:hover {
+  background-color: #45a049;
+}
+
+.modal .delete-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.modal .delete-btn:hover {
+  background-color: #da190b;
+}
+
+/* 아이콘 스타일 */
+.modal button i {
+  font-size: 14px;
+}
+
+/* 모달 닫기 버튼 (X) 스타일 */
+.modal .close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.modal .close:hover {
+  color: #000;
+}
+
+/* 모달 제목 스타일 개선 */
+.modal .modal-title {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+/* 입력 폼 스타일 개선 */
+.modal .form-group {
+  margin-bottom: 15px;
+}
+
+.modal .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 500;
+}
+
+.modal .form-group input,
+.modal .form-group select,
+.modal .form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.modal .form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* 모달 전체 스타일 개선 */
+.modal .modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 

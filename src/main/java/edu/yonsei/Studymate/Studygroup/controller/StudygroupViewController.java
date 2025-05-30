@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 // ... 다른 import문
 
@@ -53,9 +54,15 @@ public class StudygroupViewController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        GroupMember member = groupMemberRepository.findByGroupAndUser(group, user)
-                .orElseThrow(() -> new AccessDeniedException("You are not a member of this group"));
+        // 멤버십 확인
+        Optional<GroupMember> memberOpt = groupMemberRepository.findByGroupAndUser(group, user);
 
+        if (memberOpt.isEmpty()) {
+            // 멤버가 아닌 경우 메인 페이지로 리다이렉트
+            return "redirect:/?error=unauthorized";
+        }
+
+        GroupMember member = memberOpt.get();
         StudygroupDto groupDto = studygroupConverter.toDto(group, user);
         groupDto.setMemberRole(member.getRole().name());
 
@@ -67,6 +74,7 @@ public class StudygroupViewController {
 
         return "studyroom";
     }
+
 
 
     // 마이 클래스 페이지

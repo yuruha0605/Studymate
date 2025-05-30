@@ -18,11 +18,12 @@ public class StudygroupRequest {
     private Long userid;
     private Long studyGroupId;
     private Long subjectId;
-    @NotBlank
+    @NotBlank(message = "스터디 그룹 이름을 입력해주세요")
     private String groupName;
 
-    @NotBlank
+
     private String subjectName;
+
 
     @Builder.Default
     private Integer maxMembers = 5;

@@ -19,12 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -81,13 +83,31 @@ public class PostController {
 
 
 
-    @DeleteMapping("/{postId}")  // DELETE 메소드 매핑 수정
-    public void delete(
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> delete(
             @PathVariable Long postId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        postService.delete(postId, userDetails.getUser());
+        try {
+            // 게시글 작성자 확인
+            PostEntity post = postRepository.findById(postId)
+                    .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+            // 현재 사용자가 게시글 작성자인지 확인
+            if (!post.getAuthor().getId().equals(userDetails.getId())) {
+                return ResponseEntity.status(403)
+                        .body(Map.of("message", "게시글 삭제 권한이 없습니다."));
+            }
+
+            postService.deletePost(postId);
+            return ResponseEntity.ok()
+                    .body(Map.of("message", "게시글이 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", e.getMessage()));
+        }
     }
+
 
 
     @GetMapping("/{postId}")  // 단순히 /{postId}로 수정

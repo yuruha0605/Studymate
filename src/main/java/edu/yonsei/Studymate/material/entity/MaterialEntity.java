@@ -36,6 +36,7 @@ public class MaterialEntity {
     private Long studygroupId;
 
     @Column(nullable = false)
-    private LocalDateTime uploadDateTime;
+    private Long creatorId;  // 추가
+
 }
 

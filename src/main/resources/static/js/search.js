@@ -53,21 +53,33 @@ function searchKeyword() {
 
 
 function joinStudyGroup(groupId) {
-    // 스터디 그룹 참여 로직 구현
-    fetch(`[[@{/api/study-mate/}]]${groupId}/join`, {
-        method: 'POST'
+    const userIdElement = document.querySelector('input[name="userId"]');
+    if (!userIdElement) {
+        alert('로그인이 필요한 기능입니다.');
+        return;
+    }
+
+    const userId = userIdElement.value;
+
+    fetch(`/api/study-mate/studygroups/${groupId}/join?userId=${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('스터디 그룹에 참여되었습니다!');
-                searchKeyword(); // 목록 새로고침
-            } else {
-                alert(data.message || '참여에 실패했습니다.');
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('스터디 참여에 실패했습니다.');
             }
+            return response.json();
         })
-        .catch(err => {
-            console.error('참여 실패:', err);
-            alert('참여 처리 중 오류가 발생했습니다.');
+        .then(data => {
+            alert('스터디에 성공적으로 참여했습니다.');
+            window.location.href = '/study-mate/myclass';  // 참여 후 마이클래스 페이지로 이동
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message);
         });
 }
+

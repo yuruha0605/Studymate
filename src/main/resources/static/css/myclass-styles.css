@@ -17,7 +17,10 @@
     font-weight: bold;
     margin-bottom: 2rem;
     text-align: center;
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
 }
+
 
 .accent {
     color: var(--main-blue);
@@ -27,6 +30,17 @@
     margin-bottom: 2rem;
     width: 100%;
 }
+
+.subject-wrapper:nth-of-type(1) {
+    animation: slideUpFade 0.6s ease-out 0.2s;
+    animation-fill-mode: both;
+}
+
+.subject-wrapper:nth-of-type(2) {
+    animation: slideUpFade 0.6s ease-out 0.4s;
+    animation-fill-mode: both;
+}
+
 
 .subject-wrapper h2 {
     color: #333;
@@ -52,7 +66,14 @@
     padding: 1rem 2rem; /* 상하 패딩을 줄여서 높이 감소 */
     box-shadow: var(--shadow);
     width: 100%; /* 원래 가로폭으로 복원 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.classes-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
 
 
 .course-card {
@@ -66,13 +87,18 @@
     margin-bottom: 0.8rem; /* 카드 간 간격도 약간 줄임 */
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s;
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
+    transition: all 0.3s ease;
 }
+
 
 
 .course-card:hover {
-    transform: translateX(3px);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .course-info {
     flex-grow: 1;
@@ -136,21 +162,27 @@
     border-radius: 8px;
     font-weight: 500;
     text-decoration: none;
-    transition: all 0.2s;
     display: inline-block;
     font-size: 0.9rem; /* 버튼 글자 크기 축소 */
-
+    transition: all 0.3s ease;
 }
+
 
 .join-btn:hover {
     background: #3367d6;
     transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
 }
+
+.join-btn:active {
+    transform: translateY(0);
+}
+
 
 .no-groups {
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    padding: 1rem 10rem;
+    padding: 1rem 2rem;
     text-align: center;
     color: #999;
     font-size: 0.9rem;
@@ -161,7 +193,24 @@
     min-height: 100px;
     justify-content: center;
     width: 100%;
+    animation: slideUpFade 0.6s ease-out;
+    animation-fill-mode: both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.no-groups:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.main-title,
+.subject-wrapper,
+.mate-status,
+.course-card,
+.no-groups {
+    opacity: 0;
+}
+
 
 .no-groups p {
     color: #999;
@@ -175,7 +224,10 @@
     padding: 2rem;
     box-shadow: var(--shadow);
     margin-top: 2rem;
+    animation: slideUpFade 0.6s ease-out 0.6s;
+    animation-fill-mode: both;
 }
+
 
 .mate-status h2 {
     text-align: center;
@@ -184,166 +236,101 @@
 
 .mate-display {
     display: flex;
-    gap: 2rem;
-    justify-content: center;
     flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
 }
+
+
 
 .mate-entry {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
+
+.mate-avatar {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+
+
 
 .circle {
-    width: 70px;
-    height: 70px;
+    width: 100%;
+    height: 100%;
+    background: #e0e0e0;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 0.5rem;
-    border: 3px solid var(--main-blue);
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 0 1rem;
-    }
 
-    .course-card {
-        padding: 1rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .card-right {
-        width: 100%;
-        padding-left: 0;
-    }
-
-    .join-btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .course-details {
-        gap: 0.5rem;
-    }
-
-    .main-title {
-        font-size: 1.8rem;
-    }
-
-    .no-groups {
-        padding: 2rem 1rem;
-    }
-    .classes-section {
-        width: 90%;
-    }
-
+.status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
 }
 
-@media screen and (min-width: 1400px) {
-    .container {
-        max-width: 1320px;
-    }
 
-    .course-card {
-        padding: 2rem 2.5rem;
-    }
+.status-indicator.online {
+    background-color: #4CAF50;
 }
 
-@media screen and (min-width: 992px) and (max-width: 1399px) {
-    .container {
-        max-width: 1140px;
-    }
+.status-indicator.offline {
+    background-color: #9e9e9e;
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
+.mate-name {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+.no-mates {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+
+
+/* 태블릿 */
+@media (min-width: 769px) and (max-width: 1024px) {
     .container {
         max-width: 960px;
-        padding: 0 1.5rem;
     }
-
-    .course-card {
-        padding: 1.5rem;
-    }
-
-    .course-name {
-        font-size: 1.3rem;
+    .header-container {
+        max-width: 960px;
     }
 }
 
-@media screen and (min-width: 576px) and (max-width: 767px) {
+/* 작은 데스크탑 */
+@media (min-width: 1025px) and (max-width: 1440px) {
     .container {
-        max-width: 720px;
-        padding: 0 1rem;
+        max-width: 1200px;
     }
-
-    .course-card {
-        padding: 1.25rem;
+    .header-container {
+        max-width: 1200px;
     }
-
-    .main-title {
-        font-size: 2rem;
-    }
-    .classes-section {
-        width: 95%;
-    }
-
 }
 
-@media screen and (max-width: 575px) {
+/* 큰 데스크탑 */
+@media (min-width: 1441px) {
     .container {
-        max-width: 100%;
-        padding: 0 1rem;
+        max-width: 1200px;
     }
-
-    .course-card {
-        padding: 1rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .card-right {
-        width: 100%;
-        padding-left: 0;
-    }
-
-    .join-btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .main-title {
-        font-size: 1.8rem;
-    }
-
-    .course-name {
-        font-size: 1.2rem;
+    .header-container {
+        max-width: 1200px;
     }
 }
 
-@media screen and (min-width: 992px) {
-    ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 5px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 5px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-    }
-}
 
 /* 모달 스타일 추가 */
 .modal {
@@ -425,4 +412,97 @@
 
 .submit-btn:hover {
     background: #3367d6;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.modal-title {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    background-color: var(--main-blue);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

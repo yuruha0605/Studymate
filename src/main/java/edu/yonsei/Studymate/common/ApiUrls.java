@@ -6,19 +6,19 @@ public final class ApiUrls {
 
     public static final class Auth {
         public static final String BASE = API_BASE + "/auth";
-        public static final String LOGIN = BASE + "/login";
-        public static final String SIGNUP = BASE + "/signup";
-        public static final String LOGOUT = BASE + "/logout";
+        public static final String LOGIN ="/login";
+        public static final String SIGNUP = "/signup";
+        public static final String LOGOUT = "/logout";
     }
 
     public static final class StudyGroup {
         public static final String BASE = API_BASE + "/studygroups";
-        public static final String CREATE = BASE + "/create";
+        public static final String CREATE = "/create";
         public static final String LIST = BASE + "/list";
         public static final String DETAIL = BASE + "/{groupId}";
         public static final String JOIN = DETAIL + "/join";
         public static final String DELETE = BASE + "/delete/{groupId}";
-        public static final String SEARCH = BASE + "/search";
+        public static final String SEARCH = "/search";
     }
 
     public static final class Post {
@@ -35,7 +35,7 @@ public final class ApiUrls {
         public static final String BASE = API_BASE + "/subjects";
         public static final String CREATE = BASE + "/create";
         public static final String DETAIL = BASE + "/{subjectId}";
-        public static final String SEARCH = BASE + "/search";
+        public static final String SEARCH = "/search";
     }
 
     public static final class View {
