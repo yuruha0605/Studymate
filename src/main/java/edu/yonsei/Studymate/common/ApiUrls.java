@@ -13,12 +13,12 @@ public final class ApiUrls {
 
     public static final class StudyGroup {
         public static final String BASE = API_BASE + "/studygroups";
-        public static final String CREATE = BASE + "/create";
-        public static final String LIST = BASE + "/list";
-        public static final String DETAIL = BASE + "/{groupId}";
+        public static final String CREATE ="/create";
+        public static final String LIST = "/list";
+        public static final String DETAIL = "/{groupId}";
         public static final String JOIN = DETAIL + "/join";
-        public static final String DELETE = BASE + "/delete/{groupId}";
-        public static final String SEARCH = BASE + "/search";
+        public static final String DELETE = "/delete/{groupId}";
+        public static final String SEARCH = "/search";
     }
 
     public static final class Post {

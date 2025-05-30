@@ -53,11 +53,15 @@ function searchKeyword() {
 
 
 function joinStudyGroup(groupId) {
-    // 스터디 그룹 참여 로직 구현
-    fetch(`[[@{/api/study-mate/}]]${groupId}/join`, {
+    const joinUrl = `/api/study-mate/studygroups/${groupId}/join`;
+
+    fetch(joinUrl, {
         method: 'POST'
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+        })
         .then(data => {
             if (data.success) {
                 alert('스터디 그룹에 참여되었습니다!');

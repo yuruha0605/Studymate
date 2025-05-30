@@ -10,12 +10,16 @@ import edu.yonsei.Studymate.Studygroup.service.StudygroupConverter;
 import edu.yonsei.Studymate.Studygroup.service.StudygroupService;
 import edu.yonsei.Studymate.common.ApiUrls;
 import edu.yonsei.Studymate.common.Content;
+import edu.yonsei.Studymate.login.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Pageable;
@@ -78,15 +82,21 @@ public class StudygroupController {
     }
 
 
-
     @PostMapping(ApiUrls.StudyGroup.JOIN)
-    public StudygroupDto joinGroup(
-            @PathVariable Long groupId,
-            @RequestParam Long userId
-    ) {
+    public StudygroupDto joinGroup(@PathVariable Long groupId) {
+        // SecurityContext에서 인증정보 가져오기
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Long userId;
+
+        if (principal instanceof CustomUserDetails) {
+            userId = ((CustomUserDetails) principal).getId();
+        } else {
+            throw new RuntimeException("인증 정보가 올바르지 않습니다.");
+        }
+
         return studygroupService.joinGroup(groupId, userId);
     }
-
 
     @DeleteMapping(ApiUrls.StudyGroup.DELETE)
     public void deleteGroup(
