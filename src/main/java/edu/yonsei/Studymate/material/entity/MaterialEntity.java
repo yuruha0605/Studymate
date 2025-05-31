@@ -1,5 +1,6 @@
 package edu.yonsei.Studymate.material.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,12 @@ public class MaterialEntity {
 
     @Column(nullable = false)
     private Long creatorId;  // 추가
+
+    @Column(name = "uploaded_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime uploadedAt;
+
+
 
 }
 

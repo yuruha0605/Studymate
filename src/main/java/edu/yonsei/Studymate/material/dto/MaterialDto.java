@@ -19,6 +19,12 @@ public class MaterialDto {
     private String fileName;
     private Long studygroupId;
     private Long creatorId;  // 추가
+    private String originalFileName;  // 원본 파일명 추가
+    private String contentType;      // 파일 타입 추가
+    private LocalDateTime uploadedAt;  // 추가
+    private String creatorEmail; // 추가 (화면 표시용)
+
+
 
 }
 

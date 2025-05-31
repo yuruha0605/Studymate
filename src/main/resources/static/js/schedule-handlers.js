@@ -48,25 +48,16 @@ async function loadSchedules() {
     }
 }
 
-// schedule-handlers.js 파일에서 일정을 표시하는 부분 수정
+
 function displaySchedule(schedule) {
     const scheduleItem = document.createElement('div');
     scheduleItem.className = 'schedule-item';
     scheduleItem.setAttribute('data-id', schedule.id);
 
     const scheduleContent = `
-        <div class="schedule-info">
+        <div class="schedule-info" onclick="showScheduleDetail(${JSON.stringify(schedule).replace(/"/g, '&quot;')})">
             <h3>${schedule.title}</h3>
-            <p>${schedule.description || ''}</p>
             <p class="schedule-datetime">${formatDateTime(schedule.scheduleDateTime)}</p>
-        </div>
-        <div class="schedule-actions">
-            <button onclick="editSchedule(${schedule.id})" class="edit-btn">
-                <i class="fas fa-edit"></i> 수정
-            </button>
-            <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
-                <i class="fas fa-trash-alt"></i> 삭제
-            </button>
         </div>
     `;
 
@@ -74,6 +65,93 @@ function displaySchedule(schedule) {
     return scheduleItem;
 }
 
+// function showScheduleDetail(schedule) {
+//     // 기존 모달이 있다면 제거
+//     const existingModal = document.querySelector('.schedule-detail-modal');
+//     if (existingModal) {
+//         existingModal.remove();
+//     }
+//
+//     const currentUserId = document.querySelector('input[name="userId"]').value;
+//     const modal = document.createElement('div');
+//     modal.className = 'schedule-detail-modal modal';
+//
+//     modal.innerHTML = `
+//         <div class="modal-content">
+//             <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
+//             <h2>${schedule.title}</h2>
+//             <div class="schedule-detail-content">
+//                 <p class="schedule-description">${schedule.description || '설명 없음'}</p>
+//                 <p class="schedule-time">일정: ${formatDateTime(schedule.scheduleDateTime)}</p>
+//             </div>
+//             ${currentUserId == schedule.creatorId ? `
+//                 <div class="schedule-actions">
+//                     <button onclick="editSchedule(${schedule.id})" class="edit-btn">
+//                         <i class="fas fa-edit"></i> 수정
+//                     </button>
+//                     <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
+//                         <i class="fas fa-trash-alt"></i> 삭제
+//                     </button>
+//                 </div>
+//             ` : ''}
+//         </div>
+//     `;
+//
+//     document.body.appendChild(modal);
+//     modal.style.display = 'block';
+//
+//     // 모달 외부 클릭 시 닫기
+//     modal.onclick = function(event) {
+//         if (event.target === modal) {
+//             modal.remove();
+//         }
+//     };
+// }
+
+function showScheduleDetail(schedule) {
+    // 기존 모달이 있다면 제거
+    const existingModal = document.querySelector('.schedule-detail-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const currentUserId = document.querySelector('input[name="userId"]').value;
+    const modal = document.createElement('div');
+    modal.className = 'schedule-detail-modal modal';
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
+            <h2>${schedule.title}</h2>
+            <div class="schedule-detail-content">
+                <p class="schedule-description">${schedule.description || '설명 없음'}</p>
+                <p class="schedule-time">일정: ${formatDateTime(schedule.scheduleDateTime)}</p>
+            </div>
+            ${currentUserId == schedule.creatorId ? `
+                <div class="schedule-actions">
+                    <button onclick="editSchedule(${schedule.id}); this.parentElement.parentElement.parentElement.remove();" class="edit-btn">
+                        <i class="fas fa-edit"></i> 수정
+                    </button>
+                    <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
+                        <i class="fas fa-trash-alt"></i> 삭제
+                    </button>
+                </div>
+            ` : ''}
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.style.display = 'block';
+
+    // 모달 외부 클릭 시 닫기
+    modal.onclick = function(event) {
+        if (event.target === modal) {
+            modal.remove();
+        }
+    };
+}
+
+// handleScheduleSubmit 함수도 같은 방식으로 수정
 async function handleScheduleSubmit(event) {
     event.preventDefault();
 
@@ -93,11 +171,14 @@ async function handleScheduleSubmit(event) {
         return;
     }
 
-    const scheduleData = {
+    // LocalDateTime 형식에 맞춰 날짜와 시간 설정
+    const scheduleDateTime = `${dateInput.value}T${timeInput.value}:00+09:00`;
+
+    const scheduleRequest = {
         title: titleInput.value.trim(),
         description: descriptionInput.value.trim(),
-        schedule_date_time: `${dateInput.value}T${timeInput.value}:00+09:00`,
-        studygroup_id: parseInt(studygroupId)
+        schedule_date_time: scheduleDateTime,  // snake_case로 변경
+        studygroup_id: parseInt(studygroupId)  // snake_case로 변경
     };
 
     try {
@@ -112,7 +193,7 @@ async function handleScheduleSubmit(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(scheduleData)
+            body: JSON.stringify(scheduleRequest)
         });
 
         if (!response.ok) {
@@ -129,12 +210,10 @@ async function handleScheduleSubmit(event) {
     }
 }
 
-
 function updateScheduleList(schedules) {
     const scheduleContainer = document.querySelector('.right-section .content-box:last-child');
     if (!scheduleContainer) return;
 
-    // 현재 로그인한 사용자의 ID 가져오기
     const currentUserId = document.querySelector('input[name="userId"]').value;
 
     const content = `
@@ -147,31 +226,25 @@ function updateScheduleList(schedules) {
         <div class="schedule-list">
             ${!schedules || schedules.length === 0 ?
         '<div class="no-content">등록된 일정이 없습니다.</div>' :
-        schedules.map(schedule => `
-                <div class="schedule-item">
-                    <div class="schedule-info">
-                        <h3>${schedule.title}</h3>
-                        <p>${schedule.description || ''}</p>
-                        <p class="schedule-datetime">${formatDateTime(schedule.scheduleDateTime)}</p>
-                    </div>
-                    ${currentUserId == schedule.creatorId ? `
-                        <div class="schedule-actions">
-                            <button onclick="editSchedule(${schedule.id})" class="edit-btn">
-                                <i class="fas fa-edit"></i> 수정
-                            </button>
-                            <button onclick="deleteSchedule(${schedule.id})" class="delete-btn">
-                                <i class="fas fa-trash-alt"></i> 삭제
-                            </button>
+        schedules.map(schedule => {
+            const scheduleHtml = `
+                        <div class="schedule-item" data-id="${schedule.id}">
+                            <div class="schedule-info" onclick="showScheduleDetail(${JSON.stringify(schedule).replace(/"/g, '&quot;')})">
+                                <div class="schedule-header">
+                                    <h3>${schedule.title}</h3>
+                                    <span class="schedule-datetime">${formatDateTime(schedule.scheduleDateTime)}</span>
+                                </div>
+                            </div>
                         </div>
-                    ` : ''}
-                </div>
-            `).join('')}
+                    `;
+            return scheduleHtml;
+        }).join('')
+    }
         </div>
     `;
 
     scheduleContainer.innerHTML = content;
 }
-
 
 // 수정 함수 분리
 async function editSchedule(scheduleId) {
@@ -189,36 +262,101 @@ async function editSchedule(scheduleId) {
 
 
 function openEditScheduleModal(schedule) {
-    const modal = document.getElementById('scheduleModal');
+    // 기존에 열려있는 모달들 모두 제거
+    const existingModals = document.querySelectorAll('.modal');
+    existingModals.forEach(modal => modal.remove());
 
-    // 기본 정보 설정
-    document.getElementById('scheduleTitle').value = schedule.title || '';
-    document.getElementById('scheduleDescription').value = schedule.description || '';
+    // 수정 모달 HTML 생성 및 추가
+    const editModal = document.createElement('div');
+    editModal.className = 'modal';
+    editModal.id = 'scheduleModal';
 
-    // 날짜와 시간 설정
-    if (schedule.scheduleDateTime) {
+    const dateTime = new Date(schedule.scheduleDateTime);
+    const dateStr = dateTime.toISOString().split('T')[0];
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+
+    editModal.innerHTML = `
+        <div class="modal-content">
+            <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
+            <h2 class="modal-title">일정 수정</h2>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="scheduleTitle">제목</label>
+                    <input type="text" id="scheduleTitle" name="title" value="${schedule.title || ''}" required>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleDescription">설명</label>
+                    <textarea id="scheduleDescription" name="description">${schedule.description || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleDate">날짜</label>
+                    <input type="date" id="scheduleDate" name="date" value="${dateStr}" required>
+                </div>
+                <div class="form-group">
+                    <label for="scheduleTime">시간</label>
+                    <input type="time" id="scheduleTime" name="time" value="${hours}:${minutes}" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">수정하기</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(editModal);
+    editModal.style.display = 'block';
+
+    // 수정 폼에 이벤트 리스너 추가
+    const form = editModal.querySelector('#scheduleForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const pathParts = window.location.pathname.split('/');
+        const studygroupId = pathParts[pathParts.length - 1];
+
+        // 날짜와 시간 형식 맞추기
+        const date = document.getElementById('scheduleDate').value;
+        const time = document.getElementById('scheduleTime').value;
+
+        const scheduleRequest = {
+            title: document.getElementById('scheduleTitle').value,
+            description: document.getElementById('scheduleDescription').value,
+            schedule_date_time: `${date}T${time}:00+09:00`, // snake_case로 변경
+            studygroup_id: parseInt(studygroupId) // snake_case로 변경
+        };
+
         try {
-            const dateTime = new Date(schedule.scheduleDateTime);
+            const response = await fetch(`/api/study-mate/schedules/${schedule.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(scheduleRequest)
+            });
 
-            // 날짜 설정 (YYYY-MM-DD 형식)
-            const dateStr = dateTime.toISOString().split('T')[0];
-            document.getElementById('scheduleDate').value = dateStr;
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || '일정 수정에 실패했습니다.');
+            }
 
-            // 시간 설정 (HH:mm 형식)
-            const hours = String(dateTime.getHours()).padStart(2, '0');
-            const minutes = String(dateTime.getMinutes()).padStart(2, '0');
-            document.getElementById('scheduleTime').value = `${hours}:${minutes}`;
+            alert('일정이 성공적으로 수정되었습니다.');
+            editModal.remove();
+            loadSchedules();
         } catch (error) {
-            console.error('Error parsing date:', error);
+            console.error('Error:', error);
+            alert(error.message);
         }
-    }
+    });
 
-    // 모달 설정
-    modal.dataset.mode = 'edit';
-    modal.dataset.scheduleId = schedule.id;
-    modal.querySelector('.modal-title').textContent = '일정 수정';
-    modal.style.display = 'block';
+    // 모달 외부 클릭 시 닫기
+    editModal.onclick = function(event) {
+        if (event.target === editModal) {
+            editModal.remove();
+        }
+    };
 }
+
 
 async function deleteSchedule(id) {
     if (!confirm('정말로 이 일정을 삭제하시겠습니까?')) {

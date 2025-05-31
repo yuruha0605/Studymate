@@ -1,5 +1,7 @@
 package edu.yonsei.Studymate.material.service;
 
+import edu.yonsei.Studymate.login.entity.User;
+import edu.yonsei.Studymate.login.repository.UserRepository;
 import edu.yonsei.Studymate.material.dto.MaterialDto;
 import edu.yonsei.Studymate.material.dto.MaterialFileDto;
 import edu.yonsei.Studymate.material.entity.MaterialEntity;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final UserRepository userRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -51,7 +54,8 @@ public class MaterialServiceImpl implements MaterialService {
                     .contentType(file.getContentType())
                     .filePath(filePath.toString())
                     .studygroupId(materialDTO.getStudygroupId())
-                    .creatorId(materialDTO.getCreatorId())  // 추가
+                    .creatorId(materialDTO.getCreatorId())
+                    .uploadedAt(LocalDateTime.now())  // 현재 시간 설정
                     .build();
 
             MaterialEntity savedMaterial = materialRepository.save(material);
@@ -60,6 +64,7 @@ public class MaterialServiceImpl implements MaterialService {
             throw new RuntimeException("파일 업로드에 실패했습니다.", e);
         }
     }
+
 
 
     @Override
@@ -94,15 +99,34 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     private MaterialDto convertToDto(MaterialEntity entity) {
+        String creatorEmail = userRepository.findById(entity.getCreatorId())
+                .map(User::getLoginId)
+                .orElse("Unknown");
+
+        // null 체크를 더 엄격하게 수정
+        LocalDateTime uploadTime = entity.getUploadedAt();
+        if (uploadTime == null) {
+            uploadTime = LocalDateTime.now();
+            // 엔티티도 업데이트
+            entity.setUploadedAt(uploadTime);
+            materialRepository.save(entity);
+        }
+
         return MaterialDto.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .fileName(entity.getFileName())
+                .fileName(entity.getOriginalFileName())  // 원본 파일명으로 변경
                 .studygroupId(entity.getStudygroupId())
                 .creatorId(entity.getCreatorId())
+                .creatorEmail(creatorEmail)
+                .uploadedAt(uploadTime)
                 .build();
+
     }
+
+
+
 
     @Override
     public MaterialDto updateMaterial(Long materialId, MaterialDto materialDto, MultipartFile file) {
