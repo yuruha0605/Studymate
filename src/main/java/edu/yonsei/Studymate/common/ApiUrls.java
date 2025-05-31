@@ -58,9 +58,9 @@ public final class ApiUrls {
 
     public static final class Myclass {
         public static final String BASE = API_BASE + "/myclass";
-        public static final String LIST = BASE + "/list";
-        public static final String JOIN = BASE + "/{classId}/join";
-        public static final String USER_CLASSES = BASE + "/user/{userId}";
+        public static final String LIST = "/list";
+        public static final String JOIN = "/{classId}/join";
+        public static final String USER_CLASSES = "/user/{userId}";
     }
 
 

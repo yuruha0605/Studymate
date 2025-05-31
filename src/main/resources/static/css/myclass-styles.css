@@ -235,12 +235,13 @@
 }
 
 .mate-display {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 180px)); /* 크기 증가 */
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center; /* 가운데 정렬 */
 }
+
 
 
 
@@ -248,35 +249,63 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 1rem;
+    padding: 1.5rem; /* 패딩 증가 */
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.mate-entry:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
 .mate-avatar {
     position: relative;
-    width: 50px;
-    height: 50px;
+    width: 100px; /* 크기 증가 */
+    height: 100px; /* 크기 증가 */
 }
 
-
-
+.profile-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
 
 .circle {
     width: 100%;
     height: 100%;
-    background: #e0e0e0;
     border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-image: url('https://i.pravatar.cc/150');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
+
+
+
 
 
 .status-indicator {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 12px;
-    height: 12px;
+    bottom: 5px;
+    right: 5px;
+    width: 24px; /* 크기 증가 */
+    height: 24px; /* 크기 증가 */
     border-radius: 50%;
-    border: 2px solid white;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+
 
 
 .status-indicator.online {
@@ -288,10 +317,14 @@
 }
 
 .mate-name {
-    font-size: 14px;
+    font-size: 1.1rem; /* 글자 크기 증가 */
     color: #333;
+    font-weight: 500;
+    text-align: center;
     margin: 0;
 }
+
+
 
 .no-mates {
     text-align: center;

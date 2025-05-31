@@ -52,6 +52,7 @@ public class StudygroupEntity {
     // 각 그룹은 또 각각에 대한 게시판이 있다
     @OneToMany(mappedBy = "studygroup", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @JsonIgnore
     @org.hibernate.annotations.SQLOrder("id")
     private List<BoardEntity> boardList = List.of();
 
@@ -64,6 +65,7 @@ public class StudygroupEntity {
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @Builder.Default
+    @JsonIgnore
     private List<GroupMember> members = new ArrayList<>();
 
 }

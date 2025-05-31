@@ -7,20 +7,21 @@ import edu.yonsei.Studymate.Myclass.entity.StudentEntity;
 import edu.yonsei.Studymate.Myclass.repository.MateRepository;
 import edu.yonsei.Studymate.Myclass.repository.MyclassRepository;
 import edu.yonsei.Studymate.Myclass.repository.StudentRepository;
+import edu.yonsei.Studymate.Studygroup.entity.GroupMember;
+import edu.yonsei.Studymate.Studygroup.entity.GroupMemberRepository;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupEntity;
 import edu.yonsei.Studymate.Studygroup.entity.StudygroupRepository;
+import edu.yonsei.Studymate.login.entity.User;
 import edu.yonsei.Studymate.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +32,9 @@ public class MateService {
     private final MateRepository mateRepository;
     private final StudygroupRepository studygroupRepository;
     private final UserRepository userRepository;
+    private final GroupMemberRepository groupMemberRepository;
+
+
 
     public List<MateEntity> getMates(Long studygroupId) {
         StudygroupEntity studygroup = studygroupRepository.findById(studygroupId)
@@ -87,4 +91,32 @@ public class MateService {
         List<MateEntity> mates = mateRepository.findByStudygroup(studygroup);
         mateRepository.deleteAll(mates);
     }
+
+    @Transactional(readOnly = true)
+    public List<GroupMember> getActiveStudyMates(Long userId, int limit) {
+        // 사용자 존재 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // 해당 사용자가 속한 그룹의 모든 멤버를 조회
+        List<GroupMember> userGroups = groupMemberRepository.findByUser_Id(userId);
+
+        // 사용자가 속한 그룹들의 모든 멤버를 수집
+        Set<GroupMember> allGroupMembers = new HashSet<>();
+
+        for (GroupMember membership : userGroups) {
+            // 각 그룹의 모든 멤버를 가져옴
+            List<GroupMember> groupMembers = groupMemberRepository.findByGroup(membership.getGroup());
+            // 자신을 제외한 멤버들만 추가
+            groupMembers.stream()
+                    .filter(member -> !member.getUser().getId().equals(userId))
+                    .forEach(allGroupMembers::add);
+        }
+
+        // 최대 limit 수만큼 반환
+        return allGroupMembers.stream()
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
 }

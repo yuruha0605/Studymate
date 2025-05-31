@@ -20,5 +20,7 @@ public class MateDto {
     private String studentName;
     //private boolean isOnline;
     private LocalDateTime lastActiveTime;
+    private String profileImageUrl; // 추가된 필드
+
 }
 

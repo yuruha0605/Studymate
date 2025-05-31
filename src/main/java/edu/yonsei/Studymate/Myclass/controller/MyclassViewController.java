@@ -40,18 +40,25 @@ public class MyclassViewController {
 //        return "myclass";
 //    }
 
+
+
     @GetMapping("/myclass")
     public String myClass(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         Long userId = userDetails.getId();
+
+        // 사용자의 스터디 그룹 정보 조회
         Map<String, List<StudygroupDto>> userClasses = myclassService.getUserClasses(userId);
-
-        // DTO 사용
-        List<MateDto> topMates = mateService.getTopMates(userId, 4);
-        model.addAttribute("studyMates", topMates);
-
         model.addAttribute("userClasses", userClasses);
+
+        // 스터디 메이트 정보 조회 (이미지 URL 관련 코드 제거)
+        List<MateDto> studyMates = mateService.getTopMates(userId, 8);
+        model.addAttribute("studyMates", studyMates);
+
         return "myclass";
     }
+
+
+
 
 
 

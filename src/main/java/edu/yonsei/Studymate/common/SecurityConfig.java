@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/study-mate/auth/logout")  // 변경된 부분
                         .logoutSuccessUrl("/study-mate/auth/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
