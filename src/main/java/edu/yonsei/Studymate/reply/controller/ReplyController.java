@@ -46,4 +46,24 @@ public class ReplyController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(replies);
     }
+
+    @DeleteMapping("/{replyId}")
+    public ResponseEntity<Void> deleteReply(
+            @PathVariable Long replyId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        replyService.deleteReply(replyId, userDetails.getUser());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{replyId}")
+    public ResponseEntity<ReplyDto> updateReply(
+            @PathVariable Long replyId,
+            @Valid @RequestBody ReplyRequest replyRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        ReplyDto updatedReply = replyService.updateReply(replyId, replyRequest, userDetails.getUser());
+        return ResponseEntity.ok(updatedReply);
+    }
+
 }

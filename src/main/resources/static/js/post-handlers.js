@@ -1,3 +1,8 @@
+
+
+
+let currentPage = 0;
+const pageSize = 10;
 let currentPostId = null;
 
 function initializePostHandlers() {
@@ -5,8 +10,8 @@ function initializePostHandlers() {
     if (questionBtn) {
         questionBtn.addEventListener('click', openQuestionModal);
     }
+    loadPosts(0); // 초기 페이지 로드
 }
-
 
 
 async function loadBoardInfo() {
@@ -26,8 +31,10 @@ async function loadBoardInfo() {
             document.getElementById('questionForm').appendChild(boardIdInput);
         }
         boardIdInput.value = boardData.id;
+        return boardData.id;
     } catch (error) {
         console.error('Error loading board info:', error);
+        throw error;
     }
 }
 
@@ -88,44 +95,33 @@ async function handleQuestionSubmit(event) {
     }
 }
 
-async function loadPosts() {
-    const pathParts = window.location.pathname.split('/');
-    const studygroupId = pathParts[pathParts.length - 1];
-
+async function loadPosts(page = 0) {
     try {
-        const boardResponse = await fetch(`/api/study-mate/boards/studygroup/${studygroupId}`);
-        if (!boardResponse.ok) {
-            throw new Error('게시판을 찾을 수 없습니다.');
-        }
-        const boardData = await boardResponse.json();
+        const pathParts = window.location.pathname.split('/');
+        const studygroupId = pathParts[pathParts.length - 1];
 
-        const boardIdInput = document.getElementById('boardId');
-        if (boardIdInput) {
-            boardIdInput.value = boardData.id;
-        }
+        const response = await fetch(`/api/study-mate/posts/${studygroupId}/list?page=${page}&size=${pageSize}`);
 
-        const postsResponse = await fetch(`/api/study-mate/posts/${boardData.id}/list?page=0&size=10`);
-        if (!postsResponse.ok) {
+        if (!response.ok) {
             throw new Error('게시글을 불러오는데 실패했습니다.');
         }
 
-        const postsData = await postsResponse.json();
-        if (postsData && postsData.body && Array.isArray(postsData.body)) {
-            updatePostList(postsData.body);
-        } else {
-            const postListContainer = document.querySelector('.content-box .post-list');
-            if (postListContainer) {
-                showNoContentMessage(postListContainer);
+        const data = await response.json();
+
+        if (data && data.body) {
+            updatePostList(data.body);
+            if (data.pagination) {
+                updatePagination(data.pagination);
             }
+        } else {
+            showNoContentMessage(document.querySelector('.post-list'));
         }
     } catch (error) {
         console.error('Error loading posts:', error);
-        const postListContainer = document.querySelector('.content-box .post-list');
-        if (postListContainer) {
-            showErrorMessage(postListContainer);
-        }
+        showErrorMessage(document.querySelector('.post-list'));
     }
 }
+
 
 function updatePostList(posts) {
     const postListContainer = document.querySelector('.post-list');
@@ -136,25 +132,16 @@ function updatePostList(posts) {
 
     const postsHtml = posts.map(post => `
         <div class="post-item" data-post-id="${post.id}" onclick="showPost(${post.id})">
-            <div class="post-info">
-                <span class="post-title">${escapeHtml(post.title)}</span>
-                <span class="post-author">${post.authorEmail || '익명'}</span>
-            </div>
+            <div class="post-title">${escapeHtml(post.title)}</div>
+            <div class="post-author">${post.authorEmail || '익명'}</div>
             <div class="post-date">${formatDateTime(post.written)}</div>
+            <div class="post-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
         </div>
     `).join('');
 
     postListContainer.innerHTML = postsHtml;
-
-    // 이벤트 리스너 추가
-    document.querySelectorAll('.post-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const postId = this.dataset.postId;
-            if (postId) {
-                showPost(postId);
-            }
-        });
-    });
 }
 
 async function showPost(postId) {
@@ -269,5 +256,76 @@ function showNoContentMessage(container) {
 function showErrorMessage(container) {
     if (container) {
         container.innerHTML = '<div class="error-message">게시글을 불러오는데 실패했습니다.</div>';
+    }
+}
+
+function updatePagination(pagination) {
+    const paginationContainer = document.querySelector('.pagination');
+    if (!paginationContainer) return;
+
+    const prevBtn = paginationContainer.querySelector('.prev');
+    const nextBtn = paginationContainer.querySelector('.next');
+    const pageNumbers = paginationContainer.querySelector('.page-numbers');
+
+    // 이벤트 리스너 추가
+    prevBtn.onclick = () => changePage(currentPage - 1);
+    nextBtn.onclick = () => changePage(currentPage + 1);
+
+    if (pagination.totalPage > 0) {
+        pageNumbers.innerHTML = '';
+        for (let i = 0; i < pagination.totalPage; i++) {
+            const button = document.createElement('button');
+            button.className = `page-btn number ${i === pagination.page ? 'active' : ''}`;
+            button.textContent = i + 1;
+            button.onclick = () => changePage(i);
+            pageNumbers.appendChild(button);
+        }
+
+        prevBtn.disabled = pagination.page === 0;
+        nextBtn.disabled = pagination.page === pagination.totalPage - 1;
+        currentPage = pagination.page;
+    }
+}
+
+
+async function changePage(page) {
+    await loadPosts(page);
+    scrollToTop();
+}
+
+function scrollToTop() {
+    document.querySelector('.post-list').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializePostHandlers();
+
+    // 폼 제출 이벤트 리스너 추가
+    const questionForm = document.getElementById('questionForm');
+    if (questionForm) {
+        questionForm.addEventListener('submit', handleQuestionSubmit);
+    }
+});
+
+
+function openQuestionModal() {
+    const modal = document.getElementById('questionModal');
+    if (modal) {
+        modal.style.display = 'block';
+        // 모달 초기화
+        const form = document.getElementById('questionForm');
+        if (form) {
+            form.reset();
+        }
+    }
+}
+
+function closeQuestionModal() {
+    const modal = document.getElementById('questionModal');
+    if (modal) {
+        modal.style.display = 'none';
     }
 }

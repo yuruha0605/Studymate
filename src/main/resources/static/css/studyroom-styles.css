@@ -53,54 +53,137 @@
 /* 스트리밍 섹션 */
 .streaming-section {
   width: 100%;
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: var(--border-radius);
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
+  background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+  padding: 2rem;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
+
 
 .video-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.5rem;
 }
+
 
 .main-video {
   width: 100%;
   max-width: 1000px;
   height: 550px;
   background: #000;
-  border-radius: 8px;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
+
 
 .main-video video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  transition: transform 0.3s ease;
 }
+
+.main-video::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
 
 .video-controls {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+
 
 .video-controls button {
-  padding: 10px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: none;
-  background: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.9);
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.video-controls button:hover {
-  background: #f0f0f0;
+.video-controls button i {
+  font-size: 1.2rem;
+  color: #333;
+  transition: all 0.3s ease;
 }
+
+
+  .video-controls button:active {
+    transform: translateY(0);
+  }
+
+  /* 버튼 활성/비활성 상태 스타일 */
+  .video-controls button.active {
+    background: var(--primary-blue);
+  }
+
+  .video-controls button.active i {
+    color: white;
+  }
+
+  /* 참가자 비디오 섹션 */
+  .participants-videos {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem;
+    margin-top: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+
+  .participants-videos::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .participants-videos::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .participants-videos::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+
+  .participants-videos::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+
+
+
+  .video-controls button:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
 
 /* 메인 콘텐츠 영역 */
 .content-wrapper {
@@ -217,10 +300,39 @@
 
 .post-actions {
   display: flex;
-  align-items: center;
   gap: 1rem;
-  margin-left: auto;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
 }
+
+.post-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+
+.post-actions .edit-btn {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.post-actions .delete-btn {
+  background: var(--danger-color);
+  color: white;
+}
+
+.post-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
 
 
 .post-title {
@@ -283,7 +395,7 @@
 }
 
 .edit-btn {
-  background: #4285f4;
+  background: var(--primary-blue);
   color: white;
 }
 
@@ -294,7 +406,8 @@
 }
 
 .edit-btn:hover {
-  background-color: #45a049;
+  background: var(--primary-hover);
+
 }
 
 .delete-btn:hover {
@@ -303,19 +416,22 @@
 
 
 
-/* 선택된 게시글 스타일 */
+/* 선택된 게시글 스타일 개선 */
 .selected-post {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: white;
-    padding: 1.5rem;
-    z-index: 1000;
-    overflow-y: auto;
-    display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  padding: 2rem;
+  z-index: 1000;
+  overflow-y: auto;
+  display: none;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
+
 
 .selected-post.show {
     display: block;
@@ -331,9 +447,11 @@
 .post-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
 }
+
 
 .back-btn {
   background: none;
@@ -341,11 +459,39 @@
   cursor: pointer;
   padding: 0.5rem;
   font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-right: 1rem;
+  transition: color 0.2s ease;
 }
 
+
 .back-btn:hover {
-  color: var(--main-blue);
+  color: var(--primary-blue);
 }
+
+.selected-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  flex-grow: 1;
+}
+
+.selected-author {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.post-content {
+  padding: 1.5rem 0;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+
+
 
 /* 수정된 action-btn 스타일 */
 .action-btn {
@@ -365,17 +511,8 @@
   right: auto;
   margin-top: auto;
   background: var(--primary-blue);
-
-
-
-
   font-weight: 500;
-
-
-
-
   justify-content: center;
-
   width: fit-content;
   align-self: flex-end;
 }
@@ -467,28 +604,202 @@
 .comment {
   padding: 1rem;
   border-bottom: 1px solid #eee;
+  position: relative;
 }
+
 
 .comment-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.comment-author {
-  font-weight: bold;
-  color: var(--text-color);
+
+.comment-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
+
+
+.comment-author {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+
+
 .comment-date {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
+
 .comment-content {
-  color: var(--text-color);
+  margin-top: 0.5rem;
+  color: var(--text-primary);
   line-height: 1.5;
 }
+
+.comment-actions {
+  display: flex;
+  gap: 0.5rem;
+  /*margin-left: auto;*/
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.comment-actions button:hover {
+  color: #333;
+}
+
+.comment-edit-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  resize: vertical;
+  min-height: 60px;
+}
+
+
+
+
+.edit-btn:hover {
+  color: #2196F3;
+}
+
+.comment-actions .delete-btn:hover {
+  color: #f44336;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+
+
+
+.comment-btn {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.comment-btn:hover {
+  color: var(--primary-blue);
+}
+
+
+
+
+.edit-comment-btn,
+.delete-comment-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-secondary);
+}
+
+.edit-comment-btn:hover,
+.delete-comment-btn:hover {
+  color: var(--primary-blue);
+}
+
+.comment-edit-form {
+  margin-top: 0.5rem;
+}
+
+.edit-comment-text {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  resize: vertical;
+  min-height: 60px;
+}
+
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+
+.edit-actions .save-btn {
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+.edit-actions .cancel-btn {
+  background-color: #999;
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+.edit-actions button {
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #666;
+  color: white;
+}
+
+
+.edit-actions button:first-child {
+  background-color: #2196F3;
+  color: white;
+}
+
+.edit-actions button:last-child {
+  background-color: #666;
+  color: white;
+}
+
+/* 댓글 섹션 개선 */
+.comments-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.comments-section h3 {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
 
 
 /* 댓글 섹션 스타일 */
@@ -500,34 +811,50 @@
   margin-bottom: 1rem;
 }
 
+
 .comment-form {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
+  align-items: flex-start;
 }
+
 
 
 .comment-form textarea {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
+  flex: 1;
+  min-height: 80px;
+  padding: 0.8rem;
+  border: 1px solid var(--border-light);
   border-radius: 4px;
   resize: vertical;
-  min-height: 60px;
 }
 
+
 .comment-form button {
-  padding: 0.5rem 1rem;
-  background: var(--main-blue);
+  background: var(--primary-blue);
   color: white;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  height: 40px;
 }
 
+
+
 .comment-form button:hover {
-  background: #3367d6;
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
 
 
 /* 반응형 디자인 */
@@ -647,15 +974,15 @@
 }
 
 
+/* 학습 일정 수정 버튼 스타일 */
 .schedule-actions .edit-btn {
-  background-color: #4CAF50;
+  background-color: var(--primary-blue);
 }
-
-
 
 .schedule-actions .edit-btn:hover {
-  background-color: #45a049;
+  background-color: var(--primary-hover);
 }
+
 
 
 /* 삭제 버튼 스타일 - 다른 삭제 버튼들과 통일 */
@@ -1202,7 +1529,71 @@
   color: var(--text-secondary);
 }
 
+/* 모달 스타일 추가 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
 
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.modal-actions .submit-btn {
+  background: var(--main-blue);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: auto;
+}
+
+.modal-actions .submit-btn:hover {
+  background: #3367d6;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+}
+
+.modal-actions .cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-actions .cancel-btn:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  width: 500px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
 
 /* 모달 버튼 공통 스타일 */
 .modal .form-actions {
@@ -1305,4 +1696,83 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.page-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.page-btn.number {
+  min-width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--main-bg);
+  color: var(--main-blue);
+}
+
+.page-btn.active {
+  background: var(--main-blue);
+  color: white;
+}
+
+.page-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.prev, .next {
+  font-size: 0.8rem;
+}
+
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+
+}
+
+.board-header h2 {
+  margin: 0;
+}
+
+.board-content {
+  position: relative;
+  padding: 1rem;
+}
+
+
+.action-btn {
+  margin-left: auto; /* 오른쪽 정렬 */
+}
+
+
 

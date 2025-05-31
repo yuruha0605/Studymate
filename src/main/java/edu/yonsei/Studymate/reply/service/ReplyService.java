@@ -40,4 +40,29 @@ public class ReplyService {
         return replyRepository.findAllByPostEntityOrderById(postEntity);
     }
 
+
+    public void deleteReply(Long replyId, User user) {
+        ReplyEntity reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new RuntimeException("Reply not found"));
+
+        if (!reply.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You can only delete your own replies");
+        }
+
+        replyRepository.delete(reply);
+    }
+
+    public ReplyDto updateReply(Long replyId, ReplyRequest replyRequest, User user) {
+        ReplyEntity reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new RuntimeException("Reply not found"));
+
+        if (!reply.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You can only update your own replies");
+        }
+
+        reply.setContent(replyRequest.getContent());
+        ReplyEntity updatedReply = replyRepository.save(reply);
+        return replyConverter.toDto(updatedReply);
+    }
+
 }

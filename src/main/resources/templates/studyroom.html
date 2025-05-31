@@ -7,12 +7,14 @@
   <link rel="stylesheet" th:href="@{/css/common-styles.css}">
   <link rel="stylesheet" th:href="@{/css/studyroom-styles.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!--  <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">-->
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container">
   <input type="hidden" name="userId" th:value="${#authentication.principal.id}">
+
   <div class="studyroom-header">
     <div class="header-top">
       <h1 class="group-title" th:text="${group.groupName}">스터디룸</h1>
@@ -61,20 +63,34 @@
       <div class="content-grid">
         <div class="left-section">
           <div class="content-box">
-            <h2>질문 게시판</h2>
-            <div class="post-list">
-              <!-- 게시글 아이템 구조 변경 -->
-              <div class="post-item" th:each="post : ${posts}" th:onclick="|showPost(${post.id})|">
-                <div class="post-title" th:text="${post.title}">게시글 제목</div>
-                <div class="post-author" th:text="${post.authorName}">작성자</div>
-                <div class="post-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">2024-03-21</div>
-                <div class="post-arrow">
-                  <i class="fas fa-chevron-right"></i>
+            <div class="board-header">
+              <h2>질문 게시판</h2>
+              <button class="action-btn" onclick="openQuestionModal()">
+                <i class="fas fa-plus"></i> 질문하기
+              </button>
+            </div>
+            <!-- 게시글 목록 영역 -->
+            <div class="board-content">
+              <div class="post-list">
+                <!-- 게시글 목록은 JavaScript로 동적 생성됨 -->
+              </div>
+
+              <!-- 페이지네이션 -->
+              <div class="pagination">
+                <button class="page-btn prev">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="page-numbers">
+                  <!-- 페이지 번호는 JavaScript로 동적 생성 -->
                 </div>
+                <button class="page-btn next">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
               </div>
             </div>
-            <!-- studyroom.html의 post-list 다음에 추가 -->
-            <div id="selectedPost" class="selected-post">
+
+            <!-- 게시글 상세 보기 영역 -->
+            <div id="selectedPost" class="selected-post" style="display: none;">
               <div class="post-header">
                 <button class="back-btn" onclick="hideSelectedPost()">
                   <i class="fas fa-arrow-left"></i>
@@ -100,9 +116,6 @@
                 </div>
               </div>
             </div>
-            <button class="action-btn" onclick="openQuestionModal()">
-              <i class="fas fa-plus"></i> 질문하기
-            </button>
           </div>
         </div>
 
@@ -267,11 +280,12 @@
     <h2 class="modal-title">스터디 탈퇴</h2>
     <p>정말로 스터디에서 탈퇴하시겠습니까?</p>
     <div class="modal-actions">
-      <button onclick="leaveGroup()" class="submit-btn">확인</button>
-      <button onclick="closeLeaveConfirmModal()" class="cancel-btn">취소</button>
+      <button class="submit-btn" onclick="leaveGroup()">확인</button>
+      <button class="cancel-btn" onclick="closeLeaveConfirmModal()">취소</button>
     </div>
   </div>
 </div>
+
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
