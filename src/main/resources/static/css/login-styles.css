@@ -181,3 +181,33 @@ main {
         transform: translateY(0);
     }
 }
+
+.error-message {
+    color: #ff0000;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.success-message {
+    color: #008000;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border-radius: 5px;
+}
+
+.links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.links a {
+    color: #666;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+

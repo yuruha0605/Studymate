@@ -1,0 +1,143 @@
+:root {
+    --main-blue: #4285f4;
+    --main-bg: #f4f4f4;
+    --card-bg: #fff;
+    --shadow: 0 4px 16px rgba(66,133,244,0.10);
+    --border-radius: 14px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main-bg);
+}
+
+.find-id-container {
+    width: 100%;
+    max-width: 450px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    animation: slideUpFade 0.6s ease-out;
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: 2rem;
+    color: var(--main-blue);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--main-blue);
+    box-shadow: 0 0 0 3px rgba(66,133,244,0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--main-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #3367d6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66,133,244,0.2);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.links a {
+    color: #666;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: var(--main-blue);
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 결과 메시지 스타일 */
+.result-message {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.result-message.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.result-message.error {
+    background: #ffebee;
+    color: #c62828;
+}

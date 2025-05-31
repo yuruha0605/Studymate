@@ -59,5 +59,20 @@ public class AuthService {
                 .build();
     }
 
+
+    public String findIdByStudentIdAndName(String studentId, String name) {
+        return userRepository.findByStudentIdAndName(studentId, name)
+                .map(User::getLoginId)
+                .orElse(null);
+    }
+
+    public String findPasswordByLoginIdAndStudentId(String loginId, String studentId) {
+        return userRepository.findByLoginIdAndStudentId(loginId, studentId)
+                .map(User::getPassword)
+                .orElse(null);
+    }
+
+
+
 }
 

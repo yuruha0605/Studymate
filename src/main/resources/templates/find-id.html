@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 찾기 | Study-Mate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/findId-styles.css}">
+</head>
+<body>
+<div class="find-id-container">
+    <div class="logo-section">
+        <a href="/login" class="logo">Study-Mate</a>
+        <h1 class="title">아이디 찾기</h1>
+    </div>
+
+    <form th:action="@{/study-mate/auth/find-id}" method="post">
+    <div class="form-group">
+            <label for="studentId">학번</label>
+            <input type="text" id="studentId" name="studentId" required
+                   placeholder="학번을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" required
+                   placeholder="이름을 입력하세요">
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-search"></i> 아이디 찾기
+        </button>
+    </form>
+
+    <!-- 결과 메시지 (조건부 렌더링) -->
+    <div th:if="${foundId}" class="result-message success">
+        <i class="fas fa-check-circle"></i>
+        찾은 아이디: <strong th:text="${foundId}"></strong>
+    </div>
+
+    <div th:if="${error}" class="result-message error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span th:text="${error}">일치하는 정보가 없습니다.</span>
+    </div>
+
+    <div class="links">
+        <a href="/login">로그인</a> |
+        <a href="/study-mate/auth/find-password">비밀번호 찾기</a> |
+        <a href="/study-mate/auth/signup">회원가입</a>
+    </div>
+</div>
+</body>
+</html>

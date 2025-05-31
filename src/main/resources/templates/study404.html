@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 - 페이지를 찾을 수 없습니다 | StudyMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --main-blue: #4285f4;
+            --main-bg: #f4f4f4;
+            --card-bg: #fff;
+            --shadow: 0 4px 16px rgba(66,133,244,0.10);
+            --border-radius: 14px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect x='10' y='10' width='15' height='80' fill='%234285f410'/%3E%3Crect x='30' y='15' width='15' height='75' fill='%234285f408'/%3E%3Crect x='50' y='5' width='15' height='85' fill='%234285f410'/%3E%3Crect x='70' y='12' width='15' height='78' fill='%234285f408'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 3rem;
+            max-width: 600px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            animation: slideUpFade 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--main-blue);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .books-shelf {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 2rem 0;
+        }
+
+        .book {
+            width: 30px;
+            height: 100px;
+            background: var(--main-blue);
+            opacity: 0.1;
+            transform: skew(-5deg);
+            position: relative;
+        }
+
+        .book:nth-child(odd) {
+            height: 90px;
+            background: var(--main-blue);
+            opacity: 0.15;
+        }
+
+        .construction-icon {
+            font-size: 4rem;
+            color: var(--main-blue);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .error-code {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--main-blue);
+            margin: 0;
+            line-height: 1;
+        }
+
+        .error-message {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 1rem 0;
+        }
+
+        .notice-box {
+            background: rgba(66,133,244,0.05);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            border: 2px dashed var(--main-blue);
+            position: relative;
+        }
+
+        .notice-box::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, transparent 50%, rgba(66,133,244,0.1) 50%);
+            border-radius: 0 0 var(--border-radius) 0;
+        }
+
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--main-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(66,133,244,0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideUpFade {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <i class="fas fa-book-reader construction-icon"></i>
+    <h1 class="error-code">404</h1>
+    <h2 class="error-message">페이지를 찾을 수 없습니다</h2>
+
+    <div class="books-shelf">
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+    </div>
+
+    <div class="notice-box">
+        <i class="fas fa-pencil-alt"></i>
+        <p>스터디메이트 자료실이 업데이트 중입니다.<br>
+            더 나은 학습 경험을 위해 준비하고 있어요!</p>
+    </div>
+
+    <p class="error-description">
+        찾으시는 자료가 이동되었거나 준비 중일 수 있습니다.<br>
+        잠시 후 다시 시도해 주세요.
+    </p>
+
+    <a href="/study-mate" class="home-button">
+        <i class="fas fa-home"></i>
+        스터디메이트 홈으로
+    </a>
+</div>
+</body>
+</html>
